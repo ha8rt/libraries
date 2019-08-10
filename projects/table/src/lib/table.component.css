@@ -1,0 +1,23 @@
+div div form label {
+  padding-right: 10px;
+}
+
+.red{
+  color: red;
+}
+
+.green{
+  color:green;
+}
+
+.black{
+  color:black;
+}
+
+.grey{
+color:grey;
+}
+
+.center{
+text-align: center;
+}

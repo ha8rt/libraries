@@ -1,0 +1,20 @@
+<ng-container [ngSwitch]="content">
+   <ng-container *ngSwitchCase="Config.icon.edit">
+      <fa-icon [icon]="fasEdit" size="lg" (click)="onClick()"></fa-icon>
+   </ng-container>
+   <ng-container *ngSwitchCase="Config.icon.delete">
+      <fa-icon [icon]="fasTimes" size="lg" (click)="onClick()"></fa-icon>
+   </ng-container>
+   <ng-container *ngSwitchCase="Config.icon.check">
+      <fa-icon [icon]="fasCheck" size="lg" (click)="onClick()"></fa-icon>
+   </ng-container>
+   <ng-container *ngSwitchCase="Config.icon.add">
+      <fa-icon [icon]="fasPlus" size="lg" (click)="onClick()"></fa-icon>
+   </ng-container>
+   <ng-container *ngSwitchCase="Config.icon.download">
+      <fa-icon [icon]="fasDownload" size="lg" (click)="onClick()"></fa-icon>
+   </ng-container>
+   <ng-container *ngSwitchDefault>
+      {{content}}
+   </ng-container>
+</ng-container>

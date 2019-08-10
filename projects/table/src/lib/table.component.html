@@ -1,0 +1,91 @@
+<div class="card border-dark">
+   <div class="card-header" *ngIf="search">
+      <form class="form-inline">
+         <label for="search" class="form-label">Keresés a mezők között:</label>
+         <input class="form-control" id="{{ 'search' + id }}" type="search" placeholder="Keresés" #search
+            (search)="onSearch(search.value)" (keyup)="onSearch(search.value)">
+         <ng-container *ngIf="headerBtn">
+            <div class="col" style="text-align: right">
+               <div style="display: inline-flex">
+                  <div *ngFor="let button of headerBtn; let i = index">
+                     <button class="btn btn-primary" (click)="onHeaderBtn(i)"
+                        style="margin-left: 2px; margin-right: 2px" [id]="'button'+i">{{ button }}</button>
+                  </div>
+               </div>
+            </div>
+         </ng-container>
+      </form>
+   </div>
+   <div class="card-body">
+      <div class="table-responsive">
+         <table class="table table-sm table-hover" [ngClass]="multiRow ? 'table-bordered' : null">
+            <thead *ngIf="this.headers">
+               <tr *ngFor="let row of this.headers.rows; let i = index">
+                  <th *ngIf="nr && i === 0" [attr.rowspan]="this.headers.rows.length"
+                     [ngClass]="multiRow ? 'text-center' : null">
+                     {{ nr }}
+                  </th>
+                  <th scope="col" *ngFor="let header of row" [attr.rowspan]="header.rowspan"
+                     [attr.colspan]="header.colspan" [ngClass]="multiRow ? 'text-center' : null">
+                     {{ header.str ? header.str : header }}
+                  </th>
+                  <th *ngIf="button" scope="col">
+                     {{ button[0] }}
+                  </th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr *ngFor="let row of this.rows; let i = index" (click)="onRowClick(row)"
+                  [ngClass]="i === selected ? 'table-active' : null">
+                  <ng-container *ngIf="getRowVisible(row)">
+                     <!-- serial number of row -->
+                     <th *ngIf="nr" [ngClass]="multiRow ? 'text-center' : null">#{{ i + 1 }}</th>
+                     <!-- other fields listed in the order of codes -->
+                     <ng-container *ngFor="let code of this.codes">
+                        <ng-container *ngFor="let fieldValue of [getFieldValue(row, code)]">
+                           <ng-container [ngSwitch]="true">
+                              <!-- if this field contains icons -->
+                              <ng-container *ngSwitchCase="isIcons(fieldValue)">
+                                 <td *ngFor="let icon of fieldValue"
+                                    [ngClass]="icon.class ? icon.class : (multiRow ? 'center' : null)">
+                                    <lib-icon [content]="icon.str"
+                                       (iClicked)="onIconClick({row: row, icon: icon.str, id: icon.id})">
+                                    </lib-icon>
+                                 </td>
+                              </ng-container>
+                              <!-- if this field is boolean -->
+                              <td *ngSwitchCase="isBoolean(row[code])" [ngClass]="multiRow ? 'text-center' : null">
+                                 <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input"
+                                       id="{{ code + '_' + rows.indexOf(row) + '_' + id }}" type="checkbox"
+                                       [(ngModel)]="row[code]" (change)="onCheckChange({row: row, elem: code})"
+                                       [disabled]="readOnly">
+                                    <label class="custom-control-label"
+                                       for="{{ code + '_' + rows.indexOf(row) + '_' + id }}"></label>
+                                 </div>
+                              </td>
+                              <!-- if this field is a link -->
+                              <td *ngSwitchCase="isLink(fieldValue)" [ngClass]="multiRow ? 'text-center' : null">
+                                 <a [routerLink]="fieldValue.link" [queryParams]="fieldValue.params">
+                                    {{ fieldValue.value }}
+                                 </a>
+                              </td>
+                              <!-- default: normal text -->
+                              <td *ngSwitchDefault [ngClass]="multiRow ? 'text-center' : null">
+                                 {{ fieldValue }}
+                              </td>
+                           </ng-container>
+                        </ng-container>
+                        <td *ngIf="button && (!btnFiltCond || row[btnFiltCond])">
+                           <button class="btn btn-sm btn-primary" (click)="onBtnClick(row)">
+                              {{ button[1] }}
+                           </button>
+                        </td>
+                     </ng-container>
+                  </ng-container>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+</div>

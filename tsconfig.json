@@ -25,6 +25,18 @@
       ],
       "table/*": [
         "dist/table/*"
+      ],
+      "icon": [
+        "dist/icon"
+      ],
+      "icon/*": [
+        "dist/icon/*"
+      ],
+      "modal": [
+        "dist/modal"
+      ],
+      "modal/*": [
+        "dist/modal/*"
       ]
     }
   }
