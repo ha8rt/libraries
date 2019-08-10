@@ -23,7 +23,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.21",
     "@fortawesome/free-solid-svg-icons": "^5.10.1",
     "@ha8rt/http.service": "^1.0.4",
-    "@ha8rt/icon": "0.0.1",
+    "@ha8rt/icon": "0.0.2",
     "@ha8rt/modal": "0.0.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.9.0",
