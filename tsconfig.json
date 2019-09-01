@@ -37,6 +37,12 @@
       ],
       "modal/*": [
         "dist/modal/*"
+      ],
+      "alert": [
+        "dist/alert"
+      ],
+      "alert/*": [
+        "dist/alert/*"
       ]
     }
   }

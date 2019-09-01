@@ -1,0 +1,11 @@
+<div class="alert alert-danger">
+   <ng-container *ngFor="let control of data">
+      <ng-container *ngIf="control[0].invalid && (control[0].touched || control[0].dirty)">
+         <ng-container *ngFor="let error of control[1]">
+            <div *ngIf="control[0].errors && control[0].errors[error[0]]">
+               {{ error[1] }}
+            </div>
+         </ng-container>
+      </ng-container>
+   </ng-container>
+</div>
