@@ -43,6 +43,12 @@
       ],
       "alert/*": [
         "dist/alert/*"
+      ],
+      "navbar": [
+        "dist/navbar"
+      ],
+      "navbar/*": [
+        "dist/navbar/*"
       ]
     }
   }

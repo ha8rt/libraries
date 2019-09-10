@@ -1,0 +1,39 @@
+<nav *ngIf="handler" class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary justify-content-end">
+   <a class="navbar-brand" routerLink="/">{{ handler.mainText }}</a>
+   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+   </button>
+
+   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div *ngFor="let nav of handler.navs" class="btn-group" dropdown>
+         <button id="button-basic" dropdownToggle type="button" class="btn btn-primary"
+            [ngClass]="[nav.disabled ? 'disabled' : '', nav.submenus ? 'dropdown-toggle' : '']"
+            aria-controls="dropdown-basic" [routerLink]="nav.link">
+            {{ nav.menuText }}
+         </button>
+         <ng-container *ngIf="nav.submenus && !nav.disabled">
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+               <li *ngFor="let first of nav.submenus" role="menuitem" dropdown placement="right" container="body"
+                  (mouseover)="onMouseOver(dp)" #dp="bs-dropdown">
+                  <a dropdownToggle class="dropdown-item"
+                     [ngClass]="[first.disabled ? 'disabled' : '', first.submenus ? 'dropdown-toggle' : '']"
+                     [style.background]="dp.isOpen ? '#e6e6e6' : null" [routerLink]="first.link">
+                     {{ first.menuText }}
+                  </a>
+                  <ng-container *ngIf="first.submenus && !first.disabled">
+                     <ul *dropdownMenu class="dropdown-menu" role="menu">
+                        <li *ngFor="let second of first.submenus" role="menuitem">
+                           <a [routerLink]="second.link" class="dropdown-item"
+                              [ngClass]="second.disabled ? 'disabled' : ''">
+                              {{ second.menuText }}
+                           </a>
+                        </li>
+                     </ul>
+                  </ng-container>
+               </li>
+            </ul>
+         </ng-container>
+      </div>
+   </div>
+</nav>
