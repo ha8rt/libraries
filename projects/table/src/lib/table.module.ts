@@ -9,10 +9,10 @@ import { IconModule } from '@ha8rt/icon';
    declarations: [TableComponent],
    imports: [
       CommonModule,
-      RouterModule,
+      RouterModule.forChild([]),
       FormsModule,
       IconModule,
    ],
-   exports: [TableComponent]
+   exports: [TableComponent, RouterModule]
 })
 export class TableModule { }
