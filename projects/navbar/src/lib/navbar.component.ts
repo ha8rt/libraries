@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren, Input } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren, Input, Output, EventEmitter } from '@angular/core';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { NavbarHandler } from './navbar.handler';
 
@@ -10,6 +10,7 @@ import { NavbarHandler } from './navbar.handler';
 export class NavbarComponent implements OnInit {
    @ViewChildren(BsDropdownDirective) private dropdowns: QueryList<BsDropdownDirective>;
    @Input() handler: NavbarHandler;
+   @Output() button = new EventEmitter<string>();
 
    constructor() { }
 
@@ -24,5 +25,9 @@ export class NavbarComponent implements OnInit {
             item.show();
          }
       });
+   }
+
+   onButton(id: string) {
+      this.button.emit(id);
    }
 }

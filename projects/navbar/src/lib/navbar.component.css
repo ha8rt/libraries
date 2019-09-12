@@ -1,9 +1,12 @@
 
- .navbar-dark .navbar-nav .nav-link{
+.navbar-dark .navbar-nav .nav-link {
    font-weight: 600;
    color: white;
 }
-.navbar-dark .navbar-nav .disabled{
+.navbar-dark .navbar-nav .disabled {
    font-weight: 500;
    color: lightgray;
- }
+}
+nav {
+  z-index: auto;
+}
