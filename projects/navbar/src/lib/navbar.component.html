@@ -13,24 +13,32 @@
          </button>
          <ng-container *ngIf="nav.submenus && !nav.disabled">
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-               <li *ngFor="let first of nav.submenus" role="menuitem" dropdown placement="right" container="body"
-                  (mouseover)="onMouseOver(dp)" #dp="bs-dropdown">
-                  <a dropdownToggle class="dropdown-item"
-                     [ngClass]="[first.disabled ? 'disabled' : '', first.submenus ? 'dropdown-toggle' : '']"
-                     [style.background]="dp.isOpen ? '#e6e6e6' : null" [routerLink]="first.link">
-                     {{ first.menuText }}
-                  </a>
-                  <ng-container *ngIf="first.submenus && !first.disabled">
-                     <ul *dropdownMenu class="dropdown-menu" role="menu">
-                        <li *ngFor="let second of first.submenus" role="menuitem">
-                           <a [routerLink]="second.link" class="dropdown-item"
-                              [ngClass]="second.disabled ? 'disabled' : ''">
-                              {{ second.menuText }}
-                           </a>
-                        </li>
-                     </ul>
-                  </ng-container>
-               </li>
+               <ng-container *ngFor="let first of nav.submenus">
+                  <li role="menuitem" dropdown placement="right" container="body" (mouseover)="onMouseOver(dp)"
+                     #dp="bs-dropdown">
+                     <a dropdownToggle class="dropdown-item"
+                        [ngClass]="[first.disabled ? 'disabled' : '', first.submenus ? 'dropdown-toggle' : '']"
+                        [style.background]="dp.isOpen ? '#e6e6e6' : null" [routerLink]="first.link"
+                        (click)="first.onclick ? onButton(first.id) : null">
+                        {{ first.menuText }}
+                     </a>
+                     <ng-container *ngIf="first.submenus && !first.disabled">
+                        <ul *dropdownMenu class="dropdown-menu" role="menu">
+                           <ng-container *ngFor="let second of first.submenus">
+                              <li role="menuitem">
+                                 <a [routerLink]="second.link" class="dropdown-item"
+                                    [ngClass]="second.disabled ? 'disabled' : ''"
+                                    (click)="second.onclick ? onButton(second.id) : null">
+                                    {{ second.menuText }}
+                                 </a>
+                              </li>
+                              <li *ngIf="second.divider" class="divider dropdown-divider"></li>
+                           </ng-container>
+                        </ul>
+                     </ng-container>
+                  </li>
+                  <li *ngIf="first.divider" class="divider dropdown-divider"></li>
+               </ng-container>
             </ul>
          </ng-container>
       </div>
