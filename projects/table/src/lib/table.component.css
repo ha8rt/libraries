@@ -2,6 +2,10 @@ div div form label {
   padding-right: 10px;
 }
 
+.card {
+   z-index: -1;
+}
+
 .red{
   color: red;
 }
