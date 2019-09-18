@@ -1,15 +1,16 @@
-<nav *ngIf="handler" class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary justify-content-end">
-   <a *ngIf="handler.mainText" class="navbar-brand" routerLink="/">{{ handler.mainText }}</a>
+<nav *ngIf="handler" class="navbar fixed-top navbar-expand-lg navbar-dark justify-content-end"
+   [ngClass]="[handler.header.classes ? handler.header.classes.join(',') : 'bg-primary']">
+   <a *ngIf="handler.header.text" class="navbar-brand" routerLink="/">{{ handler.header.text }}</a>
    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
    </button>
    <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <div *ngFor="let nav of handler.navs" class="btn-group" dropdown>
-         <button id="button-basic" dropdownToggle type="button" class="btn btn-primary"
-            [ngClass]="[nav.disabled ? 'disabled' : '', nav.submenus ? 'dropdown-toggle' : '']"
+         <button id="button-basic" dropdownToggle type="button" class="btn"
+            [ngClass]="[nav.disabled ? 'disabled' : '', nav.submenus ? 'dropdown-toggle' : '', nav.classes ? nav.classes.join(',') : 'btn-primary']"
             aria-controls="dropdown-basic" [routerLink]="nav.link">
-            {{ nav.menuText }}
+            {{ nav.text }}
          </button>
          <ng-container *ngIf="nav.submenus && !nav.disabled">
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
@@ -20,7 +21,7 @@
                         [ngClass]="[first.disabled ? 'disabled' : '', first.submenus ? 'dropdown-toggle' : '']"
                         [style.background]="dp.isOpen ? '#e6e6e6' : null" [routerLink]="first.link"
                         (click)="first.onclick ? onButton(first.id) : null">
-                        {{ first.menuText }}
+                        {{ first.text }}
                      </a>
                      <ng-container *ngIf="first.submenus && !first.disabled">
                         <ul *dropdownMenu class="dropdown-menu" role="menu">
@@ -29,7 +30,7 @@
                                  <a [routerLink]="second.link" class="dropdown-item"
                                     [ngClass]="second.disabled ? 'disabled' : ''"
                                     (click)="second.onclick ? onButton(second.id) : null">
-                                    {{ second.menuText }}
+                                    {{ second.text }}
                                  </a>
                               </li>
                               <li *ngIf="second.divider" class="divider dropdown-divider"></li>
@@ -44,8 +45,8 @@
       </div>
       <form class="form-inline my-2 my-lg-0 ml-auto">
          <ng-container *ngFor="let button of handler.buttons">
-            <button [id]="button.id" class="btn" [ngClass]="button.class.join(',')" type="button"
-               (click)="onButton(button.id)">
+            <button [id]="button.id" class="btn" [ngClass]="[button.classes ? button.classes.join(',') : 'btn-primary']"
+               type="button" (click)="onButton(button.id)">
                {{ button.text }}
             </button>
          </ng-container>

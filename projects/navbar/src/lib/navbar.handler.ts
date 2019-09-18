@@ -1,26 +1,32 @@
 export interface IDropdown {
-   menuText: string;
+   text: string;
    id?: string;
    link?: Array<string>;
    disabled?: boolean;
    submenus?: IDropdown[];
    divider?: boolean;
    onclick?: boolean;
+   classes?: Array<string>;
 }
 
 export interface IButton {
    text: string;
    id: string;
-   class: Array<string>;
+   classes?: Array<string>;
+}
+
+export interface IHeader {
+   text: string;
+   classes?: Array<string>;
 }
 
 export class NavbarHandler {
-   mainText: string;
+   header: IHeader;
    navs: IDropdown[] = [];
    buttons: IButton[] = [];
 
-   constructor(mainText: string, navs?: IDropdown[], buttons?: IButton[]) {
-      this.mainText = mainText;
+   constructor(header: IHeader, navs?: IDropdown[], buttons?: IButton[]) {
+      this.header = header;
       if (navs) {
          this.navs = navs;
       }
