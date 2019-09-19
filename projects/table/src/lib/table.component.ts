@@ -17,6 +17,7 @@ export class TableComponent implements OnChanges {
    @Input('s') search: boolean;
    @Input('b') button: (string | boolean)[];
    @Input('nr') nr: string;
+   @Input('desc') desc: boolean;
    @Input('bfc') btnFiltCond: string;
    @Input('hb') headerBtn: string[];
    @Input('ro') readOnly: boolean;

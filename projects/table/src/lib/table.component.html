@@ -39,7 +39,9 @@
                   [ngClass]="i === selected ? 'table-active' : null">
                   <ng-container *ngIf="getRowVisible(row)">
                      <!-- serial number of row -->
-                     <th *ngIf="nr" [ngClass]="multiRow ? 'text-center' : null">#{{ i + 1 }}</th>
+                     <th *ngIf="nr" [ngClass]="multiRow ? 'text-center' : null">
+                        #{{ desc ? this.rows.length - i : i + 1 }}
+                     </th>
                      <!-- other fields listed in the order of codes -->
                      <ng-container *ngFor="let code of this.codes">
                         <ng-container *ngFor="let fieldValue of [getFieldValue(row, code)]">
@@ -47,9 +49,9 @@
                               <!-- if this field contains icons -->
                               <ng-container *ngSwitchCase="isIcons(fieldValue)">
                                  <td *ngFor="let icon of fieldValue"
-                                    [ngClass]="icon.class ? icon.class : (multiRow ? 'center' : null)">
-                                    <lib-icon [content]="icon.str"
-                                       (iClicked)="onIconClick({row: row, icon: icon.str, id: icon.id})">
+                                    [ngClass]="icon.classes ? icon.classes.join(',') : (multiRow ? 'center' : null)">
+                                    <lib-icon [content]="icon.content"
+                                       (iClicked)="onIconClick({row: row, icon: icon.content, id: icon.id})">
                                     </lib-icon>
                                  </td>
                               </ng-container>
@@ -76,12 +78,15 @@
                               </td>
                            </ng-container>
                         </ng-container>
-                        <td *ngIf="button && (!btnFiltCond || row[btnFiltCond])">
-                           <button class="btn btn-sm btn-primary" (click)="onBtnClick(row)">
-                              {{ button[1] }}
-                           </button>
-                        </td>
                      </ng-container>
+                     <td *ngIf="button && (!btnFiltCond || row[btnFiltCond]); else emptyCol">
+                        <button class="btn btn-sm btn-primary" (click)="onBtnClick(row)">
+                           {{ button[1] }}
+                        </button>
+                     </td>
+                     <ng-template #emptyCol>
+                        <td></td>
+                     </ng-template>
                   </ng-container>
                </tr>
             </tbody>
