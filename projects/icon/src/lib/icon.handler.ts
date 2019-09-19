@@ -1,19 +1,23 @@
 import { Config } from '../config/config';
 
 export interface IIconClass {
-   class: string;
-   str: string;
+   classes: string[];
+   content: string;
    id: string;
 }
 
 export class IconClass implements IIconClass {
-   class: string; str: string; id: string;
-   constructor(str: string, id?: string) {
-      this.str = str;
+   classes: string[];
+   content: string;
+   id: string;
+   constructor(content: string, id?: string, classes?: string[]) {
+      this.content = content;
       if (id) {
          this.id = id;
       }
-      // this.class = 'center';
+      if (classes) {
+         this.classes = classes;
+      }
    }
 }
 

@@ -3,6 +3,8 @@ import { faTimes as fasTimes } from '@fortawesome/free-solid-svg-icons';
 import { faCheck as fasCheck } from '@fortawesome/free-solid-svg-icons';
 import { faPlus as fasPlus } from '@fortawesome/free-solid-svg-icons';
 import { faDownload as fasDownload } from '@fortawesome/free-solid-svg-icons';
+import { faCommentDots as fasCommentDots } from '@fortawesome/free-solid-svg-icons';
+import { faCommentDots as farCommentDots } from '@fortawesome/free-regular-svg-icons';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Config } from '../config/config';
 
@@ -20,6 +22,8 @@ export class IconComponent {
    fasCheck = fasCheck;
    fasPlus = fasPlus;
    fasDownload = fasDownload;
+   fasCommentDots = fasCommentDots;
+   farCommentDots = farCommentDots;
    Config = Config;
 
    constructor() { }

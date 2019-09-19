@@ -5,5 +5,7 @@ export class Config {
       edit: 'icon:fasedit',
       delete: 'icon:fastimes',
       download: 'icon:fasdownload',
+      commentDotsR: 'icon:farcommentdots',
+      commentDotsS: 'icon:fascommentdots',
    };
 }

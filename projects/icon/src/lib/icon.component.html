@@ -14,6 +14,12 @@
    <ng-container *ngSwitchCase="Config.icon.download">
       <fa-icon [icon]="fasDownload" size="lg" (click)="onClick()"></fa-icon>
    </ng-container>
+   <ng-container *ngSwitchCase="Config.icon.commentDotsS">
+      <fa-icon [icon]="fasCommentDots" size="lg" (click)="onClick()"></fa-icon>
+   </ng-container>
+   <ng-container *ngSwitchCase="Config.icon.commentDotsR">
+      <fa-icon [icon]="farCommentDots" size="lg" (click)="onClick()"></fa-icon>
+   </ng-container>
    <ng-container *ngSwitchDefault>
       {{content}}
    </ng-container>
