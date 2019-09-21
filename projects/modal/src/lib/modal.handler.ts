@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { ModalButton } from './modal.button';
 import { ModalBody } from './modal.body';
 import { ValidatorFn } from '@angular/forms';
@@ -11,7 +11,7 @@ export interface ChangeType {
 
 export class ModalHandler {
    event: Subject<void> = new Subject<void>();
-   obs = this.event.asObservable();
+   obs: Observable<void> = this.event.asObservable();
    title: string;
    body: ModalBody = [];
    buttons: ModalButton = [];
@@ -19,6 +19,10 @@ export class ModalHandler {
    validators: ValidatorFn[];
    errors: (string[])[];
    change: Subject<ChangeType>;
+
+   keyboard = true;
+   ignoreBackdropClick = false;
+   closeButton = true;
 
    constructor(title: string, text?: string, validators?: ValidatorFn[], errors?: (string[])[]) {
       this.title = title;

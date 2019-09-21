@@ -1,7 +1,7 @@
 import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { getFieldValue, Headers } from './table.handler';
 import { IIconClick, ICheckClick } from './table.click';
-import { IconClass } from '@ha8rt/icon';
+import { isIcons } from '@ha8rt/icon';
 
 @Component({
    selector: 'lib-table',
@@ -39,6 +39,8 @@ export class TableComponent implements OnChanges {
    searchStr: string;
    selected: number;
    multiRow: boolean;
+
+   isIcons = isIcons;
 
    constructor() { }
 
@@ -104,10 +106,6 @@ export class TableComponent implements OnChanges {
 
    getRowVisible(row: string): boolean {
       return this.shown[this.rows.indexOf(row)];
-   }
-
-   isIcons(field): boolean {
-      return field instanceof Array && field.every(item => item instanceof IconClass);
    }
 
    isBoolean(elem): boolean {
