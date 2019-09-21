@@ -1,6 +1,5 @@
 import { InitBody, BodyType, ModalHandler } from '@ha8rt/modal';
-import { IconClass } from '@ha8rt/icon';
-import { Config } from '../config/config';
+import { IconClass, Config } from '@ha8rt/icon';
 import { Service, ObjType } from '@ha8rt/http.service';
 
 export interface ICheckClick {
@@ -39,9 +38,9 @@ export interface IEntity {
 }
 
 export function onPushPull(object: IEntity, service: Service, selectedRow: { _id: string }, entity: {}, callback: (data) => void) {
-   if (object.icons[0].str === Config.icon.delete) {
+   if (object.icons[0].content === Config.icon.delete) {
       service._put({ _id: selectedRow._id, $pull: entity }, callback);
-   } else if (object.icons[0].str === Config.icon.add) {
+   } else if (object.icons[0].content === Config.icon.plus) {
       service._put({ _id: selectedRow._id, $push: entity }, callback);
    }
 }
@@ -52,7 +51,7 @@ export function setState(baseRows: IEntity[], stateRows: IEntity[], selectedBase
          if (baseRows[selectedBase][findField] && baseRows[selectedBase][findField].findIndex((value) => value._id === element._id) >= 0) {
             element.icons = [new IconClass(Config.icon.delete)];
          } else {
-            element.icons = [new IconClass(Config.icon.add)];
+            element.icons = [new IconClass(Config.icon.plus)];
          }
       });
    }
