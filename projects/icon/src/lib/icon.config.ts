@@ -8,5 +8,7 @@ export class Config {
       commentDotsR: 'icon:farcommentdots',
       commentDotsS: 'icon:fascommentdots',
       dollarSign: 'icon:fasdollarsign',
+      signOutAlt: 'icon:fasSignOutAlt',
+      key: 'icon:fasKey',
    };
 }

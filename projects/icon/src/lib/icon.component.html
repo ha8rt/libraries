@@ -23,6 +23,12 @@
    <ng-container *ngSwitchCase="Config.icon.dollarSign">
       <fa-icon [icon]="fasDollarSign" size="lg" (click)="onClick()"></fa-icon>
    </ng-container>
+   <ng-container *ngSwitchCase="Config.icon.signOutAlt">
+      <fa-icon [icon]="fasSignOutAlt" size="lg" (click)="onClick()"></fa-icon>
+   </ng-container>
+   <ng-container *ngSwitchCase="Config.icon.key">
+      <fa-icon [icon]="fasKey" size="lg" (click)="onClick()"></fa-icon>
+   </ng-container>
    <ng-container *ngSwitchDefault>
       {{content}}
    </ng-container>

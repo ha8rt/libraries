@@ -6,6 +6,8 @@ import { faDownload as fasDownload } from '@fortawesome/free-solid-svg-icons';
 import { faCommentDots as fasCommentDots } from '@fortawesome/free-solid-svg-icons';
 import { faCommentDots as farCommentDots } from '@fortawesome/free-regular-svg-icons';
 import { faDollarSign as fasDollarSign } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt as fasSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faKey as fasKey } from '@fortawesome/free-solid-svg-icons';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Config } from './icon.config';
 
@@ -26,6 +28,8 @@ export class IconComponent {
    fasCommentDots = fasCommentDots;
    farCommentDots = farCommentDots;
    fasDollarSign = fasDollarSign;
+   fasSignOutAlt = fasSignOutAlt;
+   fasKey = fasKey;
    Config = Config;
 
    constructor() { }
