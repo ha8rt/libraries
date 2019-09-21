@@ -32,3 +32,7 @@ export function initRows(rows: any[], edit = true, del = true) {
       }
    });
 }
+
+export function isIcons(field): boolean {
+   return field instanceof Array && field.every(item => item instanceof IconClass);
+}
