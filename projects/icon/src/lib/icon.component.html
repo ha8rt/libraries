@@ -8,7 +8,7 @@
    <ng-container *ngSwitchCase="Config.icon.check">
       <fa-icon [icon]="fasCheck" size="lg" (click)="onClick()"></fa-icon>
    </ng-container>
-   <ng-container *ngSwitchCase="Config.icon.add">
+   <ng-container *ngSwitchCase="Config.icon.plus">
       <fa-icon [icon]="fasPlus" size="lg" (click)="onClick()"></fa-icon>
    </ng-container>
    <ng-container *ngSwitchCase="Config.icon.download">
@@ -19,6 +19,9 @@
    </ng-container>
    <ng-container *ngSwitchCase="Config.icon.commentDotsR">
       <fa-icon [icon]="farCommentDots" size="lg" (click)="onClick()"></fa-icon>
+   </ng-container>
+   <ng-container *ngSwitchCase="Config.icon.dollarSign">
+      <fa-icon [icon]="fasDollarSign" size="lg" (click)="onClick()"></fa-icon>
    </ng-container>
    <ng-container *ngSwitchDefault>
       {{content}}

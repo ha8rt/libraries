@@ -1,4 +1,4 @@
-import { Config } from '../config/config';
+import { Config } from './icon.config';
 
 export interface IIconClass {
    classes: string[];
