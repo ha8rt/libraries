@@ -1,3 +1,5 @@
+import { IIconClass } from '@ha8rt/icon';
+
 export interface IDropdown {
    text: string;
    id?: string;
@@ -13,11 +15,19 @@ export interface IButton {
    text: string;
    id: string;
    classes?: Array<string>;
+   icon?: IIconClass;
+}
+
+export interface IImage {
+   src: string;
+   alt: string;
+   style?: any;
 }
 
 export interface IHeader {
    text: string;
    classes?: Array<string>;
+   image?: IImage;
 }
 
 export class NavbarHandler {
