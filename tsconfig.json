@@ -49,6 +49,12 @@
       ],
       "navbar/*": [
         "dist/navbar/*"
+      ],
+      "select": [
+        "dist/select"
+      ],
+      "select/*": [
+        "dist/select/*"
       ]
     }
   }

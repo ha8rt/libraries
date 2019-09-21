@@ -1,0 +1,11 @@
+<label for="app-option">{{ header }}</label>
+<select class="custom-select" (change)="onChange(control.value)" [formControl]="control" #select>
+   <option *ngIf="!loaded; else choose" value="-1" selected>...</option>
+   <ng-template #choose>
+      <option value="-1" hidden>Válasszon</option>
+   </ng-template>
+   <option *ngFor="let option of options" value="{{ option._id }}"
+      [selected]="options && options.length === 1 && options.indexOf(option) === 0">
+      {{ getFieldValue(option, field) }}
+   </option>
+</select>
