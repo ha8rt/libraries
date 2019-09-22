@@ -23,6 +23,9 @@ export class ModalHandler {
    keyboard = true;
    ignoreBackdropClick = false;
    closeButton = true;
+   classes: string[];
+
+   localTime = false;
 
    constructor(title: string, text?: string, validators?: ValidatorFn[], errors?: (string[])[]) {
       this.title = title;

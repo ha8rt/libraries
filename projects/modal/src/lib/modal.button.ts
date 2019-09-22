@@ -19,7 +19,10 @@ export enum ButtonType {
    Ok,
    OkCancel,
    YesCancel,
-   CancelOk
+   CancelOk,
+   SendCancel,
+   ListCancel,
+   CancelDelete,
 }
 
 export interface InitButtonObj {
@@ -51,6 +54,21 @@ export function InitButton(obj: InitButtonObj, count: number): ModalButton[] {
       }
       case ButtonType.CancelOk: {
          AddModalButton(obj.button, obj.prefix + '-ok', 'Rendben', 'btn-danger', 'button', true);
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-primary', 'submit');
+         break;
+      }
+      case ButtonType.SendCancel: {
+         AddModalButton(obj.button, obj.prefix + '-send', 'Küldés', 'btn-primary', 'submit', true);
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-warning', 'button');
+         break;
+      }
+      case ButtonType.ListCancel: {
+         AddModalButton(obj.button, obj.prefix + '-create', 'Lista készítése', 'btn-primary', 'submit', true);
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-warning', 'button');
+         break;
+      }
+      case ButtonType.CancelDelete: {
+         AddModalButton(obj.button, obj.prefix + '-delete', 'Törlés', 'btn-danger', 'button');
          AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-primary', 'submit');
          break;
       }

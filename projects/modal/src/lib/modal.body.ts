@@ -33,6 +33,9 @@ export enum BodyType {
    DeleteContestIdCodeName,
    EditIdCodeNameStartFinish,
    EditSentReceivedData,
+   OrderNumber,
+   OrderSubmitDetails,
+   Date,
 }
 
 export interface InitBodyObj {
@@ -126,6 +129,21 @@ export function InitBody(obj: InitBodyObj, count?: number): ModalBody[] {
          [obj.body] = InitBody({ body: obj.body, type: BodyType.DeleteIdCodeName, title: obj.title, row: obj.row });
          break;
       }
+      case BodyType.OrderNumber: {
+         AddModalBody(obj.body, 'modal-order-number', 'text', undefined, 'Rendelésszám:', undefined, obj.row.orderNumber, true);
+         break;
+      }
+      case BodyType.OrderSubmitDetails: {
+         AddModalBody(obj.body, 'modal-order-number', 'form-inline', undefined, 'Vevő rendelésszám:', undefined, obj.row.orderNumber);
+         AddModalBody(obj.body, 'modal-supply-date', 'form-inline', undefined, 'Kiszállítás dátuma:', undefined, obj.row.supplyDate);
+         AddModalBody(obj.body, 'modal-product', 'form-inline', undefined, 'Termék:', undefined, obj.row.product);
+         AddModalBody(obj.body, 'modal-quantity', 'form-inline', undefined, 'Mennyiség:', undefined, obj.row.quantity);
+         break;
+      }
+      case BodyType.Date: {
+         AddModalBody(obj.body, 'modal-date', 'date', 'Dátum', 'Dátum:', true, obj.row.date);
+         break;
+      }
    }
    if (obj.event) {
       obj.event.forEach((element) => {
@@ -165,7 +183,7 @@ function getTitle(type: BodyType, title: string): string {
          return title + ' törlése';
       }
       default: {
-         return null;
+         return title;
       }
    }
 }
