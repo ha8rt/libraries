@@ -11,12 +11,15 @@ export interface IModalBody {
    value: any;
    disabled: boolean;
    label: string;
+   hidden: boolean;
 }
 
+// tslint:disable: align
 export function AddModalBody(modalBody: ModalBody,
-   // tslint:disable-next-line: align
-   id: string, type: string, placeHolder: string, label?: string, required?: boolean, value?: string, disabled?: boolean) {
-   modalBody.push({ id, type, placeHolder, value, required, disabled, label });
+   id: string, type: string, placeHolder: string, label?: string,
+   required?: boolean, value?: string, disabled?: boolean, hidden?: boolean
+) {
+   modalBody.push({ id, type, placeHolder, value, required, disabled, label, hidden });
 }
 
 export enum BodyType {
@@ -36,6 +39,12 @@ export enum BodyType {
    OrderNumber,
    OrderSubmitDetails,
    Date,
+   AddClientComment,
+   SupplierComment,
+   SupplierEditClientComment,
+   SupplierShowClientComment,
+   ShowClientComment,
+   HiddenOrderNumber,
 }
 
 export interface InitBodyObj {
@@ -130,18 +139,47 @@ export function InitBody(obj: InitBodyObj, count?: number): ModalBody[] {
          break;
       }
       case BodyType.OrderNumber: {
-         AddModalBody(obj.body, 'modal-order-number', 'text', undefined, 'Rendelésszám:', undefined, obj.row.orderNumber, true);
+         AddModalBody(obj.body, 'modal-order-number', 'text', null, 'Rendelésszám:', null, obj.row.orderNumber, true);
          break;
       }
       case BodyType.OrderSubmitDetails: {
-         AddModalBody(obj.body, 'modal-order-number', 'form-inline', undefined, 'Vevő rendelésszám:', undefined, obj.row.orderNumber);
-         AddModalBody(obj.body, 'modal-supply-date', 'form-inline', undefined, 'Kiszállítás dátuma:', undefined, obj.row.supplyDate);
-         AddModalBody(obj.body, 'modal-product', 'form-inline', undefined, 'Termék:', undefined, obj.row.product);
-         AddModalBody(obj.body, 'modal-quantity', 'form-inline', undefined, 'Mennyiség:', undefined, obj.row.quantity);
+         AddModalBody(obj.body, 'modal-order-number', 'form-inline', null, 'Vevő rendelésszám:', null, obj.row.orderNumber);
+         AddModalBody(obj.body, 'modal-supply-date', 'form-inline', null, 'Kiszállítás dátuma:', null, obj.row.supplyDate);
+         AddModalBody(obj.body, 'modal-product', 'form-inline', null, 'Termék:', null, obj.row.product);
+         AddModalBody(obj.body, 'modal-quantity', 'form-inline', null, 'Mennyiség:', null, obj.row.quantity);
          break;
       }
       case BodyType.Date: {
          AddModalBody(obj.body, 'modal-date', 'date', 'Dátum', 'Dátum:', true, obj.row.date);
+         break;
+      }
+      case BodyType.AddClientComment: {
+         [obj.body] = InitBody({ body: obj.body, type: BodyType.HiddenOrderNumber, row: obj.row });
+         AddModalBody(obj.body, 'modal-edit-comment', 'textarea', 'Vevő megjegyzése', 'Vevő megjegyzése:', null, obj.row.clientComment);
+         break;
+      }
+      case BodyType.SupplierComment: {
+         [obj.body] = InitBody({ body: obj.body, type: BodyType.HiddenOrderNumber, row: obj.row });
+         AddModalBody(obj.body, 'modal-comment', 'form-inline', null, 'Szállító megjegyzése:', null, obj.row.supplierComment, true);
+         break;
+      }
+      case BodyType.SupplierEditClientComment: {
+         AddModalBody(obj.body, 'modal-comment', 'form-inline', null, 'Szállító megjegyzése:', null, obj.row.supplierComment, true);
+         [obj.body] = InitBody({ body: obj.body, type: BodyType.AddClientComment, row: obj.row });
+         break;
+      }
+      case BodyType.SupplierShowClientComment: {
+         AddModalBody(obj.body, 'modal-comment', 'form-inline', null, 'Szállító megjegyzése:', null, obj.row.supplierComment, true);
+         [obj.body] = InitBody({ body: obj.body, type: BodyType.ShowClientComment, row: obj.row });
+         break;
+      }
+      case BodyType.ShowClientComment: {
+         [obj.body] = InitBody({ body: obj.body, type: BodyType.HiddenOrderNumber, row: obj.row });
+         AddModalBody(obj.body, 'modal-edit-comment', 'textarea', '', 'Vevő megjegyzése:', null, obj.row.clientComment, true);
+         break;
+      }
+      case BodyType.HiddenOrderNumber: {
+         AddModalBody(obj.body, 'modal-order-number', 'text', '', '', null, obj.row.orderNumber, null, true);
          break;
       }
    }

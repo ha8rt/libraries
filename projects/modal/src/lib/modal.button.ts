@@ -44,32 +44,32 @@ export function InitButton(obj: InitButtonObj, count: number): ModalButton[] {
       }
       case ButtonType.OkCancel: {
          AddModalButton(obj.button, obj.prefix + '-ok', 'Rendben', 'btn-primary', 'submit', true);
-         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-warning', 'button');
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-light', 'button');
          break;
       }
       case ButtonType.YesCancel: {
          AddModalButton(obj.button, obj.prefix + '-yes', 'Igen', 'btn-primary', 'submit');
-         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-warning', 'button');
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-light', 'button');
          break;
       }
       case ButtonType.CancelOk: {
-         AddModalButton(obj.button, obj.prefix + '-ok', 'Rendben', 'btn-danger', 'button', true);
-         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-primary', 'submit');
+         AddModalButton(obj.button, obj.prefix + '-ok', 'Rendben', 'btn-primary', 'button', true);
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-light', 'submit');
          break;
       }
       case ButtonType.SendCancel: {
          AddModalButton(obj.button, obj.prefix + '-send', 'Küldés', 'btn-primary', 'submit', true);
-         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-warning', 'button');
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-light', 'button');
          break;
       }
       case ButtonType.ListCancel: {
          AddModalButton(obj.button, obj.prefix + '-create', 'Lista készítése', 'btn-primary', 'submit', true);
-         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-warning', 'button');
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-light', 'button');
          break;
       }
       case ButtonType.CancelDelete: {
-         AddModalButton(obj.button, obj.prefix + '-delete', 'Törlés', 'btn-danger', 'button');
-         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-primary', 'submit');
+         AddModalButton(obj.button, obj.prefix + '-delete', 'Törlés', 'btn-primary', 'submit');
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-light', 'button');
          break;
       }
    }
