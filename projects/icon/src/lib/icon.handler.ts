@@ -4,19 +4,24 @@ export interface IIconClass {
    classes: string[];
    content: string;
    id: string;
+   tooltip?: string;
 }
 
 export class IconClass implements IIconClass {
    classes: string[];
    content: string;
    id: string;
-   constructor(content: string, id?: string, classes?: string[]) {
+   tooltip: string;
+   constructor(content: string, id?: string, classes?: string[], tooltip?: string) {
       this.content = content;
       if (id) {
          this.id = id;
       }
       if (classes) {
          this.classes = classes;
+      }
+      if (tooltip) {
+         this.tooltip = tooltip;
       }
    }
 }

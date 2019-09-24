@@ -29,6 +29,24 @@
    <ng-container *ngSwitchCase="Config.icon.key">
       <fa-icon [icon]="fasKey" size="lg" (click)="onClick()"></fa-icon>
    </ng-container>
+   <ng-container *ngSwitchCase="Config.icon.trashAlt">
+      <fa-icon [icon]="fasTrashAlt" size="lg" (click)="onClick()"></fa-icon>
+   </ng-container>
+   <ng-container *ngSwitchCase="Config.icon.clipboardCheck">
+      <fa-icon [icon]="faClipboardCheck" size="lg" (click)="onClick()"></fa-icon>
+   </ng-container>
+   <ng-container *ngSwitchCase="Config.icon.clipboardList">
+      <fa-icon [icon]="faClipboardList" size="lg" (click)="onClick()"></fa-icon>
+   </ng-container>
+   <ng-container *ngSwitchCase="Config.icon.dolly">
+      <fa-icon [icon]="faDolly" size="lg" (click)="onClick()"></fa-icon>
+   </ng-container>
+   <ng-container *ngSwitchCase="Config.icon.thumbtack">
+      <fa-icon [icon]="faThumbtack" size="lg" (click)="onClick()"></fa-icon>
+   </ng-container>
+   <ng-container *ngSwitchCase="Config.icon.truck">
+      <fa-icon [icon]="faTruck" size="lg" (click)="onClick()"></fa-icon>
+   </ng-container>
    <ng-container *ngSwitchDefault>
       {{content}}
    </ng-container>
