@@ -15,6 +15,7 @@ export class TableComponent implements OnChanges {
    @Input('c') codes: string[];
    @Input('r') rows: string[];
    @Input('f') filter: boolean;
+   @Input() search: boolean;
    @Input('b') button: (string | boolean)[];
    @Input('nr') nr: string;
    @Input('desc') desc: boolean;
@@ -27,6 +28,7 @@ export class TableComponent implements OnChanges {
    @Output() hbClick = new EventEmitter();
    @Output() iClick = new EventEmitter();
    @Output() cClick = new EventEmitter();
+   @Output() sClick = new EventEmitter();
 
    @Output() selectChange: EventEmitter<number> = new EventEmitter<number>();
    @Input() set select(value: number) {
@@ -98,6 +100,10 @@ export class TableComponent implements OnChanges {
             }
          }
       });
+   }
+
+   onSearch() {
+      this.sClick.emit();
    }
 
    setRowVisible(row: string, state?: boolean) {

@@ -1,16 +1,21 @@
 <div class="card border-dark">
-   <div class="card-header" *ngIf="filter || headerBtn">
+   <div class="card-header" *ngIf="filter || search || headerBtn">
       <form class="form-inline">
          <ng-container *ngIf="filter">
             <label for="filter" class="form-label">Gyorsszűrő:</label>
             <input class="form-control" id="{{ 'filter' + id }}" type="search" placeholder="Szűrés" #filter
                (search)="onFilter(filter.value)" (keyup)="onFilter(filter.value)">
          </ng-container>
+         <ng-container *ngIf="search">
+            <button class="btn btn-primary" style="margin-left: 4px" (click)="onSearch()">
+               <lib-icon [content]="'fas:faSearch'"> </lib-icon>
+            </button>
+         </ng-container>
          <ng-container *ngIf="headerBtn">
             <div class="col" style="text-align: right">
                <div style="display: inline-flex">
                   <div *ngFor="let button of headerBtn; let i = index">
-                     <button class="btn btn-primary" (click)="onHeaderBtn(i)"
+                     <button class="btn btn-primary" (click)="onHeaderBtn(i)" type="button"
                         style="margin-left: 2px; margin-right: 2px" [id]="'button'+i">{{ button }}</button>
                   </div>
                </div>

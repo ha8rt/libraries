@@ -15,7 +15,7 @@ div div form label {
 }
 
 .grey{
-color:grey;
+   color:grey;
 }
 
 .pink{
@@ -23,5 +23,13 @@ color:grey;
 }
 
 .center{
-text-align: center;
+   text-align: center;
+}
+
+.right{
+   text-align: right;
+}
+
+.bolder{
+   font-weight: 550;
 }
