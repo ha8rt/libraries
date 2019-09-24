@@ -1,51 +1,13 @@
-<ng-container [ngSwitch]="content">
-   <ng-container *ngSwitchCase="Config.icon.edit">
-      <fa-icon [icon]="fasEdit" size="lg" (click)="onClick()"></fa-icon>
+<ng-container [ngSwitch]="true">
+   <ng-container *ngSwitchCase="content.split(':')[0] === 'fas'">
+      <fa-icon [icon]="fas[content.split(':')[1]]" size="lg" (click)="onClick()"
+         tooltip="{{ tooltip ? tooltip : null }}" placement="{{ tooltip ? 'auto' : null }}">
+      </fa-icon>
    </ng-container>
-   <ng-container *ngSwitchCase="Config.icon.delete">
-      <fa-icon [icon]="fasTimes" size="lg" (click)="onClick()"></fa-icon>
-   </ng-container>
-   <ng-container *ngSwitchCase="Config.icon.check">
-      <fa-icon [icon]="fasCheck" size="lg" (click)="onClick()"></fa-icon>
-   </ng-container>
-   <ng-container *ngSwitchCase="Config.icon.plus">
-      <fa-icon [icon]="fasPlus" size="lg" (click)="onClick()"></fa-icon>
-   </ng-container>
-   <ng-container *ngSwitchCase="Config.icon.download">
-      <fa-icon [icon]="fasDownload" size="lg" (click)="onClick()"></fa-icon>
-   </ng-container>
-   <ng-container *ngSwitchCase="Config.icon.commentDotsS">
-      <fa-icon [icon]="fasCommentDots" size="lg" (click)="onClick()"></fa-icon>
-   </ng-container>
-   <ng-container *ngSwitchCase="Config.icon.commentDotsR">
-      <fa-icon [icon]="farCommentDots" size="lg" (click)="onClick()"></fa-icon>
-   </ng-container>
-   <ng-container *ngSwitchCase="Config.icon.dollarSign">
-      <fa-icon [icon]="fasDollarSign" size="lg" (click)="onClick()"></fa-icon>
-   </ng-container>
-   <ng-container *ngSwitchCase="Config.icon.signOutAlt">
-      <fa-icon [icon]="fasSignOutAlt" size="lg" (click)="onClick()"></fa-icon>
-   </ng-container>
-   <ng-container *ngSwitchCase="Config.icon.key">
-      <fa-icon [icon]="fasKey" size="lg" (click)="onClick()"></fa-icon>
-   </ng-container>
-   <ng-container *ngSwitchCase="Config.icon.trashAlt">
-      <fa-icon [icon]="fasTrashAlt" size="lg" (click)="onClick()"></fa-icon>
-   </ng-container>
-   <ng-container *ngSwitchCase="Config.icon.clipboardCheck">
-      <fa-icon [icon]="faClipboardCheck" size="lg" (click)="onClick()"></fa-icon>
-   </ng-container>
-   <ng-container *ngSwitchCase="Config.icon.clipboardList">
-      <fa-icon [icon]="faClipboardList" size="lg" (click)="onClick()"></fa-icon>
-   </ng-container>
-   <ng-container *ngSwitchCase="Config.icon.dolly">
-      <fa-icon [icon]="faDolly" size="lg" (click)="onClick()"></fa-icon>
-   </ng-container>
-   <ng-container *ngSwitchCase="Config.icon.thumbtack">
-      <fa-icon [icon]="faThumbtack" size="lg" (click)="onClick()"></fa-icon>
-   </ng-container>
-   <ng-container *ngSwitchCase="Config.icon.truck">
-      <fa-icon [icon]="faTruck" size="lg" (click)="onClick()"></fa-icon>
+   <ng-container *ngSwitchCase="content.split(':')[0] === 'far'">
+      <fa-icon [icon]="far[content.split(':')[1]]" size="lg" (click)="onClick()"
+         tooltip="{{ tooltip ? tooltip : null }}" placement="{{ tooltip ? 'auto' : null }}">
+      </fa-icon>
    </ng-container>
    <ng-container *ngSwitchDefault>
       {{content}}
