@@ -49,9 +49,11 @@
                               <!-- if this field contains icons -->
                               <ng-container *ngSwitchCase="isIcons(fieldValue)">
                                  <td *ngFor="let icon of fieldValue"
-                                    [ngClass]="icon.classes ? icon.classes.join(',') : (multiRow ? 'center' : null)">
+                                    [ngClass]="icon.classes ? icon.classes.join(' ') : (multiRow ? 'center' : null)">
                                     <lib-icon [content]="icon.content"
-                                       (iClicked)="onIconClick({row: row, icon: icon.content, id: icon.id})">
+                                       (iClicked)="onIconClick({row: row, icon: icon.content, id: icon.id})"
+                                       tooltip="{{ icon.tooltip ? icon.tooltip : null }}"
+                                       placement="{{ icon.tooltip ? 'auto' : null }}">
                                     </lib-icon>
                                  </td>
                               </ng-container>

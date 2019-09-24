@@ -5,6 +5,8 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { IconModule } from '@ha8rt/icon';
 
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+
 @NgModule({
    declarations: [TableComponent],
    imports: [
@@ -12,6 +14,7 @@ import { IconModule } from '@ha8rt/icon';
       RouterModule.forChild([]),
       FormsModule,
       IconModule,
+      TooltipModule.forRoot(),
    ],
    exports: [TableComponent, RouterModule]
 })
