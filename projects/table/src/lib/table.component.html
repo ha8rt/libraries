@@ -1,9 +1,11 @@
 <div class="card border-dark">
-   <div class="card-header" *ngIf="search">
+   <div class="card-header" *ngIf="filter || headerBtn">
       <form class="form-inline">
-         <label for="search" class="form-label">Keresés a mezők között:</label>
-         <input class="form-control" id="{{ 'search' + id }}" type="search" placeholder="Keresés" #search
-            (search)="onSearch(search.value)" (keyup)="onSearch(search.value)">
+         <ng-container *ngIf="filter">
+            <label for="filter" class="form-label">Gyorsszűrő:</label>
+            <input class="form-control" id="{{ 'filter' + id }}" type="search" placeholder="Szűrés" #filter
+               (search)="onFilter(filter.value)" (keyup)="onFilter(filter.value)">
+         </ng-container>
          <ng-container *ngIf="headerBtn">
             <div class="col" style="text-align: right">
                <div style="display: inline-flex">
@@ -50,10 +52,8 @@
                               <ng-container *ngSwitchCase="isIcons(fieldValue)">
                                  <td *ngFor="let icon of fieldValue"
                                     [ngClass]="icon.classes ? icon.classes.join(' ') : (multiRow ? 'center' : null)">
-                                    <lib-icon [content]="icon.content"
-                                       (iClicked)="onIconClick({row: row, icon: icon.content, id: icon.id})"
-                                       tooltip="{{ icon.tooltip ? icon.tooltip : null }}"
-                                       placement="{{ icon.tooltip ? 'auto' : null }}">
+                                    <lib-icon [content]="icon.content" [tooltip]="icon.tooltip"
+                                       (iClicked)="onIconClick({row: row, icon: icon.content, id: icon.id})">
                                     </lib-icon>
                                  </td>
                               </ng-container>
@@ -87,7 +87,7 @@
                         </button>
                      </td>
                      <ng-template #emptyCol>
-                        <td></td>
+                        <td *ngIf="button"></td>
                      </ng-template>
                   </ng-container>
                </tr>

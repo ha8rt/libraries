@@ -14,7 +14,7 @@ export class TableComponent implements OnChanges {
    @Input('h') headers: Headers;
    @Input('c') codes: string[];
    @Input('r') rows: string[];
-   @Input('s') search: boolean;
+   @Input('f') filter: boolean;
    @Input('b') button: (string | boolean)[];
    @Input('nr') nr: string;
    @Input('desc') desc: boolean;
@@ -36,7 +36,7 @@ export class TableComponent implements OnChanges {
    getFieldValue = getFieldValue;
 
    shown: boolean[];
-   searchStr: string;
+   filterStr: string;
    selected: number;
    multiRow: boolean;
 
@@ -47,8 +47,8 @@ export class TableComponent implements OnChanges {
    ngOnChanges() {
       if (this.rows) {
          this.shown = Array(this.rows.length).fill(true);
-         if (this.searchStr && this.searchStr.length > 0) {
-            this.onSearch(this.searchStr);
+         if (this.filterStr && this.filterStr.length > 0) {
+            this.onFilter(this.filterStr);
          }
       }
       this.multiRow = this.isMultiRow();
@@ -75,10 +75,10 @@ export class TableComponent implements OnChanges {
       this.cClick.emit(event);
    }
 
-   onSearch(searchStr: string) {
-      this.searchStr = searchStr;
+   onFilter(filterStr: string) {
+      this.filterStr = filterStr;
       this.rows.forEach((row, index) => {
-         if (this.nr && searchStr.startsWith('#') && (searchStr.length === 1 || searchStr.substring(1) === (index + 1).toString())) {
+         if (this.nr && filterStr.startsWith('#') && (filterStr.length === 1 || filterStr.substring(1) === (index + 1).toString())) {
             // if it is found by the serial number
             this.setRowVisible(row);
             return;
@@ -92,7 +92,7 @@ export class TableComponent implements OnChanges {
             } else {
                item = '' + getFieldValue(row, this.codes[i]);
             }
-            if (item.toUpperCase().includes(searchStr.toUpperCase()) && !this.isBoolean(row[this.codes[i]])) {
+            if (item.toUpperCase().includes(filterStr.toUpperCase()) && !this.isBoolean(row[this.codes[i]])) {
                this.setRowVisible(row);
                break;
             }
