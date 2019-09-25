@@ -1,34 +1,9 @@
-export type ModalButton = IModalButton[];
-
-export interface IModalButton {
-   id: string;
-   value: string;
-   classes: string;
-   type: string;
-   checkInvalid: boolean;
-}
+import { ModalButton, InitButtonObj, ButtonType } from './button.handler';
 
 export function AddModalButton(modalButton: ModalButton,
    // tslint:disable-next-line: align
    id: string, value: string, classes: string, type: string, checkInvalid?: boolean) {
    modalButton.push({ id, value, classes, type, checkInvalid });
-}
-
-export enum ButtonType {
-   Login,
-   Ok,
-   OkCancel,
-   YesCancel,
-   CancelOk,
-   SendCancel,
-   ListCancel,
-   CancelDelete,
-}
-
-export interface InitButtonObj {
-   type: ButtonType;
-   prefix: string;
-   button?: ModalButton;
 }
 
 export function InitButton(obj: InitButtonObj, count: number): ModalButton[] {
@@ -69,6 +44,12 @@ export function InitButton(obj: InitButtonObj, count: number): ModalButton[] {
       }
       case ButtonType.CancelDelete: {
          AddModalButton(obj.button, obj.prefix + '-delete', 'Törlés', 'btn-primary', 'submit');
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-light', 'button');
+         break;
+      }
+      case ButtonType.RemoveFilterOkCancel: {
+         AddModalButton(obj.button, obj.prefix + '-remove-filter', 'Feltétel törlése', 'btn-light left', 'button');
+         AddModalButton(obj.button, obj.prefix + '-ok', 'Rendben', 'btn-primary', 'submit', true);
          AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-light', 'button');
          break;
       }

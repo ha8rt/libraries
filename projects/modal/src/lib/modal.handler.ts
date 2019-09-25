@@ -1,7 +1,7 @@
 import { Subject, Observable } from 'rxjs';
-import { ModalButton } from './modal.button';
-import { ModalBody } from './modal.body';
 import { ValidatorFn } from '@angular/forms';
+import { ModalBody } from './body.handler';
+import { ModalButton } from './button.handler';
 
 export interface ChangeType {
    title?: string;

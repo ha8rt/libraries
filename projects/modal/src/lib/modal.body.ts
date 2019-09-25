@@ -1,18 +1,5 @@
-import { Subject } from 'rxjs';
-import { ChangeType } from './modal.handler';
-
-export type ModalBody = IModalBody[];
-
-export interface IModalBody {
-   id: string;
-   type: string;
-   placeHolder: string;
-   required: boolean;
-   value: any;
-   disabled: boolean;
-   label: string;
-   hidden: boolean;
-}
+import { ModalBody, InitBodyObj, BodyType } from './body.handler';
+import { getTitle } from './modal.title';
 
 // tslint:disable: align
 export function AddModalBody(modalBody: ModalBody,
@@ -20,39 +7,6 @@ export function AddModalBody(modalBody: ModalBody,
    required?: boolean, value?: string, disabled?: boolean, hidden?: boolean
 ) {
    modalBody.push({ id, type, placeHolder, value, required, disabled, label, hidden });
-}
-
-export enum BodyType {
-   Login,
-   ChgPwd,
-   AddCodeName,
-   EditIdCodeName,
-   DeleteIdCodeName,
-   AddTypeCodeName,
-   EditTypeIdCodeName,
-   DeleteTypeIdCodeName,
-   AddContestCodeName,
-   EditContestIdCodeName,
-   DeleteContestIdCodeName,
-   EditIdCodeNameStartFinish,
-   EditSentReceivedData,
-   OrderNumber,
-   OrderSubmitDetails,
-   Date,
-   AddClientComment,
-   SupplierComment,
-   SupplierEditClientComment,
-   SupplierShowClientComment,
-   ShowClientComment,
-   HiddenOrderNumber,
-}
-
-export interface InitBodyObj {
-   type: BodyType;
-   event?: Subject<ChangeType>[];
-   title?: string;
-   row?: any;
-   body?: ModalBody;
 }
 
 export function InitBody(obj: InitBodyObj, count?: number): ModalBody[] {
@@ -182,6 +136,11 @@ export function InitBody(obj: InitBodyObj, count?: number): ModalBody[] {
          AddModalBody(obj.body, 'modal-order-number', 'text', '', '', null, obj.row.orderNumber, null, true);
          break;
       }
+      case BodyType.SearchCommentOrderDate: {
+         AddModalBody(obj.body, 'search-comment', 'text', 'Vevő megjegyzés', 'Vevő megjegyzés:');
+         AddModalBody(obj.body, 'search-date', 'date', '', 'Rendelés dátuma: ', false, '0000-01-01');
+         break;
+      }
    }
    if (obj.event) {
       obj.event.forEach((element) => {
@@ -189,39 +148,4 @@ export function InitBody(obj: InitBodyObj, count?: number): ModalBody[] {
       });
    }
    return new Array(count ? count : 1).fill(obj.body);
-}
-
-function getTitle(type: BodyType, title: string): string {
-   switch (type) {
-      case BodyType.AddContestCodeName: {
-         return title + ' hozzáadása';
-      }
-      case BodyType.AddTypeCodeName: {
-         return title + ' hozzáadása';
-      }
-      case BodyType.AddCodeName: {
-         return title + ' hozzáadása';
-      }
-      case BodyType.EditContestIdCodeName: {
-         return title + ' módosítása';
-      }
-      case BodyType.EditTypeIdCodeName: {
-         return title + ' módosítása';
-      }
-      case BodyType.EditIdCodeName: {
-         return title + ' módosítása';
-      }
-      case BodyType.DeleteTypeIdCodeName: {
-         return title + ' törlése';
-      }
-      case BodyType.DeleteIdCodeName: {
-         return title + ' törlése';
-      }
-      case BodyType.DeleteContestIdCodeName: {
-         return title + ' törlése';
-      }
-      default: {
-         return title;
-      }
-   }
 }
