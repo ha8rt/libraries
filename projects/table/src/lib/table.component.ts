@@ -80,7 +80,10 @@ export class TableComponent implements OnChanges {
    onFilter(filterStr: string) {
       this.filterStr = filterStr;
       this.rows.forEach((row, index) => {
-         if (this.nr && filterStr.startsWith('#') && (filterStr.length === 1 || filterStr.substring(1) === (index + 1).toString())) {
+         if (this.nr &&
+            filterStr.startsWith('#') &&
+            (filterStr.length === 1 || filterStr.substring(1) === (this.desc ? this.rows.length - index : index + 1).toString())
+         ) {
             // if it is found by the serial number
             this.setRowVisible(row);
             return;
