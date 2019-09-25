@@ -48,7 +48,7 @@ export function InitButton(obj: InitButtonObj, count: number): ModalButton[] {
          break;
       }
       case ButtonType.RemoveFilterOkCancel: {
-         AddModalButton(obj.button, obj.prefix + '-remove-filter', 'Feltétel törlése', 'btn-light left', 'button');
+         AddModalButton(obj.button, obj.prefix + '-remove-filter', 'Szűrés alaphelyzetbe', 'btn-light left', 'button');
          AddModalButton(obj.button, obj.prefix + '-ok', 'Rendben', 'btn-primary', 'submit', true);
          AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-light', 'button');
          break;
