@@ -129,7 +129,10 @@ export function InitBody(obj: InitBodyObj, count?: number): ModalBody[] {
       }
       case BodyType.ShowClientComment: {
          [obj.body] = InitBody({ body: obj.body, type: BodyType.HiddenOrderNumber, row: obj.row });
-         AddModalBody(obj.body, 'modal-edit-comment', 'textarea', '', 'Vevő megjegyzése:', null, obj.row.clientComment, true);
+         AddModalBody(
+            obj.body, 'modal-edit-comment', 'textarea', 'Vevő megjegyzése',
+            'Vevő megjegyzése:', null, obj.row.clientComment, true
+         );
          break;
       }
       case BodyType.HiddenOrderNumber: {
@@ -138,7 +141,7 @@ export function InitBody(obj: InitBodyObj, count?: number): ModalBody[] {
       }
       case BodyType.SearchCommentOrderDate: {
          AddModalBody(obj.body, 'search-comment', 'text', 'Vevő megjegyzés', 'Vevő megjegyzés:');
-         AddModalBody(obj.body, 'search-date', 'date', '', 'Rendelés dátuma: ', false, '0000-01-01');
+         AddModalBody(obj.body, 'search-date', 'date', 'Rendelés dátuma', 'Rendelés dátuma: ', false, '0000-01-01');
          break;
       }
    }
