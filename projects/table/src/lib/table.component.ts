@@ -1,7 +1,7 @@
 import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { getFieldValue, Headers } from './table.handler';
 import { IIconClick, ICheckClick } from './table.click';
-import { isIcons } from '@ha8rt/icon';
+import { isIcons, IconClass } from '@ha8rt/icon';
 
 @Component({
    selector: 'lib-table',
@@ -90,14 +90,17 @@ export class TableComponent implements OnChanges {
          } else {
             this.setRowVisible(row, false);
          }
-         for (let i = 0, len = this.codes.length; i < len; i++) {
+         for (const code of this.codes) {
             let item: string;
-            if (row[this.codes[i]] && row[this.codes[i]].str) {
-               item = '' + row[this.codes[i]].str;
+            const value = getFieldValue(row, code);
+            if (isIcons(value)) {
+               item = (value as IconClass[]).map((icon) =>
+                  !(icon.content.startsWith('fas:') || icon.content.startsWith('far:')) ? icon.content : ''
+               ).join('#');
             } else {
-               item = '' + getFieldValue(row, this.codes[i]);
+               item = '' + value;
             }
-            if (item.toUpperCase().includes(filterStr.toUpperCase()) && !this.isBoolean(row[this.codes[i]])) {
+            if (item.toUpperCase().includes(filterStr.toUpperCase()) && !this.isBoolean(row[code])) {
                this.setRowVisible(row);
                break;
             }
