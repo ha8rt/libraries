@@ -55,6 +55,18 @@
       ],
       "select/*": [
         "dist/select/*"
+      ],
+      "form-input": [
+        "dist/form-input"
+      ],
+      "form-input/*": [
+        "dist/form-input/*"
+      ],
+      "gallery": [
+        "dist/gallery"
+      ],
+      "gallery/*": [
+        "dist/gallery/*"
       ]
     }
   }

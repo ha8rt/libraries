@@ -1,0 +1,6 @@
+<h1 align="center">{{title}}</h1>
+<carousel>
+    <slide *ngFor="let link of links">
+        <img [src]="link.src" alt="link.alt" style="display: block; width: 100%;">
+    </slide>
+</carousel>

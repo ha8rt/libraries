@@ -1,0 +1,32 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <div class="container">
+        <div class="row">
+            <div *ngFor="let input of inputs" class="col-sm-{{input.sizesm}} col-md-{{input.sizemd}} col-lg-{{input.sizelg}}">
+                <label [for]="input.id">{{input.label}}</label>
+                <input *ngIf="input.type !== 'select'" 
+                    [type]="input.type" 
+                    [id]="input.id"
+                    [name]="input.name"
+                    [placeholder]="input.placeholder? input.placeholder : ''" 
+                    [value]="input.initValue? input.initValue : ''"
+                    [required]="input.required? 'required' : ''"
+                    class="form-control"
+                    [formControlName]="input.name"
+                >
+                <select *ngIf="input.type === 'select'" 
+                    [name]="input.name" 
+                    [id]="input.id"
+                    class="form-control"
+                    [required]="input.required ? required : ''"
+                    [formControlName]="input.id"
+                    >
+                    <option *ngFor="let option of input.options" [value]="option.value">{{option.text}}</option>
+                </select>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-12">
+                <br>
+                <button class="btn btn-success" type="submit">Submit</button>
+            </div>
+        </div>
+    </div>
+</form>
