@@ -51,7 +51,7 @@
                type="button" (click)="onButton(button.id)">
                {{ button.text }}
                <ng-container *ngIf="isIcons([button.icon])">
-                  <lib-icon [content]="button.icon.content"></lib-icon>
+                  <lib-icon [content]="button.icon.content" [tooltip]="button.icon.tooltip"></lib-icon>
                </ng-container>
             </button>
          </ng-container>
