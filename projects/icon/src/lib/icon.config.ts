@@ -1,7 +1,7 @@
 export class Config {
    static icon = {
       plus: 'fas:faPlus',
-      check: 'fas:faCheck',
+      check: 'fas:faCheck', // kiszállítva
       edit: 'fas:faEdit',
       delete: 'fas:faTimes',
       download: 'fas:faDownload',
@@ -18,10 +18,13 @@ export class Config {
       key: 'fas:faKey',
 
       trashAlt: 'fas:faTrashAlt', // törölve
-      clipboardCheck: 'fas:faClipboardCheck', // feldolgozva
+      clipboardCheck: 'fas:faClipboardCheck',
       clipboardList: 'fas:faClipboardList', // feldolgozásra vár
-      dolly: 'fas:faDolly', // feldolgozás alatt
+      dolly: 'fas:faDolly',
       thumbtack: 'fas:faThumbtack', // evidenciába
-      truck: 'fas:faTruck', // kiszállítva
+      truck: 'fas:faTruck',
+
+      cogs: 'fas:faCogs', // feldolgozás alatt
+      box: 'fas:faBox', // feldolgozva
    };
 }
