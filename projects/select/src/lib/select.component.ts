@@ -18,12 +18,13 @@ export class SelectComponent implements OnInit, OnDestroy {
    @Input() load: Observable<void>;
    @Input() unload: Observable<void>;
    @Input('h') header: string;
-   @Input('options') options: string[];
+   @Input() options: string[];
    @Input() field: string;
    @Input('req') required: boolean;
-   @Input('elemList') elemList: ElemList;
-   @Input('myName') myName: string;
-   @Input('myGroup') myGroup: FormGroup;
+   @Input() elemList: ElemList;
+   @Input() myName: string;
+   @Input() myGroup: FormGroup;
+   @Input() chooseStr: string;
 
    @Output() changed = new EventEmitter();
 
