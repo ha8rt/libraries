@@ -11,8 +11,11 @@
       <div *ngFor="let nav of handler.navs" class="btn-group" dropdown>
          <button id="button-basic" dropdownToggle type="button" class="btn"
             [ngClass]="[nav.disabled ? 'disabled' : '', nav.submenus ? 'dropdown-toggle' : '', nav.classes ? nav.classes.join(' ') : 'btn-primary']"
-            aria-controls="dropdown-basic" [routerLink]="nav.link">
+            aria-controls="dropdown-basic" [routerLink]="nav.link" [tooltip]="nav.tooltip">
             {{ nav.text }}
+            <ng-container *ngIf="isIcons([nav.icon])">
+               <lib-icon [content]="nav.icon.content" [tooltip]="nav.icon.tooltip"></lib-icon>
+            </ng-container>
          </button>
          <ng-container *ngIf="nav.submenus && !nav.disabled">
             <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
@@ -22,17 +25,24 @@
                      <a dropdownToggle class="dropdown-item"
                         [ngClass]="[first.disabled ? 'disabled' : '', first.submenus ? 'dropdown-toggle' : '']"
                         [style.background]="dp.isOpen ? '#e6e6e6' : null" [routerLink]="first.link"
-                        (click)="first.onclick ? onButton(first.id) : null">
+                        [tooltip]="first.tooltip" (click)="first.onclick ? onButton(first.id) : null">
                         {{ first.text }}
+                        <ng-container *ngIf="isIcons([first.icon])">
+                           <lib-icon [content]="first.icon.content" [tooltip]="first.icon.tooltip"></lib-icon>
+                        </ng-container>
                      </a>
                      <ng-container *ngIf="first.submenus && !first.disabled">
                         <ul *dropdownMenu class="dropdown-menu" role="menu">
                            <ng-container *ngFor="let second of first.submenus">
                               <li role="menuitem">
                                  <a [routerLink]="second.link" class="dropdown-item"
-                                    [ngClass]="second.disabled ? 'disabled' : ''"
+                                    [ngClass]="second.disabled ? 'disabled' : ''" [tooltip]="second.tooltip"
                                     (click)="second.onclick ? onButton(second.id) : null">
                                     {{ second.text }}
+                                    <ng-container *ngIf="isIcons([second.icon])">
+                                       <lib-icon [content]="second.icon.content" [tooltip]="second.icon.tooltip">
+                                       </lib-icon>
+                                    </ng-container>
                                  </a>
                               </li>
                               <li *ngIf="second.divider" class="divider dropdown-divider"></li>
@@ -48,7 +58,7 @@
       <form class="form-inline my-2 my-lg-0 ml-auto">
          <ng-container *ngFor="let button of handler.buttons">
             <button [id]="button.id" class="btn" [ngClass]="[button.classes ? button.classes.join(' ') : 'btn-primary']"
-               type="button" (click)="onButton(button.id)">
+               type="button" [tooltip]="button.tooltip" (click)="onButton(button.id)">
                {{ button.text }}
                <ng-container *ngIf="isIcons([button.icon])">
                   <lib-icon [content]="button.icon.content" [tooltip]="button.icon.tooltip"></lib-icon>

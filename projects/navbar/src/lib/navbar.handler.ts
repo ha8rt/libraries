@@ -9,6 +9,8 @@ export interface IDropdown {
    divider?: boolean;
    onclick?: boolean;
    classes?: Array<string>;
+   tooltip?: string;
+   icon?: IIconClass;
 }
 
 export interface IButton {
@@ -16,6 +18,7 @@ export interface IButton {
    id: string;
    classes?: Array<string>;
    icon?: IIconClass;
+   tooltip?: string;
 }
 
 export interface IImage {
