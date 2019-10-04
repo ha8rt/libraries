@@ -26,5 +26,8 @@ export class Config {
 
       cogs: 'fas:faCogs', // feldolgozás alatt
       box: 'fas:faBox', // feldolgozva
+
+      info: 'fas:faInfoCircle',
+      print: 'fas:faPrint',
    };
 }
