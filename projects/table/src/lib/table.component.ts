@@ -1,6 +1,6 @@
 import { Component, OnChanges, Input, Output, EventEmitter, ElementRef } from '@angular/core';
-import { getFieldValue, Headers } from './table.handler';
-import { IIconClick, ICheckClick, IFocusOut } from './table.click';
+import { getFieldValue, Headers, IPagination } from './table.handler';
+import { IIconClick, ICheckClick, IFocusOut, IPageChanged } from './table.click';
 import { isIcons, IconClass } from '@ha8rt/icon';
 
 @Component({
@@ -23,6 +23,7 @@ export class TableComponent implements OnChanges {
    @Input('hb') headerBtn: string[];
    @Input('ro') readOnly: boolean;
    @Input('i') inputs: [number[], number[]];
+   @Input('p') pagination: IPagination;
 
    @Output() rClick = new EventEmitter();
    @Output() bClick = new EventEmitter();
@@ -31,6 +32,7 @@ export class TableComponent implements OnChanges {
    @Output() cClick = new EventEmitter<ICheckClick>();
    @Output() sClick = new EventEmitter();
    @Output() focusOut = new EventEmitter<IFocusOut>();
+   @Output() pageChanged = new EventEmitter<IPageChanged>();
 
    @Output() selectChange: EventEmitter<number> = new EventEmitter<number>();
    @Input() set select(value: number) {
@@ -116,6 +118,10 @@ export class TableComponent implements OnChanges {
 
    onFocusOut(event: FocusEvent, row: any[], rowId: number, columnId: number) {
       this.focusOut.emit({ row, value: (event.target as any).value, rowId, columnId });
+   }
+
+   onPageChanged(event: IPageChanged) {
+      this.pageChanged.emit(event);
    }
 
    setRowVisible(row: string, state?: boolean) {

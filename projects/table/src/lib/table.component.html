@@ -1,5 +1,5 @@
 <div class="card border-dark">
-   <div class="card-header" *ngIf="filter || search || headerBtn">
+   <div class="card-header" *ngIf="filter || search || pagination || headerBtn">
       <form class="form-inline">
          <ng-container *ngIf="filter">
             <label for="filter" class="form-label">Gyorsszűrő:</label>
@@ -10,6 +10,16 @@
             <button class="btn btn-primary" style="margin-left: 4px" (click)="onSearch()">
                <lib-icon [content]="'fas:faSearch'"> </lib-icon>
             </button>
+         </ng-container>
+         <ng-container *ngIf="pagination">
+            <div class="col" style="text-align: center">
+               <div style="display: inline-flex">
+                  <pagination [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage"
+                     [nextText]="pagination.nextText" [previousText]="pagination.previousText"
+                     [maxSize]="pagination.maxSize" [rotate]="pagination.rotate" (pageChanged)="onPageChanged($event)">
+                  </pagination>
+               </div>
+            </div>
          </ng-container>
          <ng-container *ngIf="headerBtn">
             <div class="col" style="text-align: right">

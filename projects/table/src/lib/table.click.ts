@@ -69,3 +69,8 @@ export interface IFocusOut {
    rowId: number;
    columnId: number;
 }
+
+export interface IPageChanged {
+   page: number;
+   itemsPerPage: number;
+}

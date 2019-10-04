@@ -54,3 +54,12 @@ export function convertDateToLocale(rows: any[], fields: string[], locale: strin
       });
    });
 }
+
+export interface IPagination {
+   totalItems: number;
+   itemsPerPage: number;
+   nextText: string;
+   previousText: string;
+   maxSize: number;
+   rotate: boolean;
+}
