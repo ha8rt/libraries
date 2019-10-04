@@ -29,5 +29,9 @@ export class Config {
 
       info: 'fas:faInfoCircle',
       print: 'fas:faPrint',
+      language: 'fas:faGlobeAmericas',
+      home: 'fas:faHome',
+
+      settings: 'fas:faUsersCog',
    };
 }
