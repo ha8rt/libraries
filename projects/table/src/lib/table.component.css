@@ -33,3 +33,7 @@ div div form label {
 .bolder{
    font-weight: 550;
 }
+
+.form-control.ng-dirty{
+   border: 2px solid rgba(50,50,50,0.15);
+}

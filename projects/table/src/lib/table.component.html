@@ -50,9 +50,15 @@
                         #{{ desc ? this.rows.length - i : i + 1 }}
                      </th>
                      <!-- other fields listed in the order of codes -->
-                     <ng-container *ngFor="let code of this.codes">
+                     <ng-container *ngFor="let code of this.codes; let j = index">
                         <ng-container *ngFor="let fieldValue of [getFieldValue(row, code)]">
                            <ng-container [ngSwitch]="true">
+                              <ng-container *ngSwitchCase="inputs && (inputs[0].includes(i) || inputs[1].includes(j))">
+                                 <td>
+                                    <input id="{{ 'input' + i + '' + j }}" class="form-control" type="text"
+                                       value="{{ fieldValue }}" (focusout)="onFocusOut($event, row, i, j)">
+                                 </td>
+                              </ng-container>
                               <!-- if this field contains icons -->
                               <ng-container *ngSwitchCase="isIcons(fieldValue)">
                                  <td *ngFor="let icon of fieldValue"

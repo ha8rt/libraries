@@ -62,3 +62,10 @@ export function onHbClick(add: ModalHandler, type: BodyType, title: string) {
    [add.body] = InitBody({ type, event: [add.change], title }, 1);
    add.event.next();
 }
+
+export interface IFocusOut {
+   row: any;
+   value: string;
+   rowId: number;
+   columnId: number;
+}

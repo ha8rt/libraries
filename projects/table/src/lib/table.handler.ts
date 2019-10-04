@@ -46,3 +46,11 @@ export function convertToBool(rows: any[], fields: string[]) {
       });
    });
 }
+
+export function convertDateToLocale(rows: any[], fields: string[], locale: string) {
+   rows.forEach((row) => {
+      fields.forEach((field) => {
+         row[field] = new Date(row[field]).toLocaleString(locale);
+      });
+   });
+}

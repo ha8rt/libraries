@@ -1,6 +1,6 @@
-import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnChanges, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import { getFieldValue, Headers } from './table.handler';
-import { IIconClick, ICheckClick } from './table.click';
+import { IIconClick, ICheckClick, IFocusOut } from './table.click';
 import { isIcons, IconClass } from '@ha8rt/icon';
 
 @Component({
@@ -22,13 +22,15 @@ export class TableComponent implements OnChanges {
    @Input('bfc') btnFiltCond: string;
    @Input('hb') headerBtn: string[];
    @Input('ro') readOnly: boolean;
+   @Input('i') inputs: [number[], number[]];
 
    @Output() rClick = new EventEmitter();
    @Output() bClick = new EventEmitter();
    @Output() hbClick = new EventEmitter();
-   @Output() iClick = new EventEmitter();
-   @Output() cClick = new EventEmitter();
+   @Output() iClick = new EventEmitter<IIconClick>();
+   @Output() cClick = new EventEmitter<ICheckClick>();
    @Output() sClick = new EventEmitter();
+   @Output() focusOut = new EventEmitter<IFocusOut>();
 
    @Output() selectChange: EventEmitter<number> = new EventEmitter<number>();
    @Input() set select(value: number) {
@@ -110,6 +112,10 @@ export class TableComponent implements OnChanges {
 
    onSearch() {
       this.sClick.emit();
+   }
+
+   onFocusOut(event: FocusEvent, row: any[], rowId: number, columnId: number) {
+      this.focusOut.emit({ row, value: (event.target as any).value, rowId, columnId });
    }
 
    setRowVisible(row: string, state?: boolean) {
