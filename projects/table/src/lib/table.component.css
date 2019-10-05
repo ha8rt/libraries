@@ -37,3 +37,7 @@ div div form label {
 .form-control.ng-dirty{
    border: 2px solid rgba(50,50,50,0.15);
 }
+
+.table td{
+   vertical-align: middle;
+}

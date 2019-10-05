@@ -16,7 +16,9 @@
                <div style="display: inline-flex">
                   <pagination [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage"
                      [nextText]="pagination.nextText" [previousText]="pagination.previousText"
-                     [maxSize]="pagination.maxSize" [rotate]="pagination.rotate" (pageChanged)="onPageChanged($event)">
+                     [maxSize]="pagination.maxSize" [rotate]="pagination.rotate"
+                     [boundaryLinks]="pagination.boundaryLinks" [firstText]="pagination.firstText"
+                     [lastText]="pagination.lastText" (pageChanged)="onPageChanged($event)">
                   </pagination>
                </div>
             </div>

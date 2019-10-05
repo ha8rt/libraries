@@ -62,4 +62,7 @@ export interface IPagination {
    previousText: string;
    maxSize: number;
    rotate: boolean;
+   boundaryLinks: boolean;
+   firstText: string;
+   lastText: string;
 }
