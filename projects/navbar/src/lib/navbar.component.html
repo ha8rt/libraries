@@ -1,12 +1,12 @@
-<nav *ngIf="handler" class="navbar sticky-top navbar-expand-xl navbar-dark justify-content-end"
+<nav *ngIf="handler" class="navbar sticky-top navbar-expand-custom navbar-dark justify-content-end"
    [ngClass]="[handler.header.classes ? handler.header.classes.join(' ') : 'bg-primary']">
+   <img *ngIf="handler.header.image" [src]="handler.header.image.src" [alt]="handler.header.image.alt"
+      [ngStyle]="handler.header.image.style">
    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
    </button>
    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <img *ngIf="handler.header.image" [src]="handler.header.image.src" [alt]="handler.header.image.alt"
-         [ngStyle]="handler.header.image.style">
       <a *ngIf="handler.header.text" class="navbar-brand" routerLink="/">{{ handler.header.text }}</a>
       <div *ngFor="let nav of handler.navs" class="btn-group" dropdown>
          <button id="button-basic" dropdownToggle type="button" class="btn"
@@ -17,43 +17,7 @@
                <lib-icon [content]="nav.icon.content" [tooltip]="nav.icon.tooltip"></lib-icon>
             </ng-container>
          </button>
-         <ng-container *ngIf="nav.submenus && !nav.disabled">
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-               <ng-container *ngFor="let first of nav.submenus">
-                  <li role="menuitem" dropdown placement="right" container="body" (mouseover)="onMouseOver(dp)"
-                     #dp="bs-dropdown">
-                     <a dropdownToggle class="dropdown-item"
-                        [ngClass]="[first.disabled ? 'disabled' : '', first.submenus ? 'dropdown-toggle' : '']"
-                        [style.background]="dp.isOpen ? '#e6e6e6' : null" [routerLink]="first.link"
-                        [tooltip]="first.tooltip" (click)="first.onclick ? onButton(first.id) : null">
-                        {{ first.text }}
-                        <ng-container *ngIf="isIcons([first.icon])">
-                           <lib-icon [content]="first.icon.content" [tooltip]="first.icon.tooltip"></lib-icon>
-                        </ng-container>
-                     </a>
-                     <ng-container *ngIf="first.submenus && !first.disabled">
-                        <ul *dropdownMenu class="dropdown-menu" role="menu">
-                           <ng-container *ngFor="let second of first.submenus">
-                              <li role="menuitem">
-                                 <a [routerLink]="second.link" class="dropdown-item"
-                                    [ngClass]="second.disabled ? 'disabled' : ''" [tooltip]="second.tooltip"
-                                    (click)="second.onclick ? onButton(second.id) : null">
-                                    {{ second.text }}
-                                    <ng-container *ngIf="isIcons([second.icon])">
-                                       <lib-icon [content]="second.icon.content" [tooltip]="second.icon.tooltip">
-                                       </lib-icon>
-                                    </ng-container>
-                                 </a>
-                              </li>
-                              <li *ngIf="second.divider" class="divider dropdown-divider"></li>
-                           </ng-container>
-                        </ul>
-                     </ng-container>
-                  </li>
-                  <li *ngIf="first.divider" class="divider dropdown-divider"></li>
-               </ng-container>
-            </ul>
-         </ng-container>
+         <lib-submenu [parent]="nav" (button)="onButton($event)"></lib-submenu>
       </div>
       <div class="btn-group ml-auto">
          <ng-container *ngFor="let button of handler.buttons">

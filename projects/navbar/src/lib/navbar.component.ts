@@ -1,5 +1,4 @@
-import { Component, OnInit, QueryList, ViewChildren, Input, Output, EventEmitter } from '@angular/core';
-import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NavbarHandler } from './navbar.handler';
 import { isIcons } from '@ha8rt/icon';
 
@@ -9,7 +8,6 @@ import { isIcons } from '@ha8rt/icon';
    styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-   @ViewChildren(BsDropdownDirective) private dropdowns: QueryList<BsDropdownDirective>;
    @Input() handler: NavbarHandler;
    @Output() button = new EventEmitter<string>();
 
@@ -20,18 +18,7 @@ export class NavbarComponent implements OnInit {
    ngOnInit() {
    }
 
-   onMouseOver(element: BsDropdownDirective) {
-      this.dropdowns.forEach((item) => {
-         if (item !== element && item.placement === 'right') {
-            item.hide();
-         } else if (item === element) {
-            item.show();
-         }
-      });
-   }
-
    onButton(id: string) {
       this.button.emit(id);
    }
-
 }

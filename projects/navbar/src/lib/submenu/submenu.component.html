@@ -1,0 +1,21 @@
+<ng-container *ngIf="parent.submenus && !parent.disabled">
+   <ul *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+      <ng-container *ngFor="let submenu of parent.submenus">
+         <li role="menuitem" dropdown placement="right" container="body" (mouseover)="onMouseOver(dp)"
+            #dp="bs-dropdown">
+            <a dropdownToggle [routerLink]="submenu.link" class="dropdown-item"
+               [ngClass]="[submenu.disabled ? 'disabled' : '', submenu.submenus ? 'dropdown-toggle' : '', submenu.classes ? submenu.classes.join(' ') : '']"
+               [style.background]="dp.isOpen ? '#e6e6e6' : null" [tooltip]="submenu.tooltip"
+               (click)="submenu.onclick ? onButton(submenu.id) : null">
+               {{ submenu.text }}
+               <ng-container *ngIf="isIcons([submenu.icon])">
+                  <lib-icon [content]="submenu.icon.content" [tooltip]="submenu.icon.tooltip">
+                  </lib-icon>
+               </ng-container>
+            </a>
+            <lib-submenu [parent]="submenu" (button)="onButton($event)"></lib-submenu>
+         </li>
+         <li *ngIf="submenu.divider" class="divider dropdown-divider"></li>
+      </ng-container>
+   </ul>
+</ng-container>

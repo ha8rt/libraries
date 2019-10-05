@@ -5,9 +5,10 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { RouterModule } from '@angular/router';
 import { IconModule } from '@ha8rt/icon';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { SubmenuComponent } from './submenu/submenu.component';
 
 @NgModule({
-   declarations: [NavbarComponent],
+   declarations: [NavbarComponent, SubmenuComponent],
    imports: [
       CommonModule,
       RouterModule.forChild([]),
