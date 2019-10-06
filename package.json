@@ -23,6 +23,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.22",
     "@fortawesome/free-regular-svg-icons": "^5.11.1",
     "@fortawesome/free-solid-svg-icons": "^5.10.2",
+    "@ha8rt/alert": "0.0.2",
     "@ha8rt/http.service": "^1.0.4",
     "@ha8rt/icon": "0.0.8",
     "@ha8rt/modal": "0.0.6",

@@ -1,6 +1,6 @@
 import { Service, Body } from '@ha8rt/http.service';
 
-export function onButton(service: Service, event: Body, callback: (data) => void) {
+export function onButton(service: Service, event: Body, callback: (data: any) => void) {
    const button = event.getKey();
    if (button === 'add-ok') {
       service._post(event, callback);

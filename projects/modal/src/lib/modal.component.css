@@ -1,0 +1,18 @@
+.form-control.ng-invalid.ng-touched{
+   border: 2px solid red;
+}
+.form-group ~ .form-group>label{
+   margin-top: 1rem;
+}
+.form-group{
+   margin-bottom: 0rem;
+}
+ [type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+.modal-footer{
+   display: block;
+}

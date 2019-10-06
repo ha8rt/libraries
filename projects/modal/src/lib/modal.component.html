@@ -1,0 +1,97 @@
+<ng-template #template>
+   <div class="modal-header">
+      <!-- a modal címe -->
+      <h4 class="modal-title pull-left">{{ title }}</h4>
+      <!-- bezáró gomb -->
+      <button *ngIf="closeButton" type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+         <span aria-hidden="true">&times;</span>
+      </button>
+   </div>
+   <form [formGroup]="modalForm">
+      <div class="modal-body">
+         <!-- magyarázó szöveg -->
+         <label *ngIf="text">{{ text }}</label>
+         <!-- végigmegyünk az inputokon, rendereljük mindet  -->
+         <ng-container *ngIf="inputs.length > 0">
+            <lib-alert *ngIf="isInvalid()" [data]="invalidData"></lib-alert>
+            <div formArrayName="inputs">
+               <div *ngFor="let input of inputs.controls; let i = index"
+                  [ngClass]="modalBody[i].label ? 'form-group' : null">
+                  <ng-container [ngSwitch]="modalBody[i].type">
+                     <ng-container *ngSwitchCase="'form-inline'">
+                        <div class="form-group row">
+                           <div class="col-3"> {{modalBody[i].label}} </div>
+                           <div class="col-9"> <b> {{modalBody[i].value}} </b> </div>
+                        </div>
+                     </ng-container>
+                     <!-- ha nem form-inline -->
+                     <ng-container *ngSwitchDefault>
+                        <!-- cím kiírása a mezőhöz, ha létezik -->
+                        <label *ngIf="modalBody[i].label" for="{{ modalBody[i].id }}">
+                           {{ modalBody[i].label }}
+                        </label>
+                        <ng-container [ngSwitch]="modalBody[i].type">
+                           <ng-container *ngSwitchCase="'textarea'">
+                              <textarea [formControlName]="i" id="{{ modalBody[i].id }}" class="form-control"
+                                 maxlength="1000" placeholder="{{ modalBody[i].placeHolder }}"
+                                 [(ngModel)]="modalBody[i].value"></textarea>
+                           </ng-container>
+                           <ng-container *ngSwitchCase="'date'">
+                              <input [formControlName]="i" id="{{ modalBody[i].id }}" type="date" class="form-control"
+                                 placeholder="{{ modalBody[i].placeHolder }}" [(ngModel)]="modalBody[i].value"
+                                 bsDatepicker [bsConfig]="bsConfig" triggers="dblclick:click"
+                                 (dblclick)="onDblClick(modalBody[i])">
+                           </ng-container>
+                           <ng-container *ngSwitchCase="'dateTime'">
+                              <div class="row">
+                                 <div class="col-6">
+                                    <input [formControlName]="i" id="{{ modalBody[i].id }}" type="date"
+                                       class="form-control" placeholder="{{ modalBody[i].placeHolder }}"
+                                       [(ngModel)]="modalBody[i].value" bsDatepicker [bsConfig]="bsConfig"
+                                       triggers="dblclick:click" (dblclick)="onDblClick(modalBody[i])">
+                                 </div>
+                                 <div class="col-6">
+                                    <timepicker [formControlName]="i+1" id="{{ modalBody[i+1].id }}"
+                                       [(ngModel)]="modalBody[i+1].value" [showMeridian]="false" [showSpinners]="false"
+                                       [showSeconds]="true">
+                                    </timepicker>
+                                 </div>
+                              </div>
+                           </ng-container>
+                           <ng-container *ngSwitchDefault>
+                              <ng-container *ngIf="modalBody[i].type !== ''">
+                                 <input [formControlName]="i" id="{{ modalBody[i].id }}" type="{{ modalBody[i].type }}"
+                                    class="form-control" placeholder="{{ modalBody[i].placeHolder }}"
+                                    [(ngModel)]="modalBody[i].value" autocomplete="{{ modalBody[i].id }}"
+                                    [hidden]="modalBody[i].hidden">
+                              </ng-container>
+                           </ng-container>
+                        </ng-container>
+                     </ng-container>
+                  </ng-container>
+               </div>
+            </div>
+         </ng-container>
+      </div>
+      <div class="modal-footer">
+         <div class="form-inline">
+            <ng-container *ngFor="let button of buttons">
+               <button *ngIf="button.classes.includes('left')" id="{{ button.id }}" class="btn"
+                  [ngClass]="button.classes" type="{{ button.type }}" (click)="onButton($event)"
+                  [disabled]="button.checkInvalid ? modalForm.invalid : null">
+                  {{ button.value }}
+               </button>
+            </ng-container>
+            <div class="col" style="text-align: right">
+               <ng-container *ngFor="let button of buttons">
+                  <button *ngIf="!button.classes.includes('left')" id="{{ button.id }}" class="btn"
+                     [ngClass]="button.classes" type="{{ button.type }}" style="margin-left: 4px"
+                     (click)="onButton($event)" [disabled]="button.checkInvalid ? modalForm.invalid : null">
+                     {{ button.value }}
+                  </button>
+               </ng-container>
+            </div>
+         </div>
+      </div>
+   </form>
+</ng-template>

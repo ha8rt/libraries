@@ -34,5 +34,4 @@ export class ModalHandler {
       this.errors = errors;
       this.change = new Subject();
    }
-
 }
