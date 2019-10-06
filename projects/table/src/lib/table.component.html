@@ -1,6 +1,9 @@
 <div class="card border-dark">
-   <div class="card-header" *ngIf="filter || search || pagination || headerBtn">
+   <div class="card-header" *ngIf="label || filter || search || isPagination() || headerBtn">
       <form class="form-inline">
+         <ng-container *ngIf="label">
+            <b>{{ label }}</b>
+         </ng-container>
          <ng-container *ngIf="filter">
             <label for="filter" class="form-label">Gyorsszűrő:</label>
             <input class="form-control" id="{{ 'filter' + id }}" type="search" placeholder="Szűrés" #filter
@@ -11,7 +14,7 @@
                <lib-icon [content]="'fas:faSearch'"> </lib-icon>
             </button>
          </ng-container>
-         <ng-container *ngIf="pagination">
+         <ng-container *ngIf="isPagination()">
             <div class="col" style="text-align: center">
                <div style="display: inline-flex">
                   <pagination [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage"

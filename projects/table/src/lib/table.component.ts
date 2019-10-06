@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, Output, EventEmitter, ElementRef } from '@angular/core';
+import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { getFieldValue, Headers, IPagination } from './table.handler';
 import { IIconClick, ICheckClick, IFocusOut, IPageChanged } from './table.click';
 import { isIcons, IconClass } from '@ha8rt/icon';
@@ -24,6 +24,7 @@ export class TableComponent implements OnChanges {
    @Input('ro') readOnly: boolean;
    @Input('i') inputs: [number[], number[]];
    @Input('p') pagination: IPagination;
+   @Input('l') label: string;
 
    @Output() rClick = new EventEmitter();
    @Output() bClick = new EventEmitter();
@@ -142,5 +143,9 @@ export class TableComponent implements OnChanges {
 
    isMultiRow(): boolean {
       return this.headers ? this.headers.rows.length > 1 : false;
+   }
+
+   isPagination(): boolean {
+      return this.pagination && this.pagination.totalItems > this.pagination.itemsPerPage;
    }
 }
