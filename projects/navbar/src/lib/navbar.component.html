@@ -9,7 +9,7 @@
    <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <a *ngIf="handler.header.text" class="navbar-brand" routerLink="/">{{ handler.header.text }}</a>
       <div *ngFor="let nav of handler.navs" class="btn-group" dropdown>
-         <button id="button-basic" dropdownToggle type="button" class="btn"
+         <button *ngIf="nav" id="button-basic" dropdownToggle type="button" class="btn"
             [ngClass]="[nav.disabled ? 'disabled' : '', nav.submenus ? 'dropdown-toggle' : '', nav.classes ? nav.classes.join(' ') : 'btn-primary']"
             aria-controls="dropdown-basic" [routerLink]="nav.link" [tooltip]="nav.tooltip">
             {{ nav.text }}
@@ -21,8 +21,9 @@
       </div>
       <div class="btn-group ml-auto">
          <ng-container *ngFor="let button of handler.buttons">
-            <button [id]="button.id" class="btn" [ngClass]="[button.classes ? button.classes.join(' ') : 'btn-primary']"
-               type="button" [tooltip]="button.tooltip" (click)="onButton(button.id)">
+            <button *ngIf="button" [id]="button.id" class="btn"
+               [ngClass]="[button.classes ? button.classes.join(' ') : 'btn-primary']" type="button"
+               [tooltip]="button.tooltip" (click)="onButton(button.id)">
                {{ button.text }}
                <ng-container *ngIf="isIcons([button.icon])">
                   <lib-icon [content]="button.icon.content" [tooltip]="button.icon.tooltip"></lib-icon>

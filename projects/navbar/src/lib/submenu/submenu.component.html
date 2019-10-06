@@ -1,7 +1,7 @@
 <ng-container *ngIf="parent.submenus && !parent.disabled">
    <ul *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
       <ng-container *ngFor="let submenu of parent.submenus">
-         <li role="menuitem" dropdown placement="right" container="body" (mouseover)="onMouseOver(dp)"
+         <li *ngIf="submenu" role="menuitem" dropdown placement="right" container="body" (mouseover)="onMouseOver(dp)"
             #dp="bs-dropdown">
             <a dropdownToggle [routerLink]="submenu.link" class="dropdown-item"
                [ngClass]="[submenu.disabled ? 'disabled' : '', submenu.submenus ? 'dropdown-toggle' : '', submenu.classes ? submenu.classes.join(' ') : '']"
