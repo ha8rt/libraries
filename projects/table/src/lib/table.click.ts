@@ -1,4 +1,4 @@
-import { InitBody, BodyType, ModalHandler } from '@ha8rt/modal';
+import { InitBody, BodyType, IModalHandler } from '@ha8rt/modal';
 import { IconClass, Config } from '@ha8rt/icon';
 import { Service, ObjType } from '@ha8rt/http.service';
 
@@ -21,7 +21,7 @@ export interface IIconClick {
 }
 
 export function onIconClick(
-   event: IIconClick, edit: ModalHandler, del: ModalHandler, editType: BodyType, delType: BodyType, title: string
+   event: IIconClick, edit: IModalHandler, del: IModalHandler, editType: BodyType, delType: BodyType, title: string
 ) {
    if (event.icon === Config.icon.edit) {
       [edit.body] = InitBody({ type: editType, event: [edit.change], title, row: event.row }, 1);
@@ -57,7 +57,7 @@ export function setState(baseRows: IEntity[], stateRows: IEntity[], selectedBase
    }
 }
 
-export function onHbClick(add: ModalHandler, type: BodyType, title: string) {
+export function onHbClick(add: IModalHandler, type: BodyType, title: string) {
    add.title = 'Kategória típus hozzáadása';
    [add.body] = InitBody({ type, event: [add.change], title }, 1);
    add.event.next();
