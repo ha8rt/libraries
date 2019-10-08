@@ -2,6 +2,7 @@ import { Subject, Observable } from 'rxjs';
 import { ValidatorFn } from '@angular/forms';
 import { ModalBody } from './body.handler';
 import { ModalButton } from './button.handler';
+import { Locales } from './locale.module';
 
 export interface ChangeType {
    title?: string;
@@ -25,7 +26,8 @@ export class ModalHandler {
    closeButton = true;
    classes: string[];
 
-   localTime = false;
+   localTime = true;
+   locale: Locales = Locales.hu;
 
    constructor(title: string, text?: string, validators?: ValidatorFn[], errors?: (string[])[]) {
       this.title = title;

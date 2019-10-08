@@ -12,7 +12,8 @@ import { InvalidDataType, AddInvalidControl } from '@ha8rt/alert';
 import { Body, IElement } from '@ha8rt/http.service';
 import { ModalHandler } from './modal.handler';
 import { IModalButton } from './button.handler';
-import { IModalBody } from './body.handler';
+import { IModalBody, ControlType } from './body.handler';
+import { Locales } from './locale.module';
 
 @Component({
    selector: 'lib-modal',
@@ -20,17 +21,20 @@ import { IModalBody } from './body.handler';
    styleUrls: ['./modal.component.css']
 })
 export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
+   constructor(private modalService: BsModalService, private localeService: BsLocaleService, private fb: FormBuilder) { }
+
    @ViewChild('template', null) template: TemplateRef<any>;
 
    @Input() set handler(handler: ModalHandler) {
       this.obs = handler.obs;
       this.title = handler.title;
       this.localTime = handler.localTime;
+      this.localeService.use(handler.locale);
       if (handler.buttons) {
          this.buttons = handler.buttons;
       }
       if (handler.body) {
-         this.body = handler.body;
+         this.setBody(handler.body);
       }
       if (handler.validators) {
          this.validators = handler.validators;
@@ -47,7 +51,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
             this.text = data.text;
          }
          if (data.body) {
-            this.body = data.body;
+            this.setBody(data.body);
          }
       });
       this.config = {
@@ -66,57 +70,10 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
    config: object = {};
    closeButton: boolean;
    localTime: boolean;
+   locale: Locales;
+   type = ControlType;
 
-   modalBody: IModalBody[];
-   set body(body: IModalBody[]) {
-      this.inputs.clear();
-      this.invalidData = [];
-      this.modalBody = [];
-      body.forEach((element) => {
-         if (element.type === 'date' || element.type === 'dateTime') {
-            if (!this.localTime) {
-               const date: Date = new Date(element.value);
-               element.value = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
-            }
-            const dateControl = this.fb.control({ value: element.value, disabled: element.disabled },
-               element.required ? Validators.required : null);
-            if (element.required) {
-               AddInvalidControl(this.invalidData, dateControl, ['required', 'Adja meg a \"' + element.placeHolder + '\" mezőt.']);
-            }
-            this.inputs.push(dateControl);
-            this.modalBody.push(element);
-
-            if (element.type === 'dateTime') {
-               const timeControl = this.fb.control({ value: element.value, disabled: element.disabled },
-                  element.required ? Validators.required : null);
-               if (element.required) {
-                  AddInvalidControl(this.invalidData, timeControl, ['required', 'Adja meg a \"' + element.placeHolder + '\" mezőt.']);
-               }
-               this.inputs.push(timeControl);
-               this.modalBody.push({
-                  id: element.id + 'time', type: '', placeHolder: '', value: timeControl.value,
-                  required: element.required, disabled: element.disabled, label: '', hidden: false
-               });
-            }
-         } else {
-            const control = this.fb.control({ value: element.value, disabled: element.disabled },
-               element.required ? Validators.required : null);
-            this.inputs.push(control);
-            if (element.required) {
-               AddInvalidControl(this.invalidData, control, ['required', 'Adja meg a \"' + element.placeHolder + '\" mezőt.']);
-            }
-            this.modalBody.push(element);
-         }
-      });
-   }
-   set validators(validators: ValidatorFn[]) {
-      this.inputs.setValidators(validators);
-   }
-   set errors(errors: (string[])[]) {
-      errors.forEach(error => {
-         AddInvalidControl(this.invalidData, this.inputs, error);
-      });
-   }
+   body: IModalBody[];
 
    modalForm = this.fb.group({
       inputs: this.fb.array([])
@@ -134,8 +91,54 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
       containerClass: 'theme-dark-blue', isAnimated: true, dateInputFormat: 'YYYY-MM-DD'
    });
 
-   constructor(private modalService: BsModalService, private localeService: BsLocaleService, private fb: FormBuilder) {
-      this.localeService.use('hu');
+   setBody(body: IModalBody[]) {
+      this.inputs.clear();
+      this.invalidData = [];
+      this.body = [];
+      body.forEach((control) => {
+         if (control.type === this.type.date || control.type === this.type.dateTime) {
+            if (!this.localTime) {
+               const date: Date = new Date(control.value);
+               control.value = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+            }
+            const dateControl = this.fb.control({ value: control.value, disabled: control.disabled },
+               control.required ? Validators.required : null);
+            if (control.required) {
+               AddInvalidControl(this.invalidData, dateControl, ['required', 'Adja meg a \"' + control.placeHolder + '\" mezőt.']);
+            }
+            this.inputs.push(dateControl);
+            this.body.push(control);
+
+            if (control.type === this.type.dateTime) {
+               const timeControl = this.fb.control({ value: control.value, disabled: control.disabled },
+                  control.required ? Validators.required : null);
+               if (control.required) {
+                  AddInvalidControl(this.invalidData, timeControl, ['required', 'Adja meg a \"' + control.placeHolder + '\" mezőt.']);
+               }
+               this.inputs.push(timeControl);
+               this.body.push({
+                  id: control.id + 'time', type: this.type.null, placeHolder: '', value: timeControl.value,
+                  required: control.required, disabled: control.disabled, label: '', hidden: false
+               });
+            }
+         } else {
+            const formControl = this.fb.control({ value: control.value, disabled: control.disabled },
+               control.required ? Validators.required : null);
+            this.inputs.push(formControl);
+            if (control.required) {
+               AddInvalidControl(this.invalidData, formControl, ['required', 'Adja meg a \"' + control.placeHolder + '\" mezőt.']);
+            }
+            this.body.push(control);
+         }
+      });
+   }
+   set validators(validators: ValidatorFn[]) {
+      this.inputs.setValidators(validators);
+   }
+   set errors(errors: (string[])[]) {
+      errors.forEach(error => {
+         AddInvalidControl(this.invalidData, this.inputs, error);
+      });
    }
 
    ngOnInit(): void {
@@ -163,9 +166,9 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
 
    ngAfterViewChecked(): void {
       if (this.checkFocus && this.shown) {
-         if (this.modalBody && this.modalBody.length > 0 &&
-            this.modalBody.some((elem) => document.getElementById(elem.id) !== null)) {
-            for (const body of this.modalBody) {
+         if (this.body && this.body.length > 0 &&
+            this.body.some((elem) => document.getElementById(elem.id) !== null)) {
+            for (const body of this.body) {
                if (!body.disabled && !body.hidden) {
                   document.getElementById(body.id).focus();
                   this.checkFocus = false;
@@ -194,14 +197,14 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
 
    onButton(event) {
       const values: IElement[] = [];
-      for (const [index, element] of this.modalBody.entries()) {
-         if (element.type !== '') {
+      for (const [index, element] of this.body.entries()) {
+         if (element.type !== this.type.null) {
             let value = this.inputs.at(index).value;
             if (value instanceof Date) {
                if (!this.localTime) {
                   value = new Date(value.getTime() - value.getTimezoneOffset() * 60 * 1000);
                }
-               if (element.type === 'dateTime') {
+               if (element.type === this.type.dateTime) {
                   const time = this.inputs.at(index + 1).value as Date;
                   value.setUTCHours(time.getHours());
                   value.setUTCMinutes(time.getMinutes());
@@ -209,7 +212,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
                }
                value = value.toISOString();
             }
-            if (element.type === 'number') {
+            if (element.type === this.type.number) {
                value = Number(value).valueOf();
             }
             values.push({ id: element.id, value, disabled: element.disabled });
@@ -219,9 +222,9 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.modalRef.hide();
    }
 
-   onDblClick(modalBody: IModalBody) {
-      if (!modalBody.value || modalBody.value === '0000-01-01') {
-         modalBody.value = new Date(Date.now());
+   onDblClick(body: IModalBody) {
+      if (!body.value || body.value === '0000-01-01') {
+         body.value = new Date(Date.now());
       }
    }
 

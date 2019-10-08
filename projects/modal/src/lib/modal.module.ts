@@ -2,14 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalComponent } from './modal.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { ModalModule as NgxModal } from 'ngx-bootstrap/modal';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
-import { defineLocale } from 'ngx-bootstrap/chronos';
-import { huLocale } from 'ngx-bootstrap/locale';
 import { AlertModule } from '@ha8rt/alert';
-defineLocale('hu', huLocale);
+import { LocaleModule } from './locale.module';
 
 @NgModule({
    declarations: [ModalComponent],
@@ -17,12 +15,13 @@ defineLocale('hu', huLocale);
       CommonModule,
       FormsModule,
       ReactiveFormsModule,
-      ModalModule.forRoot(),
+      NgxModal.forRoot(),
       BsDropdownModule.forRoot(),
       BsDatepickerModule.forRoot(),
       TimepickerModule.forRoot(),
-      AlertModule
+      AlertModule,
+      LocaleModule
    ],
    exports: [ModalComponent]
 })
-export class MyModalModule { }
+export class ModalModule { }

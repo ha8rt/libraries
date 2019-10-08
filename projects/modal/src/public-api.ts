@@ -11,3 +11,4 @@ export * from './lib/body.handler';
 export * from './lib/button.handler';
 export * from './lib/modal.component';
 export * from './lib/modal.module';
+export * from './lib/locale.module';

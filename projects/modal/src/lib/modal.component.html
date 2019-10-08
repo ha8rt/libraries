@@ -15,55 +15,52 @@
          <ng-container *ngIf="inputs.length > 0">
             <lib-alert *ngIf="isInvalid()" [data]="invalidData"></lib-alert>
             <div formArrayName="inputs">
-               <div *ngFor="let input of inputs.controls; let i = index"
-                  [ngClass]="modalBody[i].label ? 'form-group' : null">
-                  <ng-container [ngSwitch]="modalBody[i].type">
-                     <ng-container *ngSwitchCase="'form-inline'">
+               <div *ngFor="let control of body; let i = index" [ngClass]="control.label ? 'form-group' : null">
+                  <ng-container [ngSwitch]="control.type">
+                     <ng-container *ngSwitchCase="type.formInline">
                         <div class="form-group row">
-                           <div class="col-3"> {{modalBody[i].label}} </div>
-                           <div class="col-9"> <b> {{modalBody[i].value}} </b> </div>
+                           <div class="col-3"> {{control.label}} </div>
+                           <div class="col-9"> <b> {{control.value}} </b> </div>
                         </div>
                      </ng-container>
                      <!-- ha nem form-inline -->
                      <ng-container *ngSwitchDefault>
                         <!-- cím kiírása a mezőhöz, ha létezik -->
-                        <label *ngIf="modalBody[i].label" for="{{ modalBody[i].id }}">
-                           {{ modalBody[i].label }}
+                        <label *ngIf="control.label" for="{{ control.id }}">
+                           {{ control.label }}
                         </label>
-                        <ng-container [ngSwitch]="modalBody[i].type">
-                           <ng-container *ngSwitchCase="'textarea'">
-                              <textarea [formControlName]="i" id="{{ modalBody[i].id }}" class="form-control"
-                                 maxlength="1000" placeholder="{{ modalBody[i].placeHolder }}"
-                                 [(ngModel)]="modalBody[i].value"></textarea>
+                        <ng-container [ngSwitch]="control.type">
+                           <ng-container *ngSwitchCase="type.textarea">
+                              <textarea [formControlName]="i" id="{{ control.id }}" class="form-control"
+                                 maxlength="1000" placeholder="{{ control.placeHolder }}"
+                                 [(ngModel)]="control.value"></textarea>
                            </ng-container>
-                           <ng-container *ngSwitchCase="'date'">
-                              <input [formControlName]="i" id="{{ modalBody[i].id }}" type="date" class="form-control"
-                                 placeholder="{{ modalBody[i].placeHolder }}" [(ngModel)]="modalBody[i].value"
-                                 bsDatepicker [bsConfig]="bsConfig" triggers="dblclick:click"
-                                 (dblclick)="onDblClick(modalBody[i])">
+                           <ng-container *ngSwitchCase="type.date">
+                              <input [formControlName]="i" id="{{ control.id }}" type="date" class="form-control"
+                                 placeholder="{{ control.placeHolder }}" [(ngModel)]="control.value" bsDatepicker
+                                 [bsConfig]="bsConfig" triggers="dblclick:click" (dblclick)="onDblClick(control)">
                            </ng-container>
-                           <ng-container *ngSwitchCase="'dateTime'">
+                           <ng-container *ngSwitchCase="type.dateTime">
                               <div class="row">
                                  <div class="col-6">
-                                    <input [formControlName]="i" id="{{ modalBody[i].id }}" type="date"
-                                       class="form-control" placeholder="{{ modalBody[i].placeHolder }}"
-                                       [(ngModel)]="modalBody[i].value" bsDatepicker [bsConfig]="bsConfig"
-                                       triggers="dblclick:click" (dblclick)="onDblClick(modalBody[i])">
+                                    <input [formControlName]="i" id="{{ control.id }}" type="date" class="form-control"
+                                       placeholder="{{ control.placeHolder }}" [(ngModel)]="control.value" bsDatepicker
+                                       [bsConfig]="bsConfig" triggers="dblclick:click" (dblclick)="onDblClick(control)">
                                  </div>
                                  <div class="col-6">
-                                    <timepicker [formControlName]="i+1" id="{{ modalBody[i+1].id }}"
-                                       [(ngModel)]="modalBody[i+1].value" [showMeridian]="false" [showSpinners]="false"
+                                    <timepicker [formControlName]="i+1" id="{{ body[i+1].id }}"
+                                       [(ngModel)]="body[i+1].value" [showMeridian]="false" [showSpinners]="false"
                                        [showSeconds]="true">
                                     </timepicker>
                                  </div>
                               </div>
                            </ng-container>
                            <ng-container *ngSwitchDefault>
-                              <ng-container *ngIf="modalBody[i].type !== ''">
-                                 <input [formControlName]="i" id="{{ modalBody[i].id }}" type="{{ modalBody[i].type }}"
-                                    class="form-control" placeholder="{{ modalBody[i].placeHolder }}"
-                                    [(ngModel)]="modalBody[i].value" autocomplete="{{ modalBody[i].id }}"
-                                    [hidden]="modalBody[i].hidden">
+                              <ng-container *ngIf="control.type !== type.null">
+                                 <input [formControlName]="i" id="{{ control.id }}" type="{{ control.type }}"
+                                    class="form-control" placeholder="{{ control.placeHolder }}"
+                                    [(ngModel)]="control.value" autocomplete="{{ control.id }}"
+                                    [hidden]="control.hidden">
                               </ng-container>
                            </ng-container>
                         </ng-container>
