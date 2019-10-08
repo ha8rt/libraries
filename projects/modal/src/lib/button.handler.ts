@@ -1,5 +1,3 @@
-export type ModalButton = IModalButton[];
-
 export interface IModalButton {
    id: string;
    value: string;
@@ -23,5 +21,5 @@ export enum ButtonType {
 export interface InitButtonObj {
    type: ButtonType;
    prefix: string;
-   button?: ModalButton;
+   button?: IModalButton[];
 }

@@ -10,7 +10,7 @@ import { FormBuilder, FormArray, Validators, ValidatorFn } from '@angular/forms'
 import { Observable, Subscription } from 'rxjs';
 import { InvalidDataType, AddInvalidControl } from '@ha8rt/alert';
 import { Body, IElement } from '@ha8rt/http.service';
-import { ModalHandler } from './modal.handler';
+import { IModalHandler } from './modal.handler';
 import { IModalButton } from './button.handler';
 import { IModalBody, ControlType } from './body.handler';
 import { Locales } from './locale.module';
@@ -25,7 +25,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
 
    @ViewChild('template', null) template: TemplateRef<any>;
 
-   @Input() set handler(handler: ModalHandler) {
+   @Input() set handler(handler: IModalHandler) {
       this.obs = handler.obs;
       this.title = handler.title;
       this.localTime = handler.localTime;

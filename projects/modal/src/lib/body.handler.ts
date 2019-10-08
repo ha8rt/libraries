@@ -1,8 +1,6 @@
 import { Subject } from 'rxjs';
 import { ChangeType } from './modal.handler';
 
-export type ModalBody = IModalBody[];
-
 export interface IModalBody {
    id: string;
    type: ControlType;
@@ -56,5 +54,5 @@ export interface InitBodyObj {
    event?: Subject<ChangeType>[];
    title?: string;
    row?: any;
-   body?: ModalBody;
+   body?: IModalBody[];
 }

@@ -1,12 +1,12 @@
-import { ModalButton, InitButtonObj, ButtonType } from './button.handler';
+import { InitButtonObj, ButtonType, IModalButton } from './button.handler';
 
-export function AddModalButton(modalButton: ModalButton,
+export function AddModalButton(modalButton: IModalButton[],
    // tslint:disable-next-line: align
    id: string, value: string, classes: string, type: string, checkInvalid?: boolean) {
    modalButton.push({ id, value, classes, type, checkInvalid });
 }
 
-export function InitButton(obj: InitButtonObj, count: number): ModalButton[] {
+export function InitButton(obj: InitButtonObj, count: number): IModalButton[][] {
    obj.button = [];
    switch (obj.type) {
       case ButtonType.Login: {

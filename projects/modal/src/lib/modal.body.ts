@@ -1,15 +1,15 @@
-import { ModalBody, InitBodyObj, BodyType, ControlType } from './body.handler';
+import { InitBodyObj, BodyType, ControlType, IModalBody } from './body.handler';
 import { getTitle } from './modal.title';
 
 // tslint:disable: align
-export function AddModalBody(modalBody: ModalBody,
+export function AddModalBody(modalBody: IModalBody[],
    id: string, type: ControlType, placeHolder: string, label?: string,
    required?: boolean, value?: string, disabled?: boolean, hidden?: boolean
 ) {
    modalBody.push({ id, type, placeHolder, value, required, disabled, label, hidden });
 }
 
-export function InitBody(obj: InitBodyObj, count?: number): ModalBody[] {
+export function InitBody(obj: InitBodyObj, count?: number): IModalBody[][] {
    if (!obj.body) {
       obj.body = [];
    }
