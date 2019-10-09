@@ -55,6 +55,15 @@ export function convertDateToLocale(rows: any[], fields: string[], locale: strin
    });
 }
 
+export function convertDateToLocaleDate(rows: any[], fields: string[], locale: string) {
+   rows.forEach((row) => {
+      fields.forEach((field) => {
+         const date = new Date(row[field]);
+         row[field] = date.getTime() > 0 ? date.toLocaleDateString(locale) : null;
+      });
+   });
+}
+
 export interface IPagination {
    totalItems: number;
    itemsPerPage: number;
