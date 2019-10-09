@@ -1,6 +1,7 @@
 import { InitBody, BodyType, IModalHandler } from '@ha8rt/modal';
-import { IconClass, Config } from '@ha8rt/icon';
+import { IconClass } from '@ha8rt/icon';
 import { Service, ObjType } from '@ha8rt/http.service';
+import { Icons } from './table.icons';
 
 export interface ICheckClick {
    row: any;
@@ -23,10 +24,10 @@ export interface IIconClick {
 export function onIconClick(
    event: IIconClick, edit: IModalHandler, del: IModalHandler, editType: BodyType, delType: BodyType, title: string
 ) {
-   if (event.icon === Config.icon.edit) {
+   if (event.icon === Icons.edit) {
       [edit.body] = InitBody({ type: editType, event: [edit.change], title, row: event.row }, 1);
       edit.event.next();
-   } else if (event.icon === Config.icon.delete) {
+   } else if (event.icon === Icons.delete) {
       [del.body] = InitBody({ type: delType, event: [del.change], title, row: event.row }, 1);
       del.event.next();
    }
@@ -38,9 +39,9 @@ export interface IEntity {
 }
 
 export function onPushPull(object: IEntity, service: Service, selectedRow: { _id: string }, entity: {}, callback: (data) => void) {
-   if (object.icons[0].content === Config.icon.delete) {
+   if (object.icons[0].content === Icons.delete) {
       service._put({ _id: selectedRow._id, $pull: entity }, callback);
-   } else if (object.icons[0].content === Config.icon.plus) {
+   } else if (object.icons[0].content === Icons.plus) {
       service._put({ _id: selectedRow._id, $push: entity }, callback);
    }
 }
@@ -49,9 +50,9 @@ export function setState(baseRows: IEntity[], stateRows: IEntity[], selectedBase
    if (baseRows && stateRows && baseRows.length > 0 && stateRows.length > 0) {
       stateRows.forEach(element => {
          if (baseRows[selectedBase][findField] && baseRows[selectedBase][findField].findIndex((value) => value._id === element._id) >= 0) {
-            element.icons = [new IconClass(Config.icon.delete)];
+            element.icons = [new IconClass(Icons.delete)];
          } else {
-            element.icons = [new IconClass(Config.icon.plus)];
+            element.icons = [new IconClass(Icons.plus)];
          }
       });
    }
