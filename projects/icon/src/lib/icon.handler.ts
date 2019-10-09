@@ -1,5 +1,3 @@
-import { Config } from './icon.config';
-
 export interface IIconClass {
    classes: string[];
    content: string;
@@ -30,10 +28,10 @@ export function initRows(rows: any[], edit = true, del = true) {
    rows.forEach(element => {
       element.icons = [];
       if (edit) {
-         element.icons.push(new IconClass(Config.icon.edit));
+         element.icons.push(new IconClass('fas:faEdit'));
       }
       if (del) {
-         element.icons.push(new IconClass(Config.icon.delete));
+         element.icons.push(new IconClass('fas:faTimes'));
       }
    });
 }

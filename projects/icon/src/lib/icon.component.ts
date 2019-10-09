@@ -2,7 +2,6 @@ import * as fas from '@fortawesome/free-solid-svg-icons';
 import * as far from '@fortawesome/free-regular-svg-icons';
 
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Config } from './icon.config';
 
 @Component({
    selector: 'lib-icon',
@@ -16,8 +15,6 @@ export class IconComponent {
 
    fas = fas;
    far = far;
-
-   Config = Config;
 
    constructor() { }
 
