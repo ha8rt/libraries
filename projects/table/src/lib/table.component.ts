@@ -1,5 +1,5 @@
 import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
-import { getFieldValue, Headers, IPagination } from './table.handler';
+import { getFieldValue, Headers, IPagination, Codes } from './table.handler';
 import { IIconClick, ICheckClick, IFocusOut, IPageChanged } from './table.click';
 import { isIcons, IconClass } from '@ha8rt/icon';
 
@@ -12,10 +12,10 @@ export class TableComponent implements OnChanges {
    @Input() id: number;
    // tslint:disable: no-input-rename
    @Input('h') headers: Headers;
-   @Input('c') codes: string[];
+   @Input('c') codes: Codes;
    @Input('r') rows: string[];
    @Input('f') filter: boolean;
-   @Input() search: boolean;
+   @Input('s') search: boolean;
    @Input('b') button: (string | boolean)[];
    @Input('nr') nr: string;
    @Input('desc') desc: boolean;
@@ -95,9 +95,9 @@ export class TableComponent implements OnChanges {
          } else {
             this.setRowVisible(row, false);
          }
-         for (const code of this.codes) {
+         for (const code of this.codes.fields) {
             let item: string;
-            const value = getFieldValue(row, code);
+            const value = getFieldValue(row, code.field);
             if (isIcons(value)) {
                item = (value as IconClass[]).map((icon) =>
                   !(icon.content.startsWith('fas:') || icon.content.startsWith('far:')) ? icon.content : ''
@@ -105,7 +105,7 @@ export class TableComponent implements OnChanges {
             } else {
                item = '' + value;
             }
-            if (item.toUpperCase().includes(filterStr.toUpperCase()) && !this.isBoolean(row[code])) {
+            if (item.toUpperCase().includes(filterStr.toUpperCase()) && !this.isBoolean(row[code.field])) {
                this.setRowVisible(row);
                break;
             }

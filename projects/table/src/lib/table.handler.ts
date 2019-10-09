@@ -1,3 +1,5 @@
+import { IconClass } from '@ha8rt/icon';
+
 export class Headers {
    rows: IHeader[][] = [];
 
@@ -27,6 +29,25 @@ export interface IHeader {
    str: string;
    rowspan?: number;
    colspan?: number;
+   class?: string;
+}
+
+export class Codes {
+   fields: IField[] = [];
+   constructor(array: (string | IField)[]) {
+      array.forEach((value) => {
+         if (typeof (value) === 'string') {
+            this.fields.push({ field: value });
+         } else {
+            this.fields.push(value);
+         }
+      });
+   }
+}
+
+export interface IField {
+   field: string;
+   align?: string;
 }
 
 export function getFieldValue(row: any, code: string) {
@@ -62,6 +83,16 @@ export function convertDateToLocaleDate(rows: any[], fields: string[], locale: s
          row[field] = date.getTime() > 0 ? date.toLocaleDateString(locale) : null;
       });
    });
+}
+
+export function addTooltips(rows: any[], fields: string[], tooltips: string[]) {
+   if (fields.length === tooltips.length) {
+      rows.forEach((row) => {
+         fields.forEach((field, index) => {
+            row[field] = [new IconClass(String(row[field]), '', [], row[tooltips[index]])];
+         });
+      });
+   }
 }
 
 export interface IPagination {

@@ -41,14 +41,15 @@
    <div class="card-body">
       <div class="table-responsive">
          <table class="table table-sm table-hover" [ngClass]="multiRow ? 'table-bordered' : null">
-            <thead *ngIf="this.headers">
-               <tr *ngFor="let row of this.headers.rows; let i = index">
-                  <th *ngIf="nr && i === 0" [attr.rowspan]="this.headers.rows.length"
+            <thead *ngIf="headers">
+               <tr *ngFor="let row of headers.rows; let i = index">
+                  <th *ngIf="nr && i === 0" [attr.rowspan]="headers.rows.length"
                      [ngClass]="multiRow ? 'text-center' : null">
                      {{ nr }}
                   </th>
                   <th scope="col" *ngFor="let header of row" [attr.rowspan]="header.rowspan"
-                     [attr.colspan]="header.colspan" [ngClass]="multiRow ? 'text-center' : null">
+                     [attr.colspan]="header.colspan"
+                     [ngClass]="[multiRow ? 'text-center' : '', header.class ? header.class : '']">
                      {{ header.str ? header.str : header }}
                   </th>
                   <th *ngIf="button" scope="col">
@@ -57,16 +58,16 @@
                </tr>
             </thead>
             <tbody>
-               <tr *ngFor="let row of this.rows; let i = index" (click)="onRowClick(row)"
+               <tr *ngFor="let row of rows; let i = index" (click)="onRowClick(row)"
                   [ngClass]="i === selected ? 'table-active' : null">
                   <ng-container *ngIf="getRowVisible(row)">
                      <!-- serial number of row -->
                      <th *ngIf="nr" [ngClass]="multiRow ? 'text-center' : null">
-                        #{{ desc ? this.rows.length - i : i + 1 }}
+                        #{{ desc ? rows.length - i : i + 1 }}
                      </th>
                      <!-- other fields listed in the order of codes -->
-                     <ng-container *ngFor="let code of this.codes; let j = index">
-                        <ng-container *ngFor="let fieldValue of [getFieldValue(row, code)]">
+                     <ng-container *ngFor="let code of codes.fields; let j = index">
+                        <ng-container *ngFor="let fieldValue of [getFieldValue(row, code.field)]">
                            <ng-container [ngSwitch]="true">
                               <ng-container *ngSwitchCase="inputs && (inputs[0].includes(i) || inputs[1].includes(j))">
                                  <td>
@@ -84,14 +85,15 @@
                                  </td>
                               </ng-container>
                               <!-- if this field is boolean -->
-                              <td *ngSwitchCase="isBoolean(row[code])" [ngClass]="multiRow ? 'text-center' : null">
+                              <td *ngSwitchCase="isBoolean(row[code.field])" [ngClass]="multiRow ? 'text-center' : null"
+                                 [align]="code.align">
                                  <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input"
-                                       id="{{ code + '_' + rows.indexOf(row) + '_' + id }}" type="checkbox"
-                                       [(ngModel)]="row[code]" (change)="onCheckChange({row: row, elem: code})"
-                                       [disabled]="readOnly">
+                                       id="{{ code.field + '_' + rows.indexOf(row) + '_' + id }}" type="checkbox"
+                                       [(ngModel)]="row[code.field]"
+                                       (change)="onCheckChange({row: row, elem: code.field})" [disabled]="readOnly">
                                     <label class="custom-control-label"
-                                       for="{{ code + '_' + rows.indexOf(row) + '_' + id }}"></label>
+                                       for="{{ code.field + '_' + rows.indexOf(row) + '_' + id }}"></label>
                                  </div>
                               </td>
                               <!-- if this field is a link -->
@@ -101,7 +103,7 @@
                                  </a>
                               </td>
                               <!-- default: normal text -->
-                              <td *ngSwitchDefault [ngClass]="multiRow ? 'text-center' : null">
+                              <td *ngSwitchDefault [ngClass]="multiRow ? 'text-center' : null" [align]="code.align">
                                  {{ fieldValue }}
                               </td>
                            </ng-container>
