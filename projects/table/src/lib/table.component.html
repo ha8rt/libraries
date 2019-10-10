@@ -1,5 +1,5 @@
 <div class="card border-dark">
-   <div class="card-header" *ngIf="label || filter || search || isPagination() || headerBtn">
+   <div class="card-header" *ngIf="label || filter || search || headerBtn">
       <form class="form-inline">
          <ng-container *ngIf="label">
             <b>{{ label }}</b>
@@ -13,18 +13,6 @@
             <button class="btn btn-primary" style="margin-left: 4px" (click)="onSearch()">
                <lib-icon [content]="'fas:faSearch'"> </lib-icon>
             </button>
-         </ng-container>
-         <ng-container *ngIf="isPagination()">
-            <div class="col" [ngStyle]="{'text-align': pagination.align}">
-               <div style="display: inline-flex">
-                  <pagination [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage"
-                     [nextText]="pagination.nextText" [previousText]="pagination.previousText"
-                     [maxSize]="pagination.maxSize" [rotate]="pagination.rotate"
-                     [boundaryLinks]="pagination.boundaryLinks" [firstText]="pagination.firstText"
-                     [lastText]="pagination.lastText" (pageChanged)="onPageChanged($event)">
-                  </pagination>
-               </div>
-            </div>
          </ng-container>
          <ng-container *ngIf="headerBtn">
             <div class="col" style="text-align: right">
@@ -69,12 +57,10 @@
                      <ng-container *ngFor="let code of codes.fields; let j = index">
                         <ng-container *ngFor="let fieldValue of [getFieldValue(row, code.field)]">
                            <ng-container [ngSwitch]="true">
-                              <ng-container *ngSwitchCase="inputs && (inputs[0].includes(i) || inputs[1].includes(j))">
-                                 <td>
-                                    <input id="{{ 'input' + i + '' + j }}" class="form-control" type="text"
-                                       value="{{ fieldValue }}" (focusout)="onFocusOut($event, row, i, j)">
-                                 </td>
-                              </ng-container>
+                              <td *ngSwitchCase="inputs && (inputs[0].includes(i) || inputs[1].includes(j))">
+                                 <input id="{{ 'input' + i + '' + j }}" class="form-control" type="text"
+                                    value="{{ fieldValue }}" (focusout)="onFocusOut($event, row, i, j)">
+                              </td>
                               <!-- if this field contains icons -->
                               <ng-container *ngSwitchCase="isIcons(fieldValue)">
                                  <td *ngFor="let icon of fieldValue"
@@ -123,6 +109,18 @@
                </tr>
             </tbody>
          </table>
+      </div>
+   </div>
+   <div class="card-footer" *ngIf="isPagination()">
+      <div class="col" [ngStyle]="{'text-align': pagination.align }">
+         <div style="display: inline-flex">
+            <pagination [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage"
+               [nextText]="pagination.nextText" [previousText]="pagination.previousText" [maxSize]="pagination.maxSize"
+               [rotate]="pagination.rotate" [boundaryLinks]="pagination.boundaryLinks"
+               [firstText]="pagination.firstText" [lastText]="pagination.lastText"
+               (pageChanged)="onPageChanged($event)">
+            </pagination>
+         </div>
       </div>
    </div>
 </div>
