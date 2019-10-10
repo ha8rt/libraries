@@ -148,6 +148,7 @@ export function InitBody(obj: InitBodyObj, count?: number): IModalBody[][] {
       }
       case BodyType.SearchCommentOrderDate: {
          AddModalBody(obj.body, 'search-comment', ControlType.text, 'Vevő megjegyzés', 'Vevő megjegyzés:');
+         AddModalBody(obj.body, 'search-name', ControlType.text, 'Termék név', 'Termék neve:');
          AddModalBody(obj.body, 'search-date', ControlType.date, 'Rendelés dátuma', 'Rendelés dátuma: ', false, '0000-01-01');
          break;
       }
