@@ -15,7 +15,7 @@
             </button>
          </ng-container>
          <ng-container *ngIf="isPagination()">
-            <div class="col" style="text-align: center">
+            <div class="col" [ngStyle]="{'text-align': pagination.align}">
                <div style="display: inline-flex">
                   <pagination [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage"
                      [nextText]="pagination.nextText" [previousText]="pagination.previousText"

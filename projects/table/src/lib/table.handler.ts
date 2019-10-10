@@ -105,4 +105,5 @@ export interface IPagination {
    boundaryLinks: boolean;
    firstText: string;
    lastText: string;
+   align: string;
 }
