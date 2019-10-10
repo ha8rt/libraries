@@ -78,7 +78,8 @@
                               <!-- if this field contains icons -->
                               <ng-container *ngSwitchCase="isIcons(fieldValue)">
                                  <td *ngFor="let icon of fieldValue"
-                                    [ngClass]="icon.classes ? icon.classes.join(' ') : (multiRow ? 'center' : null)">
+                                    [ngClass]="icon.classes ? icon.classes.join(' ') : (multiRow ? 'center' : null)"
+                                    [align]="code.align">
                                     <lib-icon [content]="icon.content" [tooltip]="icon.tooltip"
                                        (iClicked)="onIconClick({row: row, icon: icon.content, id: icon.id})">
                                     </lib-icon>
@@ -97,7 +98,8 @@
                                  </div>
                               </td>
                               <!-- if this field is a link -->
-                              <td *ngSwitchCase="isLink(fieldValue)" [ngClass]="multiRow ? 'text-center' : null">
+                              <td *ngSwitchCase="isLink(fieldValue)" [ngClass]="multiRow ? 'text-center' : null"
+                                 [align]="code.align">
                                  <a [routerLink]="fieldValue.link" [queryParams]="fieldValue.params">
                                     {{ fieldValue.value }}
                                  </a>
