@@ -37,7 +37,7 @@
                   </th>
                   <th scope="col" *ngFor="let header of row" [attr.rowspan]="header.rowspan"
                      [attr.colspan]="header.colspan"
-                     [ngClass]="[multiRow ? 'text-center' : '', header.class ? header.class : '']">
+                     [ngClass]="[multiRow ? 'text-center' : '', header.classes ? header.classes.join(' ') : '']">
                      {{ header.str ? header.str : header }}
                   </th>
                   <th *ngIf="button" scope="col">
@@ -56,25 +56,19 @@
                      <!-- other fields listed in the order of codes -->
                      <ng-container *ngFor="let code of codes.fields; let j = index">
                         <ng-container *ngFor="let fieldValue of [getFieldValue(row, code.field)]">
-                           <ng-container [ngSwitch]="true">
-                              <td *ngSwitchCase="inputs && (inputs[0].includes(i) || inputs[1].includes(j))">
-                                 <input id="{{ 'input' + i + '' + j }}" class="form-control" type="text"
+                           <td *ngIf="fieldValue !== null; else emptyCol"
+                              [ngClass]="[code.classes ? code.classes.join(' ') : '', multiRow ? 'center' : '', fieldValue.classes ? fieldValue.classes.join(' ') : '']">
+                              <ng-container [ngSwitch]="true">
+                                 <input *ngSwitchCase="inputs && (inputs[0].includes(i) || inputs[1].includes(j))"
+                                    id="{{ 'input' + i + '' + j }}" class="form-control" type="text"
                                     value="{{ fieldValue }}" (focusout)="onFocusOut($event, row, i, j)">
-                              </td>
-                              <!-- if this field contains icons -->
-                              <ng-container *ngSwitchCase="isIcons(fieldValue)">
-                                 <td *ngFor="let icon of fieldValue"
-                                    [ngClass]="icon.classes ? icon.classes.join(' ') : (multiRow ? 'center' : null)"
-                                    [align]="code.align">
-                                    <lib-icon [content]="icon.content" [tooltip]="icon.tooltip"
-                                       (iClicked)="onIconClick({row: row, icon: icon.content, id: icon.id})">
-                                    </lib-icon>
-                                 </td>
-                              </ng-container>
-                              <!-- if this field is boolean -->
-                              <td *ngSwitchCase="isBoolean(row[code.field])" [ngClass]="multiRow ? 'text-center' : null"
-                                 [align]="code.align">
-                                 <div class="custom-control custom-checkbox">
+                                 <!-- if this field contains icons -->
+                                 <lib-icon *ngSwitchCase="isIcons([fieldValue])" [content]="fieldValue.content"
+                                    [tooltip]="fieldValue.tooltip"
+                                    (iClicked)="onIconClick({row: row, icon: fieldValue.content, id: fieldValue.id})">
+                                 </lib-icon>
+                                 <!-- if this field is boolean -->
+                                 <div *ngSwitchCase="isBoolean(row[code.field])" class="custom-control custom-checkbox">
                                     <input class="custom-control-input"
                                        id="{{ code.field + '_' + rows.indexOf(row) + '_' + id }}" type="checkbox"
                                        [(ngModel)]="row[code.field]"
@@ -82,19 +76,20 @@
                                     <label class="custom-control-label"
                                        for="{{ code.field + '_' + rows.indexOf(row) + '_' + id }}"></label>
                                  </div>
-                              </td>
-                              <!-- if this field is a link -->
-                              <td *ngSwitchCase="isLink(fieldValue)" [ngClass]="multiRow ? 'text-center' : null"
-                                 [align]="code.align">
-                                 <a [routerLink]="fieldValue.link" [queryParams]="fieldValue.params">
+                                 <!-- if this field is a link -->
+                                 <a *ngSwitchCase="isLink(fieldValue)" [routerLink]="fieldValue.link"
+                                    [queryParams]="fieldValue.params">
                                     {{ fieldValue.value }}
                                  </a>
-                              </td>
-                              <!-- default: normal text -->
-                              <td *ngSwitchDefault [ngClass]="multiRow ? 'text-center' : null" [align]="code.align">
-                                 {{ fieldValue }}
-                              </td>
-                           </ng-container>
+                                 <!-- default: normal text -->
+                                 <ng-container *ngSwitchDefault>
+                                    {{ fieldValue }}
+                                 </ng-container>
+                              </ng-container>
+                           </td>
+                           <ng-template #emptyCol>
+                              <td></td>
+                           </ng-template>
                         </ng-container>
                      </ng-container>
                      <td *ngIf="button && (!btnFiltCond || row[btnFiltCond]); else emptyCol">

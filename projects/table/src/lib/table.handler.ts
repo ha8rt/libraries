@@ -29,7 +29,7 @@ export interface IHeader {
    str: string;
    rowspan?: number;
    colspan?: number;
-   class?: string;
+   classes?: string[];
 }
 
 export class Codes {
@@ -47,7 +47,7 @@ export class Codes {
 
 export interface IField {
    field: string;
-   align?: string;
+   classes?: string[];
 }
 
 export function getFieldValue(row: any, code: string) {
@@ -93,6 +93,12 @@ export function addTooltips(rows: any[], fields: string[], tooltips: string[]) {
          });
       });
    }
+}
+
+export function addLinks(rows: any[], field: string, route: string, scopes: string[], params?: object[]) {
+   rows.forEach((row) => {
+      row[field] = { value: row[field], link: route + '/' + scopes.map((param) => row[param]).join('/'), params };
+   });
 }
 
 export interface IPagination {

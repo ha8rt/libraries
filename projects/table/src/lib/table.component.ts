@@ -98,7 +98,7 @@ export class TableComponent implements OnChanges {
          for (const code of this.codes.fields) {
             let item: string;
             const value = getFieldValue(row, code.field);
-            if (isIcons(value)) {
+            if (isIcons([value])) {
                item = (value as IconClass[]).map((icon) =>
                   !(icon.content.startsWith('fas:') || icon.content.startsWith('far:')) ? icon.content : ''
                ).join('#');
