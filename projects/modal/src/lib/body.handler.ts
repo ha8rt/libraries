@@ -4,12 +4,13 @@ import { ChangeType } from './modal.handler';
 export interface IModalBody {
    id: string;
    type: ControlType;
-   placeHolder: string;
-   required: boolean;
-   value: any;
-   disabled: boolean;
-   label: string;
-   hidden: boolean;
+   placeHolder?: string;
+   required?: boolean;
+   value?: any;
+   disabled?: boolean;
+   label?: string;
+   hidden?: boolean;
+   indeterminated?: boolean;
 }
 
 export enum ControlType {
@@ -20,6 +21,7 @@ export enum ControlType {
    dateTime = 'dateTime',
    textarea = 'textarea',
    formInline = 'form-inline',
+   checkbox = 'checkbox',
    null = 'null',
 }
 

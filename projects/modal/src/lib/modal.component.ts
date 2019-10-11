@@ -215,6 +215,9 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
             if (element.type === this.type.number) {
                value = Number(value).valueOf();
             }
+            if (element.type === ControlType.checkbox && element.indeterminated) {
+               value = undefined;
+            }
             values.push({ id: element.id, value, disabled: element.disabled });
          }
       }
@@ -226,6 +229,13 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
       if (!body.value || body.value === '0000-01-01') {
          body.value = new Date(Date.now());
       }
+   }
+
+   onCheckBox(control: IModalBody) {
+      const indeterminated = (!control.value && !control.indeterminated) ? true : false;
+      const checked = (!control.value && control.indeterminated) ? true : false;
+      control.indeterminated = indeterminated;
+      control.value = checked;
    }
 
    isInvalid(): boolean {
