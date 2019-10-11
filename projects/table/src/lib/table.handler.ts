@@ -95,9 +95,20 @@ export function addTooltips(rows: any[], fields: string[], tooltips: string[]) {
    }
 }
 
-export function addLinks(rows: any[], field: string, route: string, scopes: string[], params?: object[]) {
+export function addLinks(rows: any[], field: string, paths: string[], scopes: string[], params?: object) {
    rows.forEach((row) => {
-      row[field] = { value: row[field], link: route + '/' + scopes.map((param) => row[param]).join('/'), params };
+      const obj = Object.assign({}, params);
+      if (obj) {
+         Object.keys(obj).forEach((key) => {
+            obj[key] = row[obj[key]];
+         });
+      }
+      row[field] = {
+         value: row[field],
+         link: '/' + paths.join('/').split('/').filter((value) => !value.includes(':')).join('/')
+            + '/' + scopes.map((param) => row[param]).join('/'),
+         params: obj,
+      };
    });
 }
 
