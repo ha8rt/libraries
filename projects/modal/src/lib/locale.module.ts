@@ -9,14 +9,20 @@ export enum Locales {
    ro = 'ro-ro',
 }
 
-defineLocale(Locales.en, enGbLocale);
-defineLocale(Locales.hu, huLocale);
-defineLocale(Locales.pl, plLocale);
-defineLocale(Locales.ro, roLocale);
+export function defineLocales() {
+   defineLocale(Locales.en, enGbLocale);
+   defineLocale(Locales.hu, huLocale);
+   defineLocale(Locales.pl, plLocale);
+   defineLocale(Locales.ro, roLocale);
+}
 
 @NgModule({
    declarations: [],
    imports: [],
    exports: []
 })
-export class LocaleModule { }
+export class LocaleModule {
+   constructor() {
+      defineLocales();
+   }
+}
