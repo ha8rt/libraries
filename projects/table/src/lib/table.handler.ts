@@ -63,7 +63,7 @@ export function getFieldValue(row: any, code: string) {
 export function convertToBool(rows: any[], fields: string[]) {
    rows.forEach((row) => {
       fields.forEach((field) => {
-         row[field] = row[field] === 1 ? true : false;
+         row[field] = row[field] !== undefined ? (row[field] === 1 ? true : false) : undefined;
       });
    });
 }

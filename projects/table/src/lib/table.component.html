@@ -63,7 +63,7 @@
                         <!-- other fields listed in the order of codes -->
                         <ng-container *ngFor="let code of codes.fields; let j = index">
                            <ng-container *ngFor="let fieldValue of [getFieldValue(row, code.field)]">
-                              <td *ngIf="fieldValue !== null; else emptyCol"
+                              <td *ngIf="fieldValue !== null && fieldValue !== undefined; else emptyCol"
                                  [ngClass]="[code.classes ? code.classes.join(' ') : '', multiRow ? 'center' : '', fieldValue.classes ? fieldValue.classes.join(' ') : '']">
                                  <ng-container [ngSwitch]="true">
                                     <input *ngSwitchCase="inputs && (inputs[0].includes(i) || inputs[1].includes(j))"
