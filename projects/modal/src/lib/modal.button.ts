@@ -10,47 +10,47 @@ export function InitButton(obj: InitButtonObj, count: number): IModalButton[][] 
    obj.button = [];
    switch (obj.type) {
       case ButtonType.Login: {
-         AddModalButton(obj.button, obj.prefix + '-submit', 'Bejelentkezés', 'btn-success btn-block', 'submit', true);
+         AddModalButton(obj.button, obj.prefix + '-submit', 'Login', 'btn-success btn-block', 'submit', true);
          break;
       }
       case ButtonType.Ok: {
-         AddModalButton(obj.button, obj.prefix + '-ok', 'Rendben', 'btn-primary', 'submit');
+         AddModalButton(obj.button, obj.prefix + '-ok', 'OK', 'btn-primary', 'submit');
          break;
       }
       case ButtonType.OkCancel: {
-         AddModalButton(obj.button, obj.prefix + '-ok', 'Rendben', 'btn-primary', 'submit', true);
-         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-light', 'button');
+         AddModalButton(obj.button, obj.prefix + '-ok', 'OK', 'btn-primary', 'submit', true);
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Cancel', 'btn-light', 'button');
          break;
       }
       case ButtonType.YesCancel: {
-         AddModalButton(obj.button, obj.prefix + '-yes', 'Igen', 'btn-primary', 'submit');
-         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-light', 'button');
+         AddModalButton(obj.button, obj.prefix + '-yes', 'Yes', 'btn-primary', 'submit');
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Cancel', 'btn-light', 'button');
          break;
       }
       case ButtonType.CancelOk: {
-         AddModalButton(obj.button, obj.prefix + '-ok', 'Rendben', 'btn-primary', 'button', true);
-         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-light', 'submit');
+         AddModalButton(obj.button, obj.prefix + '-ok', 'OK', 'btn-primary', 'button', true);
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Cancel', 'btn-light', 'submit');
          break;
       }
       case ButtonType.SendCancel: {
-         AddModalButton(obj.button, obj.prefix + '-send', 'Küldés', 'btn-primary', 'submit', true);
-         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-light', 'button');
+         AddModalButton(obj.button, obj.prefix + '-send', 'Send', 'btn-primary', 'submit', true);
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Cancel', 'btn-light', 'button');
          break;
       }
       case ButtonType.ListCancel: {
-         AddModalButton(obj.button, obj.prefix + '-create', 'Lista készítése', 'btn-primary', 'submit', true);
-         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-light', 'button');
+         AddModalButton(obj.button, obj.prefix + '-create', 'Create list', 'btn-primary', 'submit', true);
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Cancel', 'btn-light', 'button');
          break;
       }
       case ButtonType.CancelDelete: {
-         AddModalButton(obj.button, obj.prefix + '-delete', 'Törlés', 'btn-primary', 'submit');
-         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-light', 'button');
+         AddModalButton(obj.button, obj.prefix + '-delete', 'Delete', 'btn-primary', 'submit');
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Cancel', 'btn-light', 'button');
          break;
       }
       case ButtonType.RemoveFilterOkCancel: {
-         AddModalButton(obj.button, obj.prefix + '-remove-filter', 'Szűrés alaphelyzetbe', 'btn-light left', 'button');
-         AddModalButton(obj.button, obj.prefix + '-ok', 'Rendben', 'btn-primary', 'submit', true);
-         AddModalButton(obj.button, obj.prefix + '-cancel', 'Mégse', 'btn-light', 'button');
+         AddModalButton(obj.button, obj.prefix + '-remove-filter', 'Remove filter', 'btn-light left', 'button');
+         AddModalButton(obj.button, obj.prefix + '-ok', 'OK', 'btn-primary', 'submit', true);
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Cancel', 'btn-light', 'button');
          break;
       }
    }
