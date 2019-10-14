@@ -97,7 +97,6 @@ export class TableComponent implements OnInit, OnChanges {
    onFilter(filterStr: string) {
       this.filterStr = filterStr;
       this.rows.forEach((row, index) => {
-         console.log(this.totalItems - (this.itemsPerPage * (this.page - 1)) - index);
          if (this.nr &&
             filterStr.startsWith('#') &&
             (filterStr.length === 1 ||

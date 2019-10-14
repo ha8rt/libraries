@@ -71,7 +71,8 @@ export function convertToBool(rows: any[], fields: string[]) {
 export function convertDateToLocale(rows: any[], fields: string[], locale: string) {
    rows.forEach((row) => {
       fields.forEach((field) => {
-         row[field] = new Date(row[field]).toLocaleString(locale);
+         const date = new Date(row[field]);
+         row[field] = date.getTime() > 0 ? date.toLocaleString(locale) : null;
       });
    });
 }

@@ -4,35 +4,36 @@
          <ng-container *ngIf="label">
             <b>{{ label }}</b>
          </ng-container>
-         <ng-container *ngIf="filter">
-            <label for="filter" class="form-label">Gyorsszűrő:</label>
-            <input class="form-control" id="{{ 'filter' + id }}" type="search" placeholder="Szűrés" #filter
-               (search)="onFilter(filter.value)" (keyup)="onFilter(filter.value)">
-         </ng-container>
-         <ng-container *ngIf="search">
-            <button class="btn btn-primary" style="margin-left: 4px" (click)="onSearch()">
-               <lib-icon [content]="'fas:faSearch'"> </lib-icon>
-            </button>
-         </ng-container>
-         <ng-container *ngIf="headerBtn">
-            <div class="col" style="text-align: right">
-               <div style="display: inline-flex">
+         <div class="col" style="text-align: right">
+            <div style="display: inline-flex">
+               <ng-container *ngIf="filter">
+                  <input class="form-control" id="{{ 'filter' }}" style="height: 2rem" type="search"
+                     [placeholder]="filter" #control (search)="onFilter(control.value)"
+                     (keyup)="onFilter(control.value)" (click)="$event.stopPropagation()">
+               </ng-container>
+               <ng-container *ngIf="search">
+                  <button class="btn btn-primary btn-sm" style="margin-left: 0.25rem;"
+                     (click)="onSearch(); $event.stopPropagation();">
+                     <lib-icon [content]="'fas:faSearch'"> </lib-icon>
+                  </button>
+               </ng-container>
+               <ng-container *ngIf="headerBtn">
                   <div *ngFor="let button of headerBtn; let i = index">
-                     <button class="btn btn-primary" (click)="onHeaderBtn(i)" type="button"
-                        style="margin-left: 2px; margin-right: 2px" [id]="'button'+i">{{ button }}</button>
+                     <button class="btn btn-primary btn-sm" (click)="onHeaderBtn(i); $event.stopPropagation();"
+                        type="button" style="margin-left: 0.25rem" [id]="'button'+i">{{ button }}</button>
                   </div>
-               </div>
+               </ng-container>
+               <ng-container *ngIf="toggle !== undefined">
+                  <div style="padding-top: 0.25rem; padding-left: 1rem">
+                     <lib-icon *ngIf="!isOpen" [content]="icons.chevronDown"></lib-icon>
+                     <lib-icon *ngIf="isOpen" [content]="icons.chevronUp"></lib-icon>
+                  </div>
+               </ng-container>
             </div>
-         </ng-container>
-         <ng-container *ngIf="toggle !== undefined">
-            <div class="col" style="text-align: right">
-               <lib-icon *ngIf="!isOpen" [content]="icons.chevronDown"></lib-icon>
-               <lib-icon *ngIf="isOpen" [content]="icons.chevronUp"></lib-icon>
-            </div>
-         </ng-container>
+         </div>
       </form>
    </div>
-   <ng-container *ngIf="toggle === undefined || isOpen">
+   <div [hidden]="toggle !== undefined && !isOpen">
       <div class="card-body">
          <div class="table-responsive">
             <table class="table table-sm table-hover" [ngClass]="multiRow ? 'table-bordered' : null">
@@ -126,5 +127,5 @@
             </div>
          </div>
       </div>
-   </ng-container>
+   </div>
 </div>
