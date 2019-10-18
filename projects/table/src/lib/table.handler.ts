@@ -1,4 +1,4 @@
-import { IconClass } from '@ha8rt/icon';
+import { IconClass, IIconClass } from '@ha8rt/icon';
 
 export class Headers {
    rows: IHeader[][] = [];
@@ -110,6 +110,12 @@ export function addLinks(rows: any[], field: string, paths: string[], scopes: st
             + '/' + scopes.map((param) => row[param]).join('/'),
          params: obj,
       };
+   });
+}
+
+export function addIcon(rows: any[], field: string, icon: IIconClass) {
+   rows.forEach((row) => {
+      row[field] = new IconClass(icon.content, icon.id, icon.classes, icon.tooltip);
    });
 }
 
