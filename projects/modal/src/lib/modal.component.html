@@ -43,7 +43,7 @@
                            <ng-container *ngSwitchCase="type.checkbox">
                               <div class="custom-control custom-checkbox">
                                  <input [formControlName]="i" class="custom-control-input" id="{{ control.id }}"
-                                    type="checkbox" [checked]="control.value" [indeterminate]="control.indeterminated"
+                                    type="checkbox" [checked]="control.value" [indeterminate]="control.indeterminate"
                                     (click)="onCheckBox(control)">
                                  <label class="custom-control-label"
                                     for="{{ control.id }}">{{ control.placeHolder }}</label>

@@ -169,7 +169,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
          if (this.body && this.body.length > 0 &&
             this.body.some((elem) => document.getElementById(elem.id) !== null)) {
             for (const body of this.body) {
-               if (!body.disabled && !body.hidden) {
+               if (!body.disabled && !body.hidden && body.type !== ControlType.formInline) {
                   document.getElementById(body.id).focus();
                   this.checkFocus = false;
                   return;
@@ -214,7 +214,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
             }
             if (element.type === this.type.number) {
                value = Number(value).valueOf();
-            } else if (element.type === ControlType.checkbox && element.indeterminated) {
+            } else if (element.type === ControlType.checkbox && element.indeterminate) {
                value = undefined;
             } else if (element.type === ControlType.formInline) {
                value = element.value;
@@ -233,10 +233,14 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
    }
 
    onCheckBox(control: IModalBody) {
-      const indeterminated = (!control.value && !control.indeterminated) ? true : false;
-      const checked = (!control.value && control.indeterminated) ? true : false;
-      control.indeterminated = indeterminated;
-      control.value = checked;
+      if (control.indeterminate !== undefined) {
+         const indeterminate = (!control.value && !control.indeterminate) ? true : false;
+         const checked = (!control.value && control.indeterminate) ? true : false;
+         control.indeterminate = indeterminate;
+         control.value = checked;
+      } else {
+         control.value = !control.value;
+      }
    }
 
    isInvalid(): boolean {

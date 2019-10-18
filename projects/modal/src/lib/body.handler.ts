@@ -10,7 +10,7 @@ export interface IModalBody {
    disabled?: boolean;
    label?: string;
    hidden?: boolean;
-   indeterminated?: boolean;
+   indeterminate?: boolean;
 }
 
 export enum ControlType {
