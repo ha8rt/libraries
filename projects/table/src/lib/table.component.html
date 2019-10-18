@@ -45,11 +45,8 @@
                      </th>
                      <th scope="col" *ngFor="let header of row" [attr.rowspan]="header.rowspan"
                         [attr.colspan]="header.colspan"
-                        [ngClass]="[multiRow ? 'text-center' : '', header.classes ? header.classes.join(' ') : '']">
+                        [ngClass]="[header.classes ? header.classes.join(' ') : '', multiRow ? 'center' : '']">
                         {{ header.str ? header.str : header }}
-                     </th>
-                     <th *ngIf="button" scope="col">
-                        {{ button[0] }}
                      </th>
                   </tr>
                </thead>
@@ -64,7 +61,7 @@
                      <ng-container *ngFor="let code of codes.fields; let j = index">
                         <ng-container *ngFor="let fieldValue of [getFieldValue(row, code.field)]">
                            <td *ngIf="fieldValue !== null && fieldValue !== undefined; else emptyCol"
-                              [ngClass]="[code.classes ? code.classes.join(' ') : '', multiRow ? 'center' : '', fieldValue.classes ? fieldValue.classes.join(' ') : '']">
+                              [ngClass]="[code.classes ? code.classes.join(' ') : '', multiRow ? 'center' : '']">
                               <ng-container [ngSwitch]="true">
                                  <input *ngSwitchCase="inputs && (inputs[0].includes(i) || inputs[1].includes(j))"
                                     id="{{ 'input' + i + '' + j }}" class="form-control" type="text"
@@ -72,6 +69,7 @@
                                  <!-- if this field contains icons -->
                                  <lib-icon *ngSwitchCase="isIcons([fieldValue])" [content]="fieldValue.content"
                                     [tooltip]="fieldValue.tooltip"
+                                    [ngClass]="[fieldValue.classes ? fieldValue.classes.join(' ') : '']"
                                     (iClicked)="onIconClick({row: row, icon: fieldValue.content, id: fieldValue.id})">
                                  </lib-icon>
                                  <!-- if this field is boolean -->
@@ -88,6 +86,11 @@
                                     [queryParams]="fieldValue.params">
                                     {{ fieldValue.value }}
                                  </a>
+                                 <button *ngSwitchCase="isButton(fieldValue)"
+                                    [ngClass]="['btn', 'btn-sm', fieldValue.classes ? fieldValue.classes.join(' ') : 'btn-primary']"
+                                    (click)="onBtnClick({row: row, id: code})">
+                                    {{ fieldValue.button }}
+                                 </button>
                                  <!-- default: normal text -->
                                  <ng-container *ngSwitchDefault>
                                     {{ fieldValue }}
@@ -99,14 +102,6 @@
                            </ng-template>
                         </ng-container>
                      </ng-container>
-                     <td *ngIf="button && (!btnFiltCond || row[btnFiltCond]); else emptyCol">
-                        <button class="btn btn-sm btn-primary" (click)="onBtnClick(row)">
-                           {{ button[1] }}
-                        </button>
-                     </td>
-                     <ng-template #emptyCol>
-                        <td *ngIf="button"></td>
-                     </ng-template>
                   </tr>
                </tbody>
             </table>

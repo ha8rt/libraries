@@ -1,6 +1,6 @@
 import { Component, OnChanges, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { getFieldValue, Headers, IPagination, Codes } from './table.handler';
-import { IIconClick, ICheckClick, IFocusOut, IPageChanged } from './table.click';
+import { IIconClick, ICheckClick, IFocusOut, IPageChanged, IButtonClick } from './table.click';
 import { isIcons, IconClass } from '@ha8rt/icon';
 import { Icons } from './table.icons';
 
@@ -17,10 +17,8 @@ export class TableComponent implements OnInit, OnChanges {
    @Input('r') rows: string[];
    @Input('f') filter: boolean;
    @Input('s') search: boolean;
-   @Input('b') button: (string | boolean)[];
    @Input('nr') nr: string;
    @Input('desc') desc: boolean;
-   @Input('bfc') btnFiltCond: string;
    @Input('hb') headerBtn: string[];
    @Input('ro') readOnly: boolean;
    @Input('i') inputs: [number[], number[]];
@@ -29,7 +27,7 @@ export class TableComponent implements OnInit, OnChanges {
    @Input('t') toggle: boolean = undefined;
 
    @Output() rClick = new EventEmitter();
-   @Output() bClick = new EventEmitter();
+   @Output() bClick = new EventEmitter<IButtonClick>();
    @Output() hbClick = new EventEmitter();
    @Output() iClick = new EventEmitter<IIconClick>();
    @Output() cClick = new EventEmitter<ICheckClick>();
@@ -78,8 +76,8 @@ export class TableComponent implements OnInit, OnChanges {
       this.rClick.emit(row);
    }
 
-   onBtnClick(row) {
-      this.bClick.emit(row);
+   onBtnClick(event: IButtonClick) {
+      this.bClick.emit(event);
    }
 
    onHeaderBtn(event) {
@@ -155,6 +153,10 @@ export class TableComponent implements OnInit, OnChanges {
 
    isBoolean(elem): boolean {
       return typeof elem === 'boolean';
+   }
+
+   isButton(elem) {
+      return typeof elem === 'object' && elem && elem.button !== undefined;
    }
 
    isLink(elem): boolean {

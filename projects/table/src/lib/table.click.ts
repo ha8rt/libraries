@@ -75,3 +75,8 @@ export interface IPageChanged {
    page: number;
    itemsPerPage: number;
 }
+
+export interface IButtonClick {
+   row: any;
+   id: string;
+}

@@ -30,6 +30,10 @@ div div form label {
    text-align: right;
 }
 
+.left{
+   text-align: left;
+}
+
 .bolder{
    font-weight: 550;
 }

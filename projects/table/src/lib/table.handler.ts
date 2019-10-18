@@ -50,6 +50,17 @@ export interface IField {
    classes?: string[];
 }
 
+export interface IButton {
+   button: string;
+   classes?: string[];
+}
+
+export interface ILink {
+   link: string;
+   value: string;
+   params: object;
+}
+
 export function getFieldValue(row: any, code: string) {
    while (code && row && code.includes('.')) {
       const i = code.indexOf('.');
@@ -104,18 +115,26 @@ export function addLinks(rows: any[], field: string, paths: string[], scopes: st
             obj[key] = row[obj[key]];
          });
       }
-      row[field] = {
+      const link: ILink = {
          value: row[field],
          link: '/' + paths.join('/').split('/').filter((value) => !value.includes(':')).join('/')
             + '/' + scopes.map((param) => row[param]).join('/'),
          params: obj,
       };
+      row[field] = link;
    });
 }
 
 export function addIcon(rows: any[], field: string, icon: IIconClass) {
    rows.forEach((row) => {
       row[field] = new IconClass(icon.content, icon.id, icon.classes, icon.tooltip);
+   });
+}
+
+export function addButton(rows: any[], field: string, button: string, classes?: string[], condition?: string) {
+   rows.forEach((row) => {
+      const btn: IButton = { button, classes };
+      row[field] = !condition || row[condition] ? btn : undefined;
    });
 }
 
