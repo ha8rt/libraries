@@ -10,7 +10,7 @@ import { FormBuilder, FormArray, Validators, ValidatorFn } from '@angular/forms'
 import { Observable, Subscription } from 'rxjs';
 import { InvalidDataType, AddInvalidControl } from '@ha8rt/alert';
 import { Body, IElement } from '@ha8rt/http.service';
-import { IModalHandler } from './modal.handler';
+import { IModalHandler, ChangeType } from './modal.handler';
 import { IModalButton } from './button.handler';
 import { IModalBody, ControlType } from './body.handler';
 import { Locales } from './locale.module';
@@ -43,16 +43,11 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
       if (handler.errors) {
          this.errors = handler.errors;
       }
-      this.changeSub = handler.change.asObservable().subscribe((data) => {
-         if (data.title) {
-            this.title = data.title;
-         }
-         if (data.text) {
-            this.text = data.text;
-         }
-         if (data.body) {
-            this.setBody(data.body);
-         }
+      this.changeSub = handler.change.asObservable().subscribe((data: ChangeType) => {
+         this.title = data.title ? data.title : this.title;
+         this.text = data.text ? data.text : this.text;
+         if (data.body) { this.setBody(data.body); }
+         this.buttons = data.buttons ? data.buttons : this.buttons;
       });
       this.config = {
          keyboard: handler.keyboard,
@@ -70,7 +65,6 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
    config: object = {};
    closeButton: boolean;
    localTime: boolean;
-   locale: Locales;
    type = ControlType;
 
    body: IModalBody[];
@@ -214,8 +208,12 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
             }
             if (element.type === this.type.number) {
                value = Number(value).valueOf();
-            } else if (element.type === ControlType.checkbox && element.indeterminate) {
-               value = undefined;
+            } else if (element.type === ControlType.checkbox) {
+               if (element.indeterminate) {
+                  value = undefined;
+               } else if (value === null) {
+                  value = element.value;
+               }
             } else if (element.type === ControlType.formInline) {
                value = element.value;
             }

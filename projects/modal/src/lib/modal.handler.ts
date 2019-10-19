@@ -8,6 +8,7 @@ export interface ChangeType {
    title?: string;
    text?: string;
    body?: IModalBody[];
+   buttons?: IModalButton[];
 }
 
 export interface IModalHandler {
