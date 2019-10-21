@@ -18,7 +18,7 @@
                <div *ngFor="let control of body; let i = index" [ngClass]="control.label ? 'form-group' : null">
                   <ng-container [ngSwitch]="control.type">
                      <ng-container *ngSwitchCase="type.formInline">
-                        <div class="form-group row">
+                        <div class="form-group row" [hidden]="control.hidden">
                            <div class="col-3"> {{control.label}} </div>
                            <div class="col-9"> <b> {{control.value}} </b> </div>
                         </div>
