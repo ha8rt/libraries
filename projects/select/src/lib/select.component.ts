@@ -54,7 +54,6 @@ export class SelectComponent implements OnInit, OnDestroy {
          this.loadVal = this.load.subscribe((value) => {
             this.loaded = true;
             this.control.enable();
-            console.log(value);
             this.control.setValue(value);
          });
       }
