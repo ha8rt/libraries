@@ -15,7 +15,7 @@ export class SelectComponent implements OnInit, OnDestroy {
 
    // tslint:disable:no-input-rename
    @Input() reset: Observable<void>;
-   @Input() load: Observable<void>;
+   @Input() load: Observable<number>;
    @Input() unload: Observable<void>;
    @Input('h') header: string;
    @Input() options: string[];
@@ -51,10 +51,11 @@ export class SelectComponent implements OnInit, OnDestroy {
          });
       }
       if (this.load) {
-         this.loadVal = this.load.subscribe(() => {
+         this.loadVal = this.load.subscribe((value) => {
             this.loaded = true;
             this.control.enable();
-            this.control.setValue(-1);
+            console.log(value);
+            this.control.setValue(value);
          });
       }
       if (this.unload) {
