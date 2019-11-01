@@ -1,5 +1,5 @@
 import { Component, OnChanges, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { getFieldValue, Headers, IPagination, Codes } from './table.handler';
+import { getFieldValue, Headers, IPagination, Codes, ILink } from './table.handler';
 import { IIconClick, ICheckClick, IFocusOut, IPageChanged, IButtonClick } from './table.click';
 import { isIcons, IconClass } from '@ha8rt/icon';
 import { Icons } from './table.icons';
@@ -14,25 +14,27 @@ export class TableComponent implements OnInit, OnChanges {
    // tslint:disable: no-input-rename
    @Input('h') headers: Headers;
    @Input('c') codes: Codes;
-   @Input('r') rows: string[];
+   @Input('r') rows: any[];
    @Input('f') filter: boolean;
    @Input('s') search: boolean;
    @Input('nr') nr: string;
    @Input('desc') desc: boolean;
    @Input('hb') headerBtn: string[];
    @Input('ro') readOnly: boolean;
+   @Input('rof') readOnlyFilter: string;
+   @Input('rwf') readWriteFilter: string;
    @Input('i') inputs: [number[], number[]];
    @Input('p') pagination: IPagination;
    @Input('l') label: string;
    @Input('t') toggle: boolean = undefined;
 
    @Output() rClick = new EventEmitter();
-   @Output() bClick = new EventEmitter<IButtonClick>();
+   @Output() bClick = new EventEmitter<IButtonClick<any>>();
    @Output() hbClick = new EventEmitter();
-   @Output() iClick = new EventEmitter<IIconClick>();
-   @Output() cClick = new EventEmitter<ICheckClick>();
+   @Output() iClick = new EventEmitter<IIconClick<any>>();
+   @Output() cClick = new EventEmitter<ICheckClick<any>>();
    @Output() sClick = new EventEmitter();
-   @Output() focusOut = new EventEmitter<IFocusOut>();
+   @Output() focusOut = new EventEmitter<IFocusOut<any>>();
    @Output() pageChanged = new EventEmitter<IPageChanged>();
 
    @Output() selectChange: EventEmitter<number> = new EventEmitter<number>();
@@ -76,7 +78,7 @@ export class TableComponent implements OnInit, OnChanges {
       this.rClick.emit(row);
    }
 
-   onBtnClick(event: IButtonClick) {
+   onBtnClick(event: IButtonClick<any>) {
       this.bClick.emit(event);
    }
 
@@ -84,11 +86,11 @@ export class TableComponent implements OnInit, OnChanges {
       this.hbClick.emit(event);
    }
 
-   onIconClick(event: IIconClick) {
+   onIconClick(event: IIconClick<any>) {
       this.iClick.emit(event);
    }
 
-   onCheckChange(event: ICheckClick) {
+   onCheckChange(event: ICheckClick<any>) {
       this.cClick.emit(event);
    }
 
@@ -112,9 +114,11 @@ export class TableComponent implements OnInit, OnChanges {
             let item: string;
             const value = getFieldValue(row, code.field);
             if (isIcons([value])) {
-               item = (value as IconClass[]).map((icon) =>
+               item = ([value] as IconClass[]).map((icon) =>
                   !(icon.content.startsWith('fas:') || icon.content.startsWith('far:')) ? icon.content : ''
                ).join('#');
+            } else if (this.isLink(value)) {
+               item = (value as ILink).value;
             } else {
                item = '' + value;
             }

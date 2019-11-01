@@ -3,26 +3,26 @@ import { IconClass } from '@ha8rt/icon';
 import { Service, ObjType } from '@ha8rt/http.service';
 import { Icons } from './table.icons';
 
-export interface ICheckClick {
-   row: any;
+export interface ICheckClick<U> {
+   row: U;
    elem: string;
 }
 
-export function onCheckClick(service: Service, event: ICheckClick, callback: (data) => void) {
+export function onCheckClick(service: Service, event: ICheckClick<any>, callback: (data) => void) {
    const obj: ObjType = {};
    obj._id = event.row._id;
    obj[event.elem] = event.row[event.elem];
    service._put(obj, callback);
 }
 
-export interface IIconClick {
-   row: any;
+export interface IIconClick<U> {
+   row: U;
    icon: string;
    id: string;
 }
 
 export function onIconClick(
-   event: IIconClick, edit: IModalHandler, del: IModalHandler, editType: BodyType, delType: BodyType, title: string
+   event: IIconClick<any>, edit: IModalHandler, del: IModalHandler, editType: BodyType, delType: BodyType, title: string
 ) {
    if (event.icon === Icons.edit) {
       [edit.body] = InitBody({ type: editType, event: [edit.change], title, row: event.row }, 1);
@@ -64,8 +64,8 @@ export function onHbClick(add: IModalHandler, type: BodyType, title: string) {
    add.event.next();
 }
 
-export interface IFocusOut {
-   row: any;
+export interface IFocusOut<U> {
+   row: U;
    value: string;
    rowId: number;
    columnId: number;
@@ -76,7 +76,7 @@ export interface IPageChanged {
    itemsPerPage: number;
 }
 
-export interface IButtonClick {
-   row: any;
+export interface IButtonClick<U> {
+   row: U;
    id: string;
 }
