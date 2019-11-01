@@ -4,8 +4,7 @@
    <ng-template #choose>
       <option value="-1" hidden>{{ chooseStr ? chooseStr : 'Válasszon' }}</option>
    </ng-template>
-   <option *ngFor="let option of options" value="{{ option._id ? option._id : options.indexOf(option) }}"
-      [selected]="options && options.length === 1 && options.indexOf(option) === 0">
+   <option *ngFor="let option of options" value="{{ option._id ? option._id : options.indexOf(option) }}">
       {{ getFieldValue(option, field) }}
    </option>
 </select>
