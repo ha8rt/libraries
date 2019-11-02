@@ -147,11 +147,11 @@ export class TableComponent implements OnInit, OnChanges {
       this.isOpen = !this.isOpen;
    }
 
-   setRowVisible(row: string, state?: boolean) {
+   setRowVisible(row: any, state?: boolean) {
       this.shown[this.rows.indexOf(row)] = (state === undefined) ? true : state;
    }
 
-   getRowVisible(row: string): boolean {
+   getRowVisible(row: any): boolean {
       return this.shown[this.rows.indexOf(row)];
    }
 
@@ -173,5 +173,11 @@ export class TableComponent implements OnInit, OnChanges {
 
    isPagination(): boolean {
       return this.pagination && this.pagination.totalItems > this.pagination.itemsPerPage;
+   }
+
+   isReadOnly(row: any): boolean {
+      return this.readOnly
+         && (!this.readOnlyFilter || getFieldValue(row, this.readOnlyFilter))
+         && (!this.readWriteFilter || !getFieldValue(row, this.readWriteFilter));
    }
 }

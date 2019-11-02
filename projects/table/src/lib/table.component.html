@@ -78,7 +78,7 @@
                                        id="{{ code.field + '_' + rows.indexOf(row) + '_' + id }}" type="checkbox"
                                        [(ngModel)]="row[code.field]"
                                        (change)="onCheckChange({row: row, elem: code.field})"
-                                       [disabled]="readOnly && (!getFieldValue(row, readOnlyFilter) || getFieldValue(row, readWriteFilter))">
+                                       [disabled]="isReadOnly(row)">
                                     <label class="custom-control-label"
                                        for="{{ code.field + '_' + rows.indexOf(row) + '_' + id }}"></label>
                                  </div>
