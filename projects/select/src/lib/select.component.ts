@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Input, ViewChild, ElementRef, Output, OnDestroy, OnChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { SelectValidators } from './select.validator';
 import { getFieldValue } from '@ha8rt/table';
 import { ElemList } from './select.handler';
@@ -28,9 +28,9 @@ export class SelectComponent implements OnInit, OnDestroy, OnChanges {
 
    @Output() changed = new EventEmitter();
 
-   private resetVal;
-   private loadVal;
-   private unloadVal;
+   private resetSub: Subscription;
+   private loadSub: Subscription;
+   private unloadSub: Subscription;
    control = new FormControl({ value: '', disabled: true });
    loaded = false;
 
@@ -45,20 +45,20 @@ export class SelectComponent implements OnInit, OnDestroy, OnChanges {
       this.myGroup.addControl(this.myName, this.control);
 
       if (this.reset) {
-         this.resetVal = this.reset.subscribe(() => {
+         this.resetSub = this.reset.subscribe(() => {
             this.control.reset();
             this.control.setValue(-1);
          });
       }
       if (this.load) {
-         this.loadVal = this.load.subscribe((value) => {
+         this.loadSub = this.load.subscribe((value) => {
             this.loaded = true;
             this.control.enable();
             this.control.setValue(this.options && this.options.length === 1 ? 0 : value);
          });
       }
       if (this.unload) {
-         this.unloadVal = this.unload.subscribe(() => {
+         this.unloadSub = this.unload.subscribe(() => {
             this.loaded = false;
             this.control.disable();
             this.control.setValue(-1);
@@ -68,13 +68,13 @@ export class SelectComponent implements OnInit, OnDestroy, OnChanges {
 
    ngOnDestroy() {
       if (this.reset) {
-         this.resetVal.unsubscribe();
+         this.resetSub.unsubscribe();
       }
       if (this.load) {
-         this.loadVal.unsubscribe();
+         this.loadSub.unsubscribe();
       }
       if (this.unload) {
-         this.unloadVal.unsubscribe();
+         this.unloadSub.unsubscribe();
       }
    }
 
