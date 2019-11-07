@@ -42,6 +42,6 @@ div div form label {
    border: 2px solid rgba(50,50,50,0.15);
 }
 
-.table td{
+.table td, th{
    vertical-align: middle;
 }

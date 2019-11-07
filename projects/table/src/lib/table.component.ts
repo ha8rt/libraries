@@ -84,7 +84,6 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       }
       this.pagination.itemsPerPage = this.pagination ? this.pagination.itemsPerPage : 0;
       this.pagination.totalItems = this.pagination ? this.pagination.totalItems : (this.rows ? this.rows.length : 0);
-
    }
 
    onRowClick(row) {
