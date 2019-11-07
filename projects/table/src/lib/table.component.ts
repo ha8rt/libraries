@@ -1,15 +1,16 @@
-import { Component, OnChanges, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnChanges, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { getFieldValue, Headers, IPagination, Codes, ILink } from './table.handler';
 import { IIconClick, ICheckClick, IFocusOut, IPageChanged, IButtonClick } from './table.click';
 import { isIcons, IconClass } from '@ha8rt/icon';
 import { Icons } from './table.icons';
+import { Subscription } from 'rxjs';
 
 @Component({
    selector: 'lib-table',
    templateUrl: './table.component.html',
    styleUrls: ['./table.component.css']
 })
-export class TableComponent implements OnInit, OnChanges {
+export class TableComponent implements OnInit, OnChanges, OnDestroy {
    @Input() id: number;
    // tslint:disable: no-input-rename
    @Input('h') headers: Headers;
@@ -51,14 +52,19 @@ export class TableComponent implements OnInit, OnChanges {
    isOpen = false;
    icons = Icons;
    isIcons = isIcons;
-   totalItems: number;
-   page = 1;
-   itemsPerPage: number;
+   pageChange: Subscription;
 
    constructor() { }
 
    ngOnInit() {
       this.isOpen = this.toggle;
+      this.pageChange = this.pagination.change.asObservable().subscribe((pagination) => {
+         this.pagination = pagination;
+      });
+   }
+
+   ngOnDestroy() {
+      this.pageChange.unsubscribe();
    }
 
    ngOnChanges() {
@@ -69,8 +75,8 @@ export class TableComponent implements OnInit, OnChanges {
          }
       }
       this.multiRow = this.isMultiRow();
-      this.itemsPerPage = this.pagination ? this.pagination.itemsPerPage : 0;
-      this.totalItems = this.pagination ? this.pagination.totalItems : (this.rows ? this.rows.length : 0);
+      this.pagination.itemsPerPage = this.pagination ? this.pagination.itemsPerPage : 0;
+      this.pagination.totalItems = this.pagination ? this.pagination.totalItems : (this.rows ? this.rows.length : 0);
    }
 
    onRowClick(row) {
@@ -101,8 +107,9 @@ export class TableComponent implements OnInit, OnChanges {
             filterStr.startsWith('#') &&
             (filterStr.length === 1 ||
                filterStr.substring(1) === (
-                  this.desc ? (this.totalItems - (this.itemsPerPage * (this.page - 1)) - index).toString()
-                     : (this.itemsPerPage * (this.page - 1) + index + 1).toString()))
+                  this.desc
+                     ? (this.pagination.totalItems - (this.pagination.itemsPerPage * (this.pagination.currentPage - 1)) - index).toString()
+                     : (this.pagination.itemsPerPage * (this.pagination.currentPage - 1) + index + 1).toString()))
          ) {
             // if it is found by the serial number
             this.setRowVisible(row);
@@ -139,7 +146,6 @@ export class TableComponent implements OnInit, OnChanges {
    }
 
    onPageChanged(event: IPageChanged) {
-      this.page = event.page;
       this.pageChanged.emit(event);
    }
 

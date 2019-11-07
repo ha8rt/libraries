@@ -55,7 +55,7 @@
                      [ngClass]="i === selected ? 'table-active' : null" [hidden]="!getRowVisible(row)">
                      <!-- serial number of row -->
                      <th *ngIf="nr" [ngClass]="multiRow ? 'text-center' : null">
-                        #{{ desc ? (totalItems - (itemsPerPage * (page - 1)) - i) : ((itemsPerPage * (page - 1)) + i + 1) }}
+                        #{{ desc ? (pagination.totalItems - (pagination.itemsPerPage * (pagination.currentPage - 1)) - i) : ((pagination.itemsPerPage * (pagination.currentPage - 1)) + i + 1) }}
                      </th>
                      <!-- other fields listed in the order of codes -->
                      <ng-container *ngFor="let code of codes.fields; let j = index">
@@ -111,11 +111,11 @@
       <div class="card-footer" *ngIf="isPagination()">
          <div class="col" [ngStyle]="{'text-align': pagination.align }">
             <div style="display: inline-flex">
-               <pagination [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage"
-                  [nextText]="pagination.nextText" [previousText]="pagination.previousText"
-                  [maxSize]="pagination.maxSize" [rotate]="pagination.rotate" [boundaryLinks]="pagination.boundaryLinks"
-                  [firstText]="pagination.firstText" [lastText]="pagination.lastText"
-                  (pageChanged)="onPageChanged($event)">
+               <pagination [ngModel]="pagination.currentPage" [totalItems]="pagination.totalItems"
+                  [itemsPerPage]="pagination.itemsPerPage" [nextText]="pagination.nextText"
+                  [previousText]="pagination.previousText" [maxSize]="pagination.maxSize" [rotate]="pagination.rotate"
+                  [boundaryLinks]="pagination.boundaryLinks" [firstText]="pagination.firstText"
+                  [lastText]="pagination.lastText" (pageChanged)="onPageChanged($event)">
                </pagination>
             </div>
          </div>

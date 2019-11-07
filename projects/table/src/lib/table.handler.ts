@@ -1,4 +1,5 @@
 import { IconClass, IIconClass } from '@ha8rt/icon';
+import { Subject } from 'rxjs';
 
 export class Headers {
    rows: IHeader[][] = [];
@@ -149,4 +150,6 @@ export interface IPagination {
    firstText: string;
    lastText: string;
    align: string;
+   currentPage: number;
+   change: Subject<IPagination>;
 }
