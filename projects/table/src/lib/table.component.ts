@@ -58,13 +58,17 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
 
    ngOnInit() {
       this.isOpen = this.toggle;
-      this.pageChange = this.pagination.change.asObservable().subscribe((pagination) => {
-         this.pagination = pagination;
-      });
+      if (this.pagination && this.pagination.change) {
+         this.pageChange = this.pagination.change.asObservable().subscribe((pagination) => {
+            this.pagination = pagination;
+         });
+      }
    }
 
    ngOnDestroy() {
-      this.pageChange.unsubscribe();
+      if (this.pageChange) {
+         this.pageChange.unsubscribe();
+      }
    }
 
    ngOnChanges() {
@@ -75,8 +79,12 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
          }
       }
       this.multiRow = this.isMultiRow();
+      if (!this.pagination) {
+         this.pagination = { itemsPerPage: 0, totalItems: 0, currentPage: 1 } as any;
+      }
       this.pagination.itemsPerPage = this.pagination ? this.pagination.itemsPerPage : 0;
       this.pagination.totalItems = this.pagination ? this.pagination.totalItems : (this.rows ? this.rows.length : 0);
+
    }
 
    onRowClick(row) {
