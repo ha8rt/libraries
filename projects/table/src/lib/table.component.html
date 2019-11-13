@@ -52,7 +52,8 @@
                </thead>
                <tbody>
                   <tr *ngFor="let row of rows; let i = index" (click)="onRowClick(row)"
-                     [ngClass]="i === selected ? 'table-active' : null" [hidden]="!getRowVisible(row)">
+                     [ngClass]="[getRowStyles(row), (i === selected) ? 'table-active' : '']"
+                     [hidden]="!getRowVisible(row)">
                      <!-- serial number of row -->
                      <th *ngIf="nr" [ngClass]="multiRow ? 'text-center' : null">
                         #{{ desc ? (pagination.totalItems - (pagination.itemsPerPage * (pagination.currentPage - 1)) - i) : ((pagination.itemsPerPage * (pagination.currentPage - 1)) + i + 1) }}

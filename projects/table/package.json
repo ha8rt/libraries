@@ -1,6 +1,6 @@
 {
    "name": "@ha8rt/table",
-   "version": "0.0.41",
+   "version": "0.0.42",
    "peerDependencies": {
       "@angular/common": "^8.0.3",
       "@angular/core": "^8.0.3"

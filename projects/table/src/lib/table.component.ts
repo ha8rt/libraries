@@ -28,6 +28,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
    @Input('p') pagination: IPagination;
    @Input('l') label: string;
    @Input('t') toggle: boolean = undefined;
+   @Input() rowStyles: object[];
 
    @Output() rClick = new EventEmitter();
    @Output() bClick = new EventEmitter<IButtonClick<any>>();
@@ -80,14 +81,16 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       }
       this.multiRow = this.isMultiRow();
       if (!this.pagination) {
-         this.pagination = { itemsPerPage: 0, totalItems: 0, currentPage: 1 } as any;
+         this.pagination = { itemsPerPage: 0, totalItems: (this.rows ? this.rows.length : 0), currentPage: 1 } as any;
       }
-      this.pagination.itemsPerPage = this.pagination ? this.pagination.itemsPerPage : 0;
-      this.pagination.totalItems = this.pagination ? this.pagination.totalItems : (this.rows ? this.rows.length : 0);
    }
 
-   onRowClick(row) {
-      this.selected = this.rows.indexOf(row);
+   onRowClick(row: any) {
+      if (this.selected === this.rows.indexOf(row)) {
+         this.selected = -1;
+      } else {
+         this.selected = this.rows.indexOf(row);
+      }
       this.rClick.emit(row);
    }
 
@@ -192,5 +195,17 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       return this.readOnly
          && (!this.readOnlyFilter || getFieldValue(row, this.readOnlyFilter))
          && (!this.readWriteFilter || !getFieldValue(row, this.readWriteFilter));
+   }
+
+   getRowStyles(row: any): string {
+      if (this.rowStyles) {
+         return this.rowStyles.map((style) => {
+            if (row[Object.keys(style)[0]]) {
+               return style[Object.keys(style)[0]];
+            }
+         }).join(' ');
+      } else {
+         return '';
+      }
    }
 }
