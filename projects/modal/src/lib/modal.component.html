@@ -64,6 +64,16 @@
                                  </div>
                               </div>
                            </ng-container>
+                           <ng-container *ngSwitchCase="type.select">
+                              <select class="custom-select" [formControlName]="i" id="{{ control.id }}"
+                                 [(ngModel)]="control.value">
+                                 <option value="undefined" hidden>{{ control.default }}</option>
+                                 <option *ngFor="let option of control.options"
+                                    value="{{ option._id ? option._id : control.options.indexOf(option) }}">
+                                    {{ getFieldValue(option, control.field) }}
+                                 </option>
+                              </select>
+                           </ng-container>
                            <ng-container *ngSwitchDefault>
                               <ng-container *ngIf="control.type !== type.null">
                                  <input [formControlName]="i" id="{{ control.id }}" type="{{ control.type }}"

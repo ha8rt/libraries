@@ -13,7 +13,7 @@ import { Body, IElement } from '@ha8rt/http.service';
 import { IModalHandler, ChangeType } from './modal.handler';
 import { IModalButton } from './button.handler';
 import { IModalBody, ControlType } from './body.handler';
-import { Locales } from './locale.module';
+import { getFieldValue } from '@ha8rt/table';
 
 @Component({
    selector: 'lib-modal',
@@ -84,6 +84,12 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
    bsConfig: Partial<BsDatepickerConfig> = Object.assign({}, {
       containerClass: 'theme-dark-blue', isAnimated: true, dateInputFormat: 'YYYY-MM-DD'
    });
+
+   getFieldValue = getFieldValue;
+
+   get inputs() {
+      return this.modalForm.get('inputs') as FormArray;
+   }
 
    setBody(body: IModalBody[]) {
       this.inputs.clear();
@@ -179,10 +185,6 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
             }
          }
       }
-   }
-
-   get inputs() {
-      return this.modalForm.get('inputs') as FormArray;
    }
 
    openModal(template: TemplateRef<any>) {

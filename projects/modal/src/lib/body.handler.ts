@@ -11,6 +11,9 @@ export interface IModalBody {
    label?: string;
    hidden?: boolean;
    indeterminate?: boolean;
+   field?: string;
+   options?: any;
+   default?: string;
 }
 
 export enum ControlType {
@@ -19,6 +22,7 @@ export enum ControlType {
    number = 'number',
    date = 'date',
    dateTime = 'dateTime',
+   select = 'select',
    textarea = 'textarea',
    formInline = 'form-inline',
    checkbox = 'checkbox',
