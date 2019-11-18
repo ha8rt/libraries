@@ -1,5 +1,5 @@
 import { Component, OnChanges, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
-import { getFieldValue, Headers, IPagination, Codes, ILink } from './table.handler';
+import { getFieldValue, Headers, IPagination, Codes, ILink, cleanSpaces } from './table.handler';
 import { IIconClick, ICheckClick, IFocusOut, IPageChanged, IButtonClick } from './table.click';
 import { isIcons, IconClass } from '@ha8rt/icon';
 import { Icons } from './table.icons';
@@ -111,12 +111,12 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
    }
 
    onFilter(filterStr: string) {
-      this.filterStr = filterStr;
+      this.filterStr = cleanSpaces(filterStr);
       this.rows.forEach((row, index) => {
          if (this.nr &&
-            filterStr.startsWith('#') &&
-            (filterStr.length === 1 ||
-               filterStr.substring(1) === (
+            this.filterStr.startsWith('#') &&
+            (this.filterStr.length === 1 ||
+               this.filterStr.substring(1) === (
                   this.desc
                      ? (this.pagination.totalItems - (this.pagination.itemsPerPage * (this.pagination.currentPage - 1)) - index).toString()
                      : (this.pagination.itemsPerPage * (this.pagination.currentPage - 1) + index + 1).toString()))
@@ -137,9 +137,9 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
             } else if (this.isLink(value)) {
                item = (value as ILink).value;
             } else {
-               item = '' + value;
+               item = cleanSpaces(String(value));
             }
-            if (item.toUpperCase().includes(filterStr.toUpperCase()) && !this.isBoolean(row[code.field])) {
+            if (item.toUpperCase().includes(this.filterStr.toUpperCase()) && !this.isBoolean(row[code.field])) {
                this.setRowVisible(row);
                break;
             }

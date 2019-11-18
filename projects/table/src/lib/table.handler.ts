@@ -153,3 +153,27 @@ export interface IPagination {
    currentPage: number;
    change: Subject<IPagination>;
 }
+
+const thinSpace = '\u202F'; // '\u2009';
+
+export function splitThousands(rows: any[], fields: string[], omitZero: boolean = false) {
+   rows.forEach(row => {
+      fields.forEach(field => {
+         if (omitZero && typeof row[field] === 'number' && row[field] === 0) {
+            row[field] = '';
+         }
+         row[field] = String(row[field])
+            .split('')
+            .reduce<string>((previous, current) =>
+               previous + current + ((previous.split(thinSpace).join('').length % 3 === 0) ? thinSpace : ''), '')
+            .split(thinSpace)
+            .filter((value) => value.length > 0)
+            .join(thinSpace);
+      });
+   });
+}
+
+export function cleanSpaces(value: string): string {
+   return value.split(' ').filter((chunk) => chunk.length > 0).join('').
+      split(thinSpace).filter((chunk) => chunk.length > 0).join('');
+}
