@@ -126,9 +126,9 @@ export function addLinks(rows: any[], field: string, paths: string[], scopes: st
    });
 }
 
-export function addIcon(rows: any[], field: string, icon: IIconClass) {
+export function addIcon(rows: any[], field: string, icon: IIconClass, condition?: string) {
    rows.forEach((row) => {
-      row[field] = new IconClass(icon.content, icon.id, icon.classes, icon.tooltip);
+      row[field] = !condition || row[condition] ? new IconClass(icon.content, icon.id, icon.classes, icon.tooltip) : undefined;
    });
 }
 
