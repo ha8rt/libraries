@@ -9,6 +9,7 @@ export interface ChangeType {
    text?: string;
    body?: IModalBody[];
    buttons?: IModalButton[];
+   reqAlert?: string;
 }
 
 export interface IModalHandler {
@@ -29,6 +30,8 @@ export interface IModalHandler {
 
    localTime: boolean;
    locale: Locales;
+
+   reqAlert: string;
 }
 
 export function initModal(): IModalHandler {
@@ -49,11 +52,12 @@ export function initModal(): IModalHandler {
 
    const localTime = true;
    const locale = Locales.hu;
+   const reqAlert = 'Enter the \"$1\" field.';
 
    const handler: IModalHandler = {
       event, obs, title, body, buttons, text, validators, errors, change,
       keyboard, ignoreBackdropClick, closeButton, classes,
-      localTime, locale
+      localTime, locale, reqAlert
    };
 
    return handler;

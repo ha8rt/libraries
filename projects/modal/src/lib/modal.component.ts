@@ -30,6 +30,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.title = handler.title;
       this.localTime = handler.localTime;
       this.localeService.use(handler.locale);
+      this.reqAlert = handler.reqAlert;
       if (handler.buttons) {
          this.buttons = handler.buttons;
       }
@@ -46,6 +47,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.changeSub = handler.change.asObservable().subscribe((data: ChangeType) => {
          this.title = data.title ? data.title : this.title;
          this.text = data.text ? data.text : this.text;
+         this.reqAlert = data.reqAlert ? data.reqAlert : this.reqAlert;
          if (data.body) { this.setBody(data.body); }
          this.buttons = data.buttons ? data.buttons : this.buttons;
       });
@@ -66,6 +68,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
    closeButton: boolean;
    localTime: boolean;
    type = ControlType;
+   reqAlert: string;
 
    body: IModalBody[];
 
@@ -104,7 +107,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
             const dateControl = this.fb.control({ value: control.value, disabled: control.disabled },
                control.required ? Validators.required : null);
             if (control.required) {
-               AddInvalidControl(this.invalidData, dateControl, ['required', 'Adja meg a \"' + control.placeHolder + '\" mezőt.']);
+               AddInvalidControl(this.invalidData, dateControl, ['required', this.translateField(this.reqAlert, [control.placeHolder])]);
             }
             this.inputs.push(dateControl);
             this.body.push(control);
@@ -113,7 +116,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
                const timeControl = this.fb.control({ value: control.value, disabled: control.disabled },
                   control.required ? Validators.required : null);
                if (control.required) {
-                  AddInvalidControl(this.invalidData, timeControl, ['required', 'Adja meg a \"' + control.placeHolder + '\" mezőt.']);
+                  AddInvalidControl(this.invalidData, timeControl, ['required', this.translateField(this.reqAlert, [control.placeHolder])]);
                }
                this.inputs.push(timeControl);
                this.body.push({
@@ -126,7 +129,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
                control.required ? Validators.required : null);
             this.inputs.push(formControl);
             if (control.required) {
-               AddInvalidControl(this.invalidData, formControl, ['required', 'Adja meg a \"' + control.placeHolder + '\" mezőt.']);
+               AddInvalidControl(this.invalidData, formControl, ['required', this.translateField(this.reqAlert, [control.placeHolder])]);
             }
             this.body.push(control);
          }
@@ -139,6 +142,15 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
       errors.forEach(error => {
          AddInvalidControl(this.invalidData, this.inputs, error);
       });
+   }
+
+   translateField(translate: string, fields: string[]): string {
+      if (translate && fields) {
+         fields.forEach((value, index) => {
+            translate = translate.replace('$' + String(index + 1), value);
+         });
+      }
+      return translate;
    }
 
    ngOnInit(): void {
