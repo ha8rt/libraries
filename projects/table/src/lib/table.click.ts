@@ -1,6 +1,6 @@
 import { InitBody, BodyType, IModalHandler } from '@ha8rt/modal';
 import { IconClass } from '@ha8rt/icon';
-import { Service, ObjType } from '@ha8rt/http.service';
+import { ObjType, HttpService } from '@ha8rt/http.service';
 import { Icons } from './table.icons';
 
 export interface ICheckClick<U> {
@@ -8,7 +8,7 @@ export interface ICheckClick<U> {
    elem: string;
 }
 
-export function onCheckClick(service: Service, event: ICheckClick<any>, callback: (data) => void) {
+export function onCheckClick(service: HttpService, event: ICheckClick<any>, callback: (data) => void) {
    const obj: ObjType = {};
    obj._id = event.row._id;
    obj[event.elem] = event.row[event.elem];
@@ -38,7 +38,7 @@ export interface IEntity {
    icons?: IconClass[];
 }
 
-export function onPushPull(object: IEntity, service: Service, selectedRow: { _id: string }, entity: {}, callback: (data) => void) {
+export function onPushPull(object: IEntity, service: HttpService, selectedRow: { _id: string }, entity: {}, callback: (data) => void) {
    if (object.icons[0].content === Icons.delete) {
       service._put({ _id: selectedRow._id, $pull: entity }, callback);
    } else if (object.icons[0].content === Icons.plus) {
