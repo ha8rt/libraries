@@ -12,30 +12,29 @@ import { Subscription } from 'rxjs';
 })
 export class TableComponent implements OnInit, OnChanges, OnDestroy {
    @Input() id: number;
-   // tslint:disable: no-input-rename
-   @Input('h') headers: Headers;
-   @Input('c') codes: Codes;
-   @Input('r') rows: any[];
-   @Input('f') filter: boolean;
-   @Input('s') search: boolean;
-   @Input('nr') nr: string;
-   @Input('desc') desc: boolean;
-   @Input('hb') headerBtn: string[];
-   @Input('ro') readOnly: boolean;
-   @Input('rof') readOnlyFilter: string;
-   @Input('rwf') readWriteFilter: string;
-   @Input('i') inputs: [number[], number[]];
-   @Input('p') pagination: IPagination;
-   @Input('l') label: string;
-   @Input('t') toggle: boolean = undefined;
+   @Input() headers: Headers;
+   @Input() codes: Codes;
+   @Input() rows: any[];
+   @Input() filter: boolean;
+   @Input() search: boolean;
+   @Input() nr: string;
+   @Input() desc: boolean;
+   @Input() headerButtons: string[];
+   @Input() readOnly: boolean;
+   @Input() readOnlyFilter: string;
+   @Input() readWriteFilter: string;
+   @Input() inputs: [number[], number[]];
+   @Input() pagination: IPagination;
+   @Input() label: string;
+   @Input() toggle: boolean = undefined;
    @Input() rowStyles: object[];
 
-   @Output() rClick = new EventEmitter();
-   @Output() bClick = new EventEmitter<IButtonClick<any>>();
-   @Output() hbClick = new EventEmitter();
-   @Output() iClick = new EventEmitter<IIconClick<any>>();
-   @Output() cClick = new EventEmitter<ICheckClick<any>>();
-   @Output() sClick = new EventEmitter();
+   @Output() rowEvent = new EventEmitter();
+   @Output() buttonEvent = new EventEmitter<IButtonClick<any>>();
+   @Output() headerEvent = new EventEmitter();
+   @Output() iconEvent = new EventEmitter<IIconClick<any>>();
+   @Output() checkEvent = new EventEmitter<ICheckClick<any>>();
+   @Output() searchEvent = new EventEmitter();
    @Output() focusOut = new EventEmitter<IFocusOut<any>>();
    @Output() pageChanged = new EventEmitter<IPageChanged>();
 
@@ -91,23 +90,23 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       } else {
          this.selected = this.rows.indexOf(row);
       }
-      this.rClick.emit(row);
+      this.rowEvent.emit(row);
    }
 
    onBtnClick(event: IButtonClick<any>) {
-      this.bClick.emit(event);
+      this.buttonEvent.emit(event);
    }
 
-   onHeaderBtn(event) {
-      this.hbClick.emit(event);
+   onHeaderButtons(event) {
+      this.headerEvent.emit(event);
    }
 
    onIconClick(event: IIconClick<any>) {
-      this.iClick.emit(event);
+      this.iconEvent.emit(event);
    }
 
    onCheckChange(event: ICheckClick<any>) {
-      this.cClick.emit(event);
+      this.checkEvent.emit(event);
    }
 
    onFilter(filterStr: string) {
@@ -148,7 +147,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
    }
 
    onSearch() {
-      this.sClick.emit();
+      this.searchEvent.emit();
    }
 
    onFocusOut(event: FocusEvent, row: any[], rowId: number, columnId: number) {

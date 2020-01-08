@@ -1,5 +1,6 @@
 <div class="card border-dark">
-   <div class="card-header" *ngIf="label || filter || search || headerBtn || toggle !== undefined" (click)="onToggle()">
+   <div class="card-header" *ngIf="label || filter || search || headerButtons || toggle !== undefined"
+      (click)="onToggle()">
       <form class="form-inline">
          <ng-container *ngIf="label">
             <b>{{ label }}</b>
@@ -17,9 +18,9 @@
                      <lib-icon [content]="'fas:faSearch'"> </lib-icon>
                   </button>
                </ng-container>
-               <ng-container *ngIf="headerBtn">
-                  <div *ngFor="let button of headerBtn; let i = index">
-                     <button class="btn btn-primary btn-sm" (click)="onHeaderBtn(i); $event.stopPropagation();"
+               <ng-container *ngIf="headerButtons">
+                  <div *ngFor="let button of headerButtons; let i = index">
+                     <button class="btn btn-primary btn-sm" (click)="onHeaderButtons(i); $event.stopPropagation();"
                         type="button" style="margin-left: 0.25rem" [id]="'button'+i">{{ button }}</button>
                   </div>
                </ng-container>
