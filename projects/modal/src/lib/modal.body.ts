@@ -1,4 +1,4 @@
-import { InitBodyObj, BodyType, ControlType, IModalBody } from './body.handler';
+import { BodyType, ControlType, IModalBody, InitBodyObj } from './body.handler';
 import { getTitle } from './modal.title';
 
 // tslint:disable: align

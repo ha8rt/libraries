@@ -1,19 +1,13 @@
-import {
-   Component, OnInit, TemplateRef, Input, Output,
-   EventEmitter, ViewChild, AfterViewChecked, OnDestroy
-} from '@angular/core';
-
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
-
-import { FormBuilder, FormArray, Validators, ValidatorFn } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
-import { InvalidDataType, AddInvalidControl } from '@ha8rt/alert';
-import { Body, IElement } from '@ha8rt/http.service';
-import { IModalHandler, ChangeType } from './modal.handler';
-import { IModalButton } from './button.handler';
-import { IModalBody, ControlType } from './body.handler';
+import { AfterViewChecked, Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, ValidatorFn, Validators } from '@angular/forms';
+import { AddInvalidControl, InvalidDataType } from '@ha8rt/alert';
 import { getFieldValue } from '@ha8rt/table';
+import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Observable, Subscription } from 'rxjs';
+import { Body, ControlType, IElement, IModalBody } from './body.handler';
+import { IModalButton } from './button.handler';
+import { ChangeType, IModalHandler } from './modal.handler';
 
 @Component({
    selector: 'lib-modal',
