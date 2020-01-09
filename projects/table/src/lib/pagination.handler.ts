@@ -43,7 +43,7 @@ export class Pagination implements IPagination {
    }
 
    from(): { from: number } {
-      return { from: (this.currentPage - 1) * (this.itemsPerPage + 1) };
+      return { from: (this.currentPage - 1) * (this.itemsPerPage) + 1 };
    }
 
    to(): { to: number } {
