@@ -1,7 +1,6 @@
-import { IQuery, IType } from '@ha8rt/http.service';
 import { Subject } from 'rxjs';
-import { IPageChanged } from './table.click';
 import { IPagination } from './table.handler';
+import { IPageChanged } from './table.interface';
 
 export class Pagination implements IPagination {
    totalItems: number;
@@ -15,7 +14,7 @@ export class Pagination implements IPagination {
    lastText: string;
    align: string;
 
-   change: Subject<Pagination> = new Subject<Pagination>();
+   change: Subject<IPagination> = new Subject<IPagination>();
    private current: number;
 
    set currentPage(currentPage: number) {
@@ -43,16 +42,16 @@ export class Pagination implements IPagination {
       this.currentPage = 1;
    }
 
-   from(): IType {
-      return new IType('from', String((this.currentPage - 1) * this.itemsPerPage + 1));
+   from(): { from: number } {
+      return { from: (this.currentPage - 1) * (this.itemsPerPage + 1) };
    }
 
-   to(): IType {
-      return new IType('to', String(this.currentPage * this.itemsPerPage));
+   to(): { to: number } {
+      return { to: this.currentPage * this.itemsPerPage };
    }
 
-   inr(): IQuery {
-      return new IQuery([this.from(), this.to()]);
+   inr(): { from: number, to: number } {
+      return Object.assign(this.from(), this.to());
    }
 
    reset(callback: () => void) {

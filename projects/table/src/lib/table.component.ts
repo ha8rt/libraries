@@ -1,6 +1,6 @@
 import { Component, OnChanges, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { getFieldValue, Headers, IPagination, Codes, ILink, cleanSpaces } from './table.handler';
-import { IIconClick, ICheckClick, IFocusOut, IPageChanged, IButtonClick } from './table.click';
+import { IIconClick, ICheckClick, IFocusOut, IPageChanged, IButtonClick } from './table.interface';
 import { isIcons, IconClass } from '@ha8rt/icon';
 import { Icons } from './table.icons';
 import { Subscription } from 'rxjs';
