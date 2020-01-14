@@ -48,13 +48,20 @@ export class NavbarHandler {
       }
    }
 
-   public addNav(nav: IDropdown): NavbarHandler {
-      this.navs.push(nav);
+   public addNav(nav: IDropdown, index = -1): NavbarHandler {
+      if (index >= 0) {
+         this.navs.splice(index, 0, nav);
+      } else {
+         this.navs.push(nav);
+      }
       return this;
    }
 
    public removeNav(id: string): NavbarHandler {
-      this.navs.splice(this.navs.findIndex((value) => value.id === id), 1);
+      const index = this.navs.findIndex((value) => value.id === id);
+      if (index >= 0) {
+         this.navs.splice(index, 1);
+      }
       return this;
    }
 
