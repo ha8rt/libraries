@@ -90,6 +90,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       } else {
          this.selected = this.rows.indexOf(row);
       }
+      this.selectChange.emit(this.selected);
       this.rowEvent.emit(row);
    }
 
@@ -128,7 +129,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
          }
          for (const code of this.codes.fields) {
             let item: string;
-            const value = getFieldValue(row, code.field);
+            const value = getFieldValue(row, code.str);
             if (isIcons([value])) {
                item = ([value] as IconClass[]).map((icon) =>
                   !(icon.content.startsWith('fas:') || icon.content.startsWith('far:')) ? icon.content : ''
@@ -138,7 +139,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
             } else {
                item = cleanSpaces(String(value));
             }
-            if (item.toUpperCase().includes(this.filterStr.toUpperCase()) && !this.isBoolean(row[code.field])) {
+            if (item.toUpperCase().includes(this.filterStr.toUpperCase()) && !this.isBoolean(row[code.str])) {
                this.setRowVisible(row);
                break;
             }

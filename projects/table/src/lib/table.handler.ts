@@ -38,7 +38,7 @@ export class Codes {
    constructor(array: (string | IField)[]) {
       array.forEach((value) => {
          if (typeof (value) === 'string') {
-            this.fields.push({ field: value });
+            this.fields.push({ str: value });
          } else {
             this.fields.push(value);
          }
@@ -47,8 +47,15 @@ export class Codes {
 }
 
 export interface IField {
-   field: string;
+   str: string;
    classes?: string[];
+}
+
+export function center(str: string): IField | IHeader {
+   return { str, classes: ['center'] };
+}
+export function right(str: string): IField | IHeader {
+   return { str, classes: ['right'] };
 }
 
 export interface IButton {
@@ -72,28 +79,28 @@ export function getFieldValue(row: any, code: string) {
    return row ? row[code] : undefined;
 }
 
-export function convertToBool(rows: any[], fields: string[]) {
+export function convertToBool<T>(rows: T[], fields: Array<keyof T>) {
    rows.forEach((row) => {
       fields.forEach((field) => {
-         row[field] = row[field] !== undefined ? (row[field] === 1 ? true : false) : undefined;
+         row[field] = (row[field] !== undefined ? (Number(row[field]) === 1 ? true : false) : undefined) as any;
       });
    });
 }
 
-export function convertDateToLocale(rows: any[], fields: string[], locale: string) {
+export function convertDateToLocale<T>(rows: T[], fields: Array<keyof T>, locale: string, options?: Intl.DateTimeFormatOptions) {
    rows.forEach((row) => {
       fields.forEach((field) => {
-         const date = new Date(row[field]);
-         row[field] = date.getTime() > 0 ? date.toLocaleString(locale) : null;
+         const date = new Date(String(row[field]));
+         row[field] = (date.getTime() > 0 ? date.toLocaleString(locale, options) : null) as any;
       });
    });
 }
 
-export function convertDateToLocaleDate(rows: any[], fields: string[], locale: string) {
+export function convertDateToLocaleDate<T>(rows: T[], fields: Array<keyof T>, locale: string, options?: Intl.DateTimeFormatOptions) {
    rows.forEach((row) => {
       fields.forEach((field) => {
-         const date = new Date(row[field]);
-         row[field] = date.getTime() > 0 ? date.toLocaleDateString(locale) : null;
+         const date = new Date(String(row[field]));
+         row[field] = (date.getTime() > 0 ? date.toLocaleDateString(locale, options) : null) as any;
       });
    });
 }
