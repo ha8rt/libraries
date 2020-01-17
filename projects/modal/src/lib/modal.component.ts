@@ -4,7 +4,7 @@ import { AddInvalidControl, InvalidDataType } from '@ha8rt/alert';
 import { getFieldValue } from '@ha8rt/table';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, Subject } from 'rxjs';
 import { Body, ControlType, IElement, IModalBody } from './body.handler';
 import { IModalButton } from './button.handler';
 import { ChangeType, IModalHandler } from './modal.handler';
@@ -51,6 +51,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
          class: handler.classes ? handler.classes.join(' ') : null,
       };
       this.closeButton = handler.closeButton;
+      this.output = handler.output;
    }
    @Output() button = new EventEmitter<Body>();
 
@@ -61,8 +62,9 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
    config: object = {};
    closeButton: boolean;
    localTime: boolean;
-   type = ControlType;
    reqAlert: string;
+   ControlType = ControlType;
+   output: Subject<Body>;
 
    body: IModalBody[];
 
@@ -93,7 +95,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.invalidData = [];
       this.body = [];
       body.forEach((control) => {
-         if (control.type === this.type.date || control.type === this.type.dateTime) {
+         if (control.type === ControlType.date || control.type === ControlType.dateTime) {
             if (!this.localTime) {
                const date: Date = new Date(control.value);
                control.value = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
@@ -106,7 +108,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
             this.inputs.push(dateControl);
             this.body.push(control);
 
-            if (control.type === this.type.dateTime) {
+            if (control.type === ControlType.dateTime) {
                const timeControl = this.fb.control({ value: control.value, disabled: control.disabled },
                   control.required ? Validators.required : null);
                if (control.required) {
@@ -114,7 +116,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
                }
                this.inputs.push(timeControl);
                this.body.push({
-                  id: control.id + 'time', type: this.type.null, placeHolder: '', value: timeControl.value,
+                  id: control.id + 'time', type: ControlType.null, placeHolder: '', value: timeControl.value,
                   required: control.required, disabled: control.disabled, label: '', hidden: false
                });
             }
@@ -200,13 +202,13 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
    onButton(event) {
       const values: IElement[] = [];
       for (const [index, element] of this.body.entries()) {
-         if (element.type !== this.type.null) {
+         if (element.type !== ControlType.null) {
             let value = this.inputs.at(index).value;
             if (value instanceof Date) {
                if (!this.localTime) {
                   value = new Date(value.getTime() - value.getTimezoneOffset() * 60 * 1000);
                }
-               if (element.type === this.type.dateTime) {
+               if (element.type === ControlType.dateTime) {
                   const time = this.inputs.at(index + 1).value as Date;
                   value.setUTCHours(time.getHours());
                   value.setUTCMinutes(time.getMinutes());
@@ -214,7 +216,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
                }
                value = value.toISOString();
             }
-            if (element.type === this.type.number) {
+            if (element.type === ControlType.number) {
                value = Number(value).valueOf();
             } else if (element.type === ControlType.checkbox) {
                if (element.indeterminate) {
@@ -229,6 +231,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
          }
       }
       this.button.emit(new Body(event.currentTarget.id, values));
+      this.output.next(new Body(event.currentTarget.id, values));
       this.modalRef.hide();
    }
 

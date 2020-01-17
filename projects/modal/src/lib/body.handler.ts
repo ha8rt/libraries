@@ -30,7 +30,7 @@ export class Body {
       return element ? element.value : undefined;
    }
 
-   getPatchValues(): object {
+   getPatchValues(): { [key: string]: any } {
       const obj: { [key: string]: any } = {};
       (this.value[1] as IElement[]).forEach(element => {
          if (!element.disabled) {

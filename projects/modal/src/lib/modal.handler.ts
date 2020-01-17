@@ -1,7 +1,7 @@
 import { Subject, Observable } from 'rxjs';
 import { ValidatorFn } from '@angular/forms';
 import { Locales } from './locale.module';
-import { IModalBody } from './body.handler';
+import { IModalBody, Body } from './body.handler';
 import { IModalButton } from './button.handler';
 
 export interface ChangeType {
@@ -32,6 +32,9 @@ export interface IModalHandler {
    locale: Locales;
 
    reqAlert: string;
+
+   output: Subject<Body>;
+   outputObs: Observable<Body>;
 }
 
 export function initModal(): IModalHandler {
@@ -54,10 +57,13 @@ export function initModal(): IModalHandler {
    const locale = Locales.hu;
    const reqAlert = 'Enter the \"$1\" field.';
 
+   const output = new Subject<Body>();
+   const outputObs = output.asObservable();
+
    const handler: IModalHandler = {
       event, obs, title, body, buttons, text, validators, errors, change,
       keyboard, ignoreBackdropClick, closeButton, classes,
-      localTime, locale, reqAlert
+      localTime, locale, reqAlert, output, outputObs
    };
 
    return handler;

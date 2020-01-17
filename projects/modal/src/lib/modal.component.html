@@ -17,7 +17,7 @@
             <div formArrayName="inputs">
                <div *ngFor="let control of body; let i = index" [ngClass]="control.label ? 'form-group' : null">
                   <ng-container [ngSwitch]="control.type">
-                     <ng-container *ngSwitchCase="type.formInline">
+                     <ng-container *ngSwitchCase="ControlType.formInline">
                         <div class="form-group row" [hidden]="control.hidden">
                            <div class="col-3"> {{control.label}} </div>
                            <div class="col-9"> <b> {{control.value}} </b> </div>
@@ -30,17 +30,17 @@
                            {{ control.label }}
                         </label>
                         <ng-container [ngSwitch]="control.type">
-                           <ng-container *ngSwitchCase="type.textarea">
+                           <ng-container *ngSwitchCase="ControlType.textarea">
                               <textarea [formControlName]="i" id="{{ control.id }}" class="form-control"
                                  maxlength="1000" placeholder="{{ control.placeHolder }}"
                                  [(ngModel)]="control.value"></textarea>
                            </ng-container>
-                           <ng-container *ngSwitchCase="type.date">
+                           <ng-container *ngSwitchCase="ControlType.date">
                               <input [formControlName]="i" id="{{ control.id }}" type="date" class="form-control"
                                  placeholder="{{ control.placeHolder }}" [(ngModel)]="control.value" bsDatepicker
                                  [bsConfig]="bsConfig" triggers="dblclick:click" (dblclick)="onDblClick(control)">
                            </ng-container>
-                           <ng-container *ngSwitchCase="type.checkbox">
+                           <ng-container *ngSwitchCase="ControlType.checkbox">
                               <div class="custom-control custom-checkbox">
                                  <input [formControlName]="i" class="custom-control-input" id="{{ control.id }}"
                                     type="checkbox" [checked]="control.value" [indeterminate]="control.indeterminate"
@@ -49,7 +49,7 @@
                                     for="{{ control.id }}">{{ control.placeHolder }}</label>
                               </div>
                            </ng-container>
-                           <ng-container *ngSwitchCase="type.dateTime">
+                           <ng-container *ngSwitchCase="ControlType.dateTime">
                               <div class="row">
                                  <div class="col-6">
                                     <input [formControlName]="i" id="{{ control.id }}" type="date" class="form-control"
@@ -64,7 +64,7 @@
                                  </div>
                               </div>
                            </ng-container>
-                           <ng-container *ngSwitchCase="type.select">
+                           <ng-container *ngSwitchCase="ControlType.select">
                               <select class="custom-select" [formControlName]="i" id="{{ control.id }}"
                                  [(ngModel)]="control.value">
                                  <option value="undefined" hidden>{{ control.default }}</option>
@@ -75,7 +75,7 @@
                               </select>
                            </ng-container>
                            <ng-container *ngSwitchDefault>
-                              <ng-container *ngIf="control.type !== type.null">
+                              <ng-container *ngIf="control.type !== ControlType.null">
                                  <input [formControlName]="i" id="{{ control.id }}" type="{{ control.type }}"
                                     class="form-control" placeholder="{{ control.placeHolder }}"
                                     [(ngModel)]="control.value" autocomplete="{{ control.id }}"
