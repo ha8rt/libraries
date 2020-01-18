@@ -17,6 +17,7 @@ export class SelectComponent implements OnInit, OnDestroy, OnChanges {
    @Input() reset: Observable<void>;
    @Input() load: Observable<number>;
    @Input() unload: Observable<void>;
+   @Input() disable: Observable<boolean>;
    @Input('h') header: string;
    @Input() options: string[];
    @Input() field: string;
@@ -31,6 +32,7 @@ export class SelectComponent implements OnInit, OnDestroy, OnChanges {
    private resetSub: Subscription;
    private loadSub: Subscription;
    private unloadSub: Subscription;
+   private disableSub: Subscription;
    control = new FormControl({ value: '', disabled: true });
    loaded = false;
 
@@ -64,6 +66,15 @@ export class SelectComponent implements OnInit, OnDestroy, OnChanges {
             this.control.setValue(-1);
          });
       }
+      if (this.disable) {
+         this.disableSub = this.disable.subscribe((disable) => {
+            if (disable) {
+               this.control.disable();
+            } else {
+               this.control.enable();
+            }
+         });
+      }
    }
 
    ngOnDestroy() {
@@ -75,6 +86,9 @@ export class SelectComponent implements OnInit, OnDestroy, OnChanges {
       }
       if (this.unload) {
          this.unloadSub.unsubscribe();
+      }
+      if (this.disable) {
+         this.disableSub.unsubscribe();
       }
    }
 
