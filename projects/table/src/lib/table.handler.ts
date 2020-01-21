@@ -57,6 +57,9 @@ export function center(str: string): IField | IHeader {
 export function right(str: string): IField | IHeader {
    return { str, classes: ['right'] };
 }
+export function bolder(str: string): IField {
+   return { str, classes: ['bolder'] };
+}
 
 export interface IButton {
    button: string;
@@ -144,21 +147,6 @@ export function addButton(rows: any[], field: string, button: string, classes?: 
       const btn: IButton = { button, classes };
       row[field] = !condition || row[condition] ? btn : undefined;
    });
-}
-
-export interface IPagination {
-   totalItems: number;
-   itemsPerPage: number;
-   nextText: string;
-   previousText: string;
-   maxSize: number;
-   rotate: boolean;
-   boundaryLinks: boolean;
-   firstText: string;
-   lastText: string;
-   align: string;
-   currentPage: number;
-   change: Subject<IPagination>;
 }
 
 const thinSpace = '\u202F'; // '\u2009';

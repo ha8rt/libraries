@@ -1,9 +1,10 @@
-import { Component, OnChanges, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
-import { getFieldValue, Headers, IPagination, Codes, ILink, cleanSpaces } from './table.handler';
-import { IIconClick, ICheckClick, IFocusOut, IPageChanged, IButtonClick } from './table.interface';
-import { isIcons, IconClass } from '@ha8rt/icon';
-import { Icons } from './table.icons';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { IconClass, isIcons } from '@ha8rt/icon';
 import { Subscription } from 'rxjs';
+import { IPagination } from './pagination.handler';
+import { cleanSpaces, Codes, getFieldValue, Headers, ILink } from './table.handler';
+import { Icons } from './table.icons';
+import { IButtonClick, ICheckClick, IFocusOut, IIconClick, IPageChanged } from './table.interface';
 
 @Component({
    selector: 'lib-table',
@@ -31,7 +32,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
 
    @Output() rowEvent = new EventEmitter();
    @Output() buttonEvent = new EventEmitter<IButtonClick<any>>();
-   @Output() headerEvent = new EventEmitter();
+   @Output() headerEvent = new EventEmitter<number>();
    @Output() iconEvent = new EventEmitter<IIconClick<any>>();
    @Output() checkEvent = new EventEmitter<ICheckClick<any>>();
    @Output() searchEvent = new EventEmitter();
@@ -98,7 +99,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       this.buttonEvent.emit(event);
    }
 
-   onHeaderButtons(event) {
+   onHeaderButtons(event: number) {
       this.headerEvent.emit(event);
    }
 

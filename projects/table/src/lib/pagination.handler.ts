@@ -1,6 +1,20 @@
 import { Subject } from 'rxjs';
-import { IPagination } from './table.handler';
 import { IPageChanged } from './table.interface';
+
+export interface IPagination {
+   totalItems: number;
+   itemsPerPage: number;
+   nextText: string;
+   previousText: string;
+   maxSize: number;
+   rotate: boolean;
+   boundaryLinks: boolean;
+   firstText: string;
+   lastText: string;
+   align: string;
+   currentPage: number;
+   change: Subject<IPagination>;
+}
 
 export class Pagination implements IPagination {
    totalItems: number;
