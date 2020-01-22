@@ -34,7 +34,7 @@ export class Body {
       const obj: { [key: string]: any } = {};
       (this.value[1] as IElement[]).forEach(element => {
          if (!element.disabled) {
-            obj[element.id.split('-').reverse()[0]] = element.value === undefined ? null : element.value;
+            obj[element.id.split('-').reverse()[0]] = element.value;
          }
       });
       return obj;

@@ -221,7 +221,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
             } else if (element.type === ControlType.checkbox) {
                if (element.indeterminate) {
                   value = undefined;
-               } else if (value === null) {
+               } else {
                   value = element.value;
                }
             } else if (element.type === ControlType.formInline) {
