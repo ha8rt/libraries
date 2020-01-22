@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } 
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { IconClass, isIcons } from '@ha8rt/icon';
 import { Subscription } from 'rxjs';
-import { IPagination } from './pagination.handler';
+import { Pagination } from './pagination.handler';
 import { cleanSpaces, Codes, getFieldValue, Headers, ILink } from './table.handler';
 import { Icons } from './table.icons';
 import { IButtonClick, ICheckClick, IFocusOut, IIconClick, IPageChanged } from './table.interface';
@@ -26,7 +26,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
    @Input() readOnlyFilter: string;
    @Input() readWriteFilter: string;
    @Input() inputs: [number[], number[]];
-   @Input() pagination: IPagination;
+   @Input() pagination: Pagination;
    @Input() label: string;
    @Input() toggle: boolean = undefined;
    @Input() rowStyles: object[];
@@ -174,7 +174,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
    }
 
    onPageChanged(event: IPageChanged) {
-      if (Number(this.queryParams.page) !== event.page) {
+      if (Number(this.queryParams.page) !== event.page || !this.pagination.routeProvided) {
          this.pageChanged.emit(event);
          this.router.navigate([], {
             relativeTo: this.route,

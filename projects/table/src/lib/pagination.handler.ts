@@ -2,7 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { IPageChanged } from './table.interface';
 
-export interface IPagination {
+export class Pagination {
    totalItems: number;
    itemsPerPage: number;
    nextText: string;
@@ -13,23 +13,10 @@ export interface IPagination {
    firstText: string;
    lastText: string;
    align: string;
-   currentPage: number;
-   change: Subject<IPagination>;
-}
+   routeProvided: boolean;
+   change: Subject<Pagination> = new Subject<Pagination>();
+   scrollToTop = true;
 
-export class Pagination implements IPagination {
-   totalItems: number;
-   itemsPerPage: number;
-   nextText: string;
-   previousText: string;
-   maxSize: number;
-   rotate: boolean;
-   boundaryLinks: boolean;
-   firstText: string;
-   lastText: string;
-   align: string;
-
-   change: Subject<IPagination> = new Subject<IPagination>();
    private current: number;
 
    set currentPage(currentPage: number) {
@@ -54,8 +41,9 @@ export class Pagination implements IPagination {
       this.firstText = translate('First');
       this.lastText = translate('Last');
       this.align = 'center';
-      const page = route ? route.snapshot.queryParamMap.get('page') : 1;
-      this.current = !isNaN(Number(page)) ? Number(page) : 1;
+      this.routeProvided = route !== undefined;
+      const page = this.routeProvided ? route.snapshot.queryParamMap.get('page') : 1;
+      this.current = !isNaN(Number(page)) && page !== null ? Number(page) : 1;
    }
 
    from(): { from: number } {
@@ -90,7 +78,9 @@ export class Pagination implements IPagination {
 
    page(event: IPageChanged, callback: () => void) {
       this.currentPage = event.page;
-      scrollToTop();
+      if (scrollToTop) {
+         scrollToTop();
+      }
       callback();
    }
 
