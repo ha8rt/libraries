@@ -81,7 +81,11 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       }
       this.multiRow = this.isMultiRow();
       if (!this.pagination) {
-         this.pagination = { itemsPerPage: 0, totalItems: (this.rows ? this.rows.length : 0), currentPage: 1 } as any;
+         this.pagination = {
+            itemsPerPage: (this.rows ? this.rows.length : 0),
+            totalItems: (this.rows ? this.rows.length : 0),
+            currentPage: 1
+         } as any;
       }
    }
 

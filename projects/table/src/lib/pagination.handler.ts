@@ -68,6 +68,18 @@ export class Pagination implements IPagination {
       return Object.assign(this.from(), this.to());
    }
 
+   skip(): { skip: number } {
+      return { skip: (this.currentPage - 1) * this.itemsPerPage };
+   }
+
+   limit(): { limit: number } {
+      return { limit: this.itemsPerPage };
+   }
+
+   aggr(): { skip: number, limit: number } {
+      return Object.assign(this.skip(), this.limit());
+   }
+
    reset(callback: () => void) {
       this.currentPage = 1;
       this.itemsPerPage = 20;
