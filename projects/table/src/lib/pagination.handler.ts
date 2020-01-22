@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { IPageChanged } from './table.interface';
 
@@ -39,7 +40,7 @@ export class Pagination implements IPagination {
       return this.current;
    }
 
-   constructor(totalItems: number, translate?: (key: string) => string) {
+   constructor(totalItems: number, translate?: (key: string) => string, route?: ActivatedRoute) {
       if (!translate) {
          translate = (key: string) => key;
       }
@@ -53,7 +54,8 @@ export class Pagination implements IPagination {
       this.firstText = translate('First');
       this.lastText = translate('Last');
       this.align = 'center';
-      this.currentPage = 1;
+      const page = route ? route.snapshot.queryParamMap.get('page') : 1;
+      this.current = !isNaN(Number(page)) ? Number(page) : 1;
    }
 
    from(): { from: number } {

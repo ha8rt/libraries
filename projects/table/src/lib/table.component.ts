@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { IconClass, isIcons } from '@ha8rt/icon';
 import { Subscription } from 'rxjs';
 import { IPagination } from './pagination.handler';
@@ -53,22 +54,34 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
    isOpen = false;
    icons = Icons;
    isIcons = isIcons;
-   pageChange: Subscription;
+   pageChangeSubscription: Subscription;
+   queryParamsSubscription: Subscription;
+   queryParams: Params;
 
-   constructor() { }
+   constructor(private router: Router, private route: ActivatedRoute) {
+   }
 
    ngOnInit() {
       this.isOpen = this.toggle;
       if (this.pagination && this.pagination.change) {
-         this.pageChange = this.pagination.change.asObservable().subscribe((pagination) => {
+         this.pageChangeSubscription = this.pagination.change.asObservable().subscribe((pagination) => {
             this.pagination = pagination;
+         });
+         this.queryParamsSubscription = this.route.queryParams.subscribe((queryParams) => {
+            this.queryParams = queryParams;
+            if (!isNaN(Number(queryParams.page)) && this.pagination && Number(queryParams.page) !== this.pagination.currentPage) {
+               this.pagination.currentPage = Number(queryParams.page);
+            }
          });
       }
    }
 
    ngOnDestroy() {
-      if (this.pageChange) {
-         this.pageChange.unsubscribe();
+      if (this.pageChangeSubscription) {
+         this.pageChangeSubscription.unsubscribe();
+      }
+      if (this.queryParamsSubscription) {
+         this.queryParamsSubscription.unsubscribe();
       }
    }
 
@@ -161,7 +174,15 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
    }
 
    onPageChanged(event: IPageChanged) {
-      this.pageChanged.emit(event);
+      if (Number(this.queryParams.page) !== event.page) {
+         this.pageChanged.emit(event);
+         this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { page: event.page },
+            replaceUrl: true,
+            queryParamsHandling: 'merge',
+         });
+      }
    }
 
    onToggle() {
