@@ -82,6 +82,18 @@ export function getFieldValue(row: any, code: string) {
    return row ? row[code] : undefined;
 }
 
+export function setFieldValue(row: any, code: string, value: any) {
+   while (code && row && code.includes('.')) {
+      const i = code.indexOf('.');
+      const parent = code.substr(0, i);
+      row = row[parent];
+      code = code.substr(i + 1);
+   }
+   if (row) {
+      row[code] = value;
+   }
+}
+
 export function convertToBool<T>(rows: T[], fields: Array<keyof T>) {
    rows.forEach((row) => {
       fields.forEach((field) => {
@@ -123,16 +135,16 @@ export function addLinks(rows: any[], field: string, paths: string[], scopes: st
       const obj = Object.assign({}, params);
       if (obj) {
          Object.keys(obj).forEach((key) => {
-            obj[key] = row[obj[key]];
+            obj[key] = getFieldValue(row, obj[key]);
          });
       }
       const link: ILink = {
-         value: row[field],
+         value: getFieldValue(row, field),
          link: '/' + paths.join('/').split('/').filter((value) => !value.includes(':')).join('/')
-            + '/' + scopes.map((param) => row[param]).join('/'),
+            + '/' + scopes.map((param) => getFieldValue(row, param)).join('/'),
          params: obj,
       };
-      row[field] = link;
+      setFieldValue(row, field, link);
    });
 }
 
