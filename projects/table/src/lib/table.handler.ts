@@ -1,5 +1,5 @@
+import { Params } from '@angular/router';
 import { IconClass, IIconClass } from '@ha8rt/icon';
-import { Subject } from 'rxjs';
 
 export class Headers {
    rows: IHeader[][] = [];
@@ -151,7 +151,7 @@ export function addTooltips(rows: any[], fields: string[], tooltips: string[]) {
    }
 }
 
-export function addLinks(rows: any[], field: string, paths: string[], scopes: string[], params?: object) {
+export function addLinks(rows: any[], field: string, paths: string[], scopes: string[], params?: object, queryParams?: Params) {
    rows.forEach((row) => {
       const obj = Object.assign({}, params);
       if (obj) {
@@ -163,7 +163,7 @@ export function addLinks(rows: any[], field: string, paths: string[], scopes: st
          value: getFieldValue(row, field),
          link: '/' + paths.join('/').split('/').filter((value) => !value.includes(':')).join('/')
             + '/' + scopes.map((param) => getFieldValue(row, param)).join('/'),
-         params: obj,
+         params: Object.assign(obj, queryParams),
       };
       setFieldValue(row, field, link);
    });
