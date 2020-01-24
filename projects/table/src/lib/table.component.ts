@@ -60,7 +60,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
    queryParamsSubscription: Subscription;
    queryParams: Params;
 
-   constructor(private router: Router, private route: ActivatedRoute) {
+   constructor(public router: Router, private route: ActivatedRoute) {
    }
 
    ngOnInit() {
@@ -124,6 +124,12 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
 
    onIconClick(event: IIconClick<any>) {
       this.iconEvent.emit(event);
+   }
+
+   onLinkClick(event: ILink) {
+      window.open(event.link + '?' + Object.keys(event.params).reduce<string>((previous, current) => {
+         return previous + '&' + current + '=' + event.params[current];
+      }, ''), '_blank');
    }
 
    onCheckChange(event: ICheckClick<any>) {

@@ -90,10 +90,16 @@
                                        for="{{ code.str + '_' + rows.indexOf(row) + '_' + id }}"></label>
                                  </div>
                                  <!-- if this field is a link -->
-                                 <a *ngSwitchCase="isLink(fieldValue)" [routerLink]="fieldValue.link"
-                                    [queryParams]="fieldValue.params">
-                                    {{ fieldValue.value }}
-                                 </a>
+                                 <ng-container *ngSwitchCase="isLink(fieldValue)">
+                                    <a *ngIf="fieldValue.tab; else sameSite" [routerLink]="[router.url.split('?')[0]]"
+                                       [queryParams]="router.parseUrl(router.url).queryParams"
+                                       (click)="onLinkClick(fieldValue)">
+                                       {{ fieldValue.value }}</a>
+                                    <ng-template #sameSite>
+                                       <a [routerLink]="fieldValue.link"
+                                          [queryParams]="fieldValue.params">{{ fieldValue.value }}</a>
+                                    </ng-template>
+                                 </ng-container>
                                  <button *ngSwitchCase="isButton(fieldValue)"
                                     [ngClass]="['btn', 'btn-sm', fieldValue.classes ? fieldValue.classes.join(' ') : 'btn-primary']"
                                     (click)="onBtnClick({row: row, id: code})">

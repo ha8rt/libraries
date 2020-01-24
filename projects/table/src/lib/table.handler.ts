@@ -70,6 +70,7 @@ export interface ILink {
    link: string;
    value: string;
    params: object;
+   tab?: boolean;
 }
 
 export function getFieldValue(row: any, code: string) {
@@ -151,7 +152,9 @@ export function addTooltips(rows: any[], fields: string[], tooltips: string[]) {
    }
 }
 
-export function addLinks(rows: any[], field: string, paths: string[], scopes: string[], params?: object, queryParams?: Params) {
+export function addLinks(
+   rows: any[], field: string, paths: string[], scopes: string[], params?: object, queryParams?: Params, tab?: boolean,
+) {
    rows.forEach((row) => {
       const obj = Object.assign({}, params);
       if (obj) {
@@ -164,6 +167,7 @@ export function addLinks(rows: any[], field: string, paths: string[], scopes: st
          link: '/' + paths.join('/').split('/').filter((value) => !value.includes(':')).join('/')
             + '/' + scopes.map((param) => getFieldValue(row, param)).join('/'),
          params: Object.assign(obj, queryParams),
+         tab
       };
       setFieldValue(row, field, link);
    });
