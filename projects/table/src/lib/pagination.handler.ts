@@ -71,8 +71,14 @@ export class Pagination {
    }
 
    reset(callback: () => void) {
-      this.currentPage = 1;
+      this.current = 1;
       this.itemsPerPage = 20;
+      this.maxSize = 5;
+      callback();
+   }
+
+   set(page: number, callback: () => void) {
+      this.current = page;
       callback();
    }
 
