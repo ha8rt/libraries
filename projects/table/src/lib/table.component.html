@@ -18,6 +18,12 @@
                      <lib-icon [content]="'fas:faSearch'"> </lib-icon>
                   </button>
                </ng-container>
+               <ng-container *ngIf="refresh">
+                  <button class="btn btn-primary btn-sm" style="margin-left: 0.25rem;"
+                     (click)="onRefresh(); $event.stopPropagation();">
+                     <lib-icon [content]="'fas:faSyncAlt'"> </lib-icon>
+                  </button>
+               </ng-container>
                <ng-container *ngIf="headerButtons">
                   <div *ngFor="let button of headerButtons; let i = index">
                      <button class="btn btn-primary btn-sm" (click)="onHeaderButtons(i); $event.stopPropagation();"

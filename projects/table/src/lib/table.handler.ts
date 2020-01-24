@@ -120,6 +120,27 @@ export function convertDateToLocaleDate<T>(rows: T[], fields: Array<keyof T>, lo
    });
 }
 
+export function convertDateToLocaleTime<T>(rows: T[], fields: Array<keyof T>, locale: string, options?: Intl.DateTimeFormatOptions) {
+   rows.forEach((row) => {
+      fields.forEach((field) => {
+         const date = new Date(String(row[field]));
+         row[field] = (date.getTime() > 0 ? date.toLocaleTimeString(locale, options) : null) as any;
+      });
+   });
+}
+
+export function splitDateTimeToLocale<T>(rows: T[], fields: Array<keyof T>, locale: string, options?: Intl.DateTimeFormatOptions[]) {
+   rows.forEach((row) => {
+      fields.forEach((field) => {
+         const date = new Date(String(row[field]));
+         if (date.getTime() > 0) {
+            row[field + 'Date'] = date.toLocaleDateString(locale, options[0]) as any;
+            row[field + 'Time'] = date.toLocaleTimeString(locale, options[1]) as any;
+         }
+      });
+   });
+}
+
 export function addTooltips(rows: any[], fields: string[], tooltips: string[]) {
    if (fields.length === tooltips.length) {
       rows.forEach((row) => {

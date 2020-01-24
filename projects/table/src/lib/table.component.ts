@@ -19,6 +19,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
    @Input() rows: any[];
    @Input() filter: boolean;
    @Input() search: boolean;
+   @Input() refresh: boolean;
    @Input() nr: string;
    @Input() desc: boolean;
    @Input() headerButtons: string[];
@@ -37,6 +38,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
    @Output() iconEvent = new EventEmitter<IIconClick<any>>();
    @Output() checkEvent = new EventEmitter<ICheckClick<any>>();
    @Output() searchEvent = new EventEmitter();
+   @Output() refreshEvent = new EventEmitter();
    @Output() focusOut = new EventEmitter<IFocusOut<any>>();
    @Output() pageChanged = new EventEmitter<IPageChanged>();
 
@@ -167,6 +169,10 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
 
    onSearch() {
       this.searchEvent.emit();
+   }
+
+   onRefresh() {
+      this.refreshEvent.emit();
    }
 
    onFocusOut(event: FocusEvent, row: any[], rowId: number, columnId: number) {
