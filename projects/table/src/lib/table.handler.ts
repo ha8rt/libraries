@@ -164,8 +164,8 @@ export function addLinks(
       }
       const link: ILink = {
          value: getFieldValue(row, field),
-         link: '/' + paths.join('/').split('/').filter((value) => !value.includes(':')).join('/')
-            + '/' + scopes.map((param) => getFieldValue(row, param)).join('/'),
+         link: '/' + paths.join('/').split('/').filter((path) => !path.includes(':')).map((path) => encodeURIComponent(path)).join('/')
+            + '/' + scopes.map((param) => encodeURIComponent(getFieldValue(row, param))).join('/'),
          params: Object.assign(obj, queryParams),
          tab
       };
