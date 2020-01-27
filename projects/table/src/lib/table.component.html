@@ -91,7 +91,7 @@
                                  </div>
                                  <!-- if this field is a link -->
                                  <ng-container *ngSwitchCase="isLink(fieldValue)">
-                                    <a *ngIf="fieldValue.tab; else sameSite" [routerLink]="[router.url.split('?')[0]]"
+                                    <a *ngIf="fieldValue.tab; else sameSite" [routerLink]="routerLink"
                                        [queryParams]="router.parseUrl(router.url).queryParams"
                                        (click)="onLinkClick(fieldValue)">
                                        {{ fieldValue.value }}</a>

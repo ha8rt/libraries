@@ -59,8 +59,10 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
    pageChangeSubscription: Subscription;
    queryParamsSubscription: Subscription;
    queryParams: Params;
+   routerLink: string[];
 
    constructor(public router: Router, private route: ActivatedRoute) {
+      this.routerLink = router.url.split('?')[0].split('/').map((segment) => decodeURIComponent(segment));
    }
 
    ngOnInit() {

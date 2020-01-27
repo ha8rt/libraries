@@ -173,6 +173,34 @@ export function addLinks(
    });
 }
 
+export function addRouting(rows: any[], field: string, paths: string[], queryParams?: Params, openTab?: boolean) {
+   rows.forEach((row) => {
+      const routes: string[] = [];
+      paths.forEach((path) => {
+         if (path.startsWith('$')) {
+            routes.push(getFieldValue(row, path.substring(1)));
+         } else {
+            routes.push(path);
+         }
+      });
+      const params: Params = {};
+      Object.keys(queryParams || {}).forEach((key) => {
+         if (queryParams[key].startsWith('$')) {
+            params[key] = encodeURIComponent(getFieldValue(row, String(queryParams[key]).substring(1)));
+         } else {
+            params[key] = encodeURIComponent(queryParams[key]);
+         }
+      });
+      const link: ILink = {
+         value: getFieldValue(row, field),
+         link: '/' + routes.map((route) => encodeURIComponent(route)).join('/'),
+         params,
+         tab: openTab,
+      };
+      setFieldValue(row, field, link);
+   });
+}
+
 export function addIcon(rows: any[], field: string, icon: IIconClass, condition?: string) {
    rows.forEach((row) => {
       row[field] = !condition || row[condition] ? new IconClass(icon.content, icon.id, icon.classes, icon.tooltip) : undefined;
