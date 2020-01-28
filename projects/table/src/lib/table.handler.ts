@@ -60,6 +60,12 @@ export function right(str: string): IField | IHeader {
 export function bolder(str: string): IField {
    return { str, classes: ['bolder'] };
 }
+export function rowspan(str: string, span: number): IHeader {
+   return { str, rowspan: span };
+}
+export function colspan(str: string, span: number): IHeader {
+   return { str, colspan: span };
+}
 
 export interface IButton {
    button: string;
