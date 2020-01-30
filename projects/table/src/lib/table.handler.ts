@@ -79,25 +79,25 @@ export interface ILink {
    tab?: boolean;
 }
 
-export function getFieldValue(row: any, code: string) {
-   while (code && row && code.includes('.')) {
-      const i = code.indexOf('.');
-      const parent = code.substr(0, i);
+export function getFieldValue(row: any, field: string) {
+   while (field && row && field.includes('.')) {
+      const i = field.indexOf('.');
+      const parent = field.substr(0, i);
       row = row[parent];
-      code = code.substr(i + 1);
+      field = field.substr(i + 1);
    }
-   return row ? row[code] : undefined;
+   return row ? row[field] : undefined;
 }
 
-export function setFieldValue(row: any, code: string, value: any) {
-   while (code && row && code.includes('.')) {
-      const i = code.indexOf('.');
-      const parent = code.substr(0, i);
+export function setFieldValue(row: any, field: string, value: any) {
+   while (field && row && field.includes('.')) {
+      const i = field.indexOf('.');
+      const parent = field.substr(0, i);
       row = row[parent];
-      code = code.substr(i + 1);
+      field = field.substr(i + 1);
    }
    if (row) {
-      row[code] = value;
+      row[field] = value;
    }
 }
 
@@ -207,9 +207,13 @@ export function addRouting(rows: any[], field: string, paths: string[], queryPar
    });
 }
 
-export function addIcon(rows: any[], field: string, icon: IIconClass, condition?: string) {
+export function addIcon(rows: any[], field: string, icon: IIconClass, conditions?: string[]) {
    rows.forEach((row) => {
-      row[field] = !condition || row[condition] ? new IconClass(icon.content, icon.id, icon.classes, icon.tooltip) : undefined;
+      setFieldValue(row, field,
+         !conditions || conditions.every((condition) => getFieldValue(row, condition)) ?
+            new IconClass(icon.content, icon.id, icon.classes, icon.tooltip)
+            : getFieldValue(row, field)
+      );
    });
 }
 
@@ -248,4 +252,12 @@ export function splitThousands(rows: any[], fields: string[], omitZero: boolean 
 export function cleanSpaces(value: string): string {
    return value.split(' ').filter((chunk) => chunk.length > 0).join('').
       split(thinSpace).filter((chunk) => chunk.length > 0).join('');
+}
+
+export function setBoolean<T>(rows: T[], keys: Array<keyof T>) {
+   rows.forEach((row) => {
+      keys.forEach((key) => {
+         row[key] = Boolean(row[key]) as any;
+      });
+   });
 }
