@@ -84,7 +84,7 @@ export class Pagination {
 
    page(event: IPageChanged, callback: () => void) {
       this.currentPage = event.page;
-      if (scrollToTop) {
+      if (this.scrollToTop) {
          scrollToTop();
       }
       callback();
