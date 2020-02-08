@@ -7,7 +7,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { Body, ControlType, IElement, IModalBody } from './body.handler';
 import { IModalButton } from './button.handler';
-import { ChangeType, IModalHandler } from './modal.handler';
+import { ChangeType, ModalHandler } from './modal.handler';
 
 @Component({
    selector: 'lib-modal',
@@ -19,7 +19,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
 
    @ViewChild('template', null) template: TemplateRef<any>;
 
-   @Input() set handler(handler: IModalHandler) {
+   @Input() set handler(handler: ModalHandler) {
       this.obs = handler.obs;
       this.title = handler.title;
       this.localTime = handler.localTime;

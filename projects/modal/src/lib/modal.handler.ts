@@ -12,59 +12,33 @@ export interface ChangeType {
    reqAlert?: string;
 }
 
-export interface IModalHandler {
-   event: Subject<void>;
-   obs: Observable<void>;
+export class ModalHandler {
+   event: Subject<void> = new Subject<void>();
+   obs: Observable<void> = this.event.asObservable();
    title: string;
-   body: IModalBody[];
-   buttons: IModalButton[];
+   body: IModalBody[] = [];
+   buttons: IModalButton[] = [];
    text: string;
-   validators: ValidatorFn[];
-   errors: (string[])[];
-   change: Subject<ChangeType>;
+   validators: ValidatorFn[] = [];
+   errors: (string[])[] = [];
+   change: Subject<ChangeType> = new Subject<ChangeType>();
 
-   keyboard: boolean;
-   ignoreBackdropClick: boolean;
-   closeButton: boolean;
-   classes: string[];
+   keyboard = true;
+   ignoreBackdropClick = false;
+   closeButton = true;
+   classes: string[] = [];
 
-   localTime: boolean;
-   locale: Locales;
+   localTime = true;
+   locale: Locales = Locales.hu;
 
-   reqAlert: string;
+   reqAlert = 'Enter the \"$1\" field.';
 
-   output: Subject<Body>;
-   outputObs: Observable<Body>;
-}
+   output: Subject<Body> = new Subject<Body>();
+   outputObs: Observable<Body> = this.output.asObservable();
 
-export function initModal(): IModalHandler {
-   const event = new Subject<void>();
-   const obs = event.asObservable();
-   const title = '';
-   const body = [];
-   const buttons = [];
-   const text = '';
-   const validators = [];
-   const errors = [];
-   const change = new Subject();
+   constructor() { }
 
-   const keyboard = true;
-   const ignoreBackdropClick = false;
-   const closeButton = true;
-   const classes = [];
-
-   const localTime = true;
-   const locale = Locales.hu;
-   const reqAlert = 'Enter the \"$1\" field.';
-
-   const output = new Subject<Body>();
-   const outputObs = output.asObservable();
-
-   const handler: IModalHandler = {
-      event, obs, title, body, buttons, text, validators, errors, change,
-      keyboard, ignoreBackdropClick, closeButton, classes,
-      localTime, locale, reqAlert, output, outputObs
-   };
-
-   return handler;
+   set(item: string, value: any) {
+      this.body.find((elem) => elem.id === item).value = value;
+   }
 }

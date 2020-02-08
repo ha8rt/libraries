@@ -1,6 +1,6 @@
-import { IModalHandler } from './modal.handler';
+import { ModalHandler } from './modal.handler';
 
-export function translateModal(handler: IModalHandler, translate: (key: string) => string): IModalHandler {
+export function translateModal(handler: ModalHandler, translate: (key: string) => string): ModalHandler {
    handler.body.forEach((body) => {
       body.label = translate(body.label);
       body.placeHolder = translate(body.placeHolder);
