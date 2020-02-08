@@ -211,8 +211,9 @@ export function addIcon(rows: any[], field: string, icon: IIconClass, conditions
    rows.forEach((row) => {
       setFieldValue(row, field,
          !conditions || conditions.every((condition) => getFieldValue(row, condition)) ?
-            new IconClass(icon.content, icon.id, icon.classes, icon.tooltip)
-            : getFieldValue(row, field)
+            new IconClass(icon.content, icon.id, icon.classes,
+               icon.tooltip && icon.tooltip.startsWith('$') ? getFieldValue(row, icon.tooltip.substring(1)) : icon.tooltip,
+            ) : getFieldValue(row, field)
       );
    });
 }
