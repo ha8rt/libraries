@@ -168,8 +168,12 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
    }
 
    ngOnDestroy(): void {
-      this.showSub.unsubscribe();
-      this.changeSub.unsubscribe();
+      if (this.showSub) {
+         this.showSub.unsubscribe();
+      }
+      if (this.changeSub) {
+         this.changeSub.unsubscribe();
+      }
    }
 
    ngAfterViewChecked(): void {

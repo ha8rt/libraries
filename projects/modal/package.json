@@ -1,6 +1,6 @@
 {
    "name": "@ha8rt/modal",
-   "version": "0.0.31",
+   "version": "0.0.32",
    "peerDependencies": {
       "@angular/common": "^8.0.3",
       "@angular/core": "^8.0.3"
