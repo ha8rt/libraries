@@ -3,9 +3,9 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { IconClass, isIcons } from '@ha8rt/icon';
 import { Subscription } from 'rxjs';
 import { Pagination } from './pagination.handler';
-import { cleanSpaces, Codes, getFieldValue, Headers, ILink } from './table.handler';
+import { cleanSpaces, Codes, getFieldValue, Headers, ILink, setFieldValue } from './table.handler';
 import { Icons } from './table.icons';
-import { IButtonClick, ICheckClick, IFocusOut, IIconClick, IPageChanged } from './table.interface';
+import { IButtonEvent, ICheckEvent, IColorEvent, IFocusOut, IIconEvent, IPageChanged } from './table.interface';
 
 @Component({
    selector: 'lib-table',
@@ -33,21 +33,20 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
    @Input() rowStyles: object[];
 
    @Output() rowEvent = new EventEmitter();
-   @Output() buttonEvent = new EventEmitter<IButtonClick<any>>();
+   @Output() buttonEvent = new EventEmitter<IButtonEvent<any>>();
    @Output() headerEvent = new EventEmitter<number>();
-   @Output() iconEvent = new EventEmitter<IIconClick<any>>();
-   @Output() checkEvent = new EventEmitter<ICheckClick<any>>();
+   @Output() iconEvent = new EventEmitter<IIconEvent<any>>();
+   @Output() checkEvent = new EventEmitter<ICheckEvent<any>>();
    @Output() searchEvent = new EventEmitter();
    @Output() refreshEvent = new EventEmitter();
    @Output() focusOut = new EventEmitter<IFocusOut<any>>();
    @Output() pageChanged = new EventEmitter<IPageChanged>();
+   @Output() colorEvent = new EventEmitter<IColorEvent<any>>();
 
    @Output() selectChange: EventEmitter<number> = new EventEmitter<number>();
    @Input() set select(value: number) {
       this.selected = value;
    }
-
-   getFieldValue = getFieldValue;
 
    shown: boolean[];
    filterStr: string;
@@ -55,7 +54,6 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
    multiRow: boolean;
    isOpen = false;
    icons = Icons;
-   isIcons = isIcons;
    pageChangeSubscription: Subscription;
    queryParamsSubscription: Subscription;
    queryParams: Params;
@@ -96,7 +94,8 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
             this.onFilter(this.filterStr);
          }
       }
-      this.multiRow = this.isMultiRow();
+      const isMultiRow = () => this.headers ? this.headers.rows.length > 1 : false;
+      this.multiRow = isMultiRow();
       if (!this.pagination) {
          this.pagination = {
             itemsPerPage: (this.rows ? this.rows.length : 0),
@@ -106,38 +105,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       }
    }
 
-   onRowClick(row: any) {
-      if (this.selected === this.rows.indexOf(row)) {
-         this.selected = -1;
-      } else {
-         this.selected = this.rows.indexOf(row);
-      }
-      this.selectChange.emit(this.selected);
-      this.rowEvent.emit(row);
-   }
-
-   onBtnClick(event: IButtonClick<any>) {
-      this.buttonEvent.emit(event);
-   }
-
-   onHeaderButtons(event: number) {
-      this.headerEvent.emit(event);
-   }
-
-   onIconClick(event: IIconClick<any>) {
-      this.iconEvent.emit(event);
-   }
-
-   onLinkClick(event: ILink) {
-      window.open(event.link + '?' + Object.keys(event.params).reduce<string>((previous, current) => {
-         return previous + '&' + current + '=' + event.params[current];
-      }, ''), '_blank');
-   }
-
-   onCheckChange(event: ICheckClick<any>) {
-      this.checkEvent.emit(event);
-   }
-
+   onToggle = () => this.isOpen = !this.isOpen;
    onFilter(filterStr: string) {
       this.filterStr = cleanSpaces(filterStr);
       this.rows.forEach((row, index) => {
@@ -174,69 +142,15 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
          }
       });
    }
-
-   onSearch() {
-      this.searchEvent.emit();
-   }
-
-   onRefresh() {
-      this.refreshEvent.emit();
-   }
-
-   onFocusOut(event: FocusEvent, row: any[], rowId: number, columnId: number) {
-      this.focusOut.emit({ row, value: (event.target as any).value, rowId, columnId });
-   }
-
-   onPageChanged(event: IPageChanged) {
-      if (Number(this.queryParams.page) !== event.page || !this.pagination.routeProvided) {
-         this.pageChanged.emit(event);
-         this.router.navigate([], {
-            relativeTo: this.route,
-            queryParams: { page: event.page },
-            replaceUrl: true,
-            queryParamsHandling: 'merge',
-         });
+   onRowClick(row: any) {
+      if (this.selected === this.rows.indexOf(row)) {
+         this.selected = -1;
+      } else {
+         this.selected = this.rows.indexOf(row);
       }
+      this.selectChange.emit(this.selected);
+      this.rowEvent.emit(row);
    }
-
-   onToggle() {
-      this.isOpen = !this.isOpen;
-   }
-
-   setRowVisible(row: any, state?: boolean) {
-      this.shown[this.rows.indexOf(row)] = (state === undefined) ? true : state;
-   }
-
-   getRowVisible(row: any): boolean {
-      return this.shown[this.rows.indexOf(row)];
-   }
-
-   isBoolean(elem): boolean {
-      return typeof elem === 'boolean';
-   }
-
-   isButton(elem) {
-      return typeof elem === 'object' && elem && elem.button !== undefined;
-   }
-
-   isLink(elem): boolean {
-      return typeof elem === 'object' && elem && elem.link !== undefined;
-   }
-
-   isMultiRow(): boolean {
-      return this.headers ? this.headers.rows.length > 1 : false;
-   }
-
-   isPagination(): boolean {
-      return this.pagination && this.pagination.totalItems > this.pagination.itemsPerPage;
-   }
-
-   isReadOnly(row: any): boolean {
-      return this.readOnly
-         && (!this.readOnlyFilter || getFieldValue(row, this.readOnlyFilter))
-         && (!this.readWriteFilter || !getFieldValue(row, this.readWriteFilter));
-   }
-
    getRowStyles(row: any): string {
       if (this.rowStyles) {
          return this.rowStyles.map((style) => {
@@ -246,6 +160,49 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
          }).join(' ');
       } else {
          return '';
+      }
+   }
+   // tslint:disable-next-line: member-ordering
+   getFieldValue = getFieldValue;
+   // tslint:disable-next-line: member-ordering
+   setFieldValue = setFieldValue;
+   getRowVisible = (row: any) => this.shown[this.rows.indexOf(row)];
+   setRowVisible = (row: any, state?: boolean) => this.shown[this.rows.indexOf(row)] = (state === undefined) ? true : state;
+   // tslint:disable-next-line: member-ordering
+   isIcons = isIcons;
+   isBoolean = (elem: any) => {
+      return typeof elem === 'boolean' || (elem.indeterminate !== undefined && typeof elem.indeterminate === 'boolean');
+   }
+   onCheckBox(row: any, elem: string) {
+      if (row[elem].indeterminate !== undefined) {
+         const indeterminate = (!row[elem].value && !row[elem].indeterminate) ? true : false;
+         const checked = (!row[elem].value && row[elem].indeterminate) ? true : false;
+         row[elem].indeterminate = indeterminate;
+         row[elem].value = checked;
+      } else {
+         row[elem] = !row[elem];
+      }
+   }
+   // tslint:disable-next-line: max-line-length
+   isReadOnly = (row: any) => this.readOnly && (!this.readOnlyFilter || getFieldValue(row, this.readOnlyFilter)) && (!this.readWriteFilter || !getFieldValue(row, this.readWriteFilter));
+   isLink = (elem: any) => typeof elem === 'object' && elem && elem.link !== undefined;
+   onLinkClick(event: ILink) {
+      window.open(event.link + '?' + Object.keys(event.params).reduce<string>((previous, current) => {
+         return previous + '&' + current + '=' + event.params[current];
+      }, ''), '_blank');
+   }
+   isButton = (elem: any) => typeof elem === 'object' && elem && elem.button !== undefined;
+   isColor = (elem: any) => typeof elem === 'string' && new RegExp('^#[0-F]{6}$').test(elem.toUpperCase());
+   isPagination = () => this.pagination && this.pagination.totalItems > this.pagination.itemsPerPage;
+   onPageChanged(event: IPageChanged) {
+      if (Number(this.queryParams.page) !== event.page || !this.pagination.routeProvided) {
+         this.pageChanged.emit(event);
+         this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { page: event.page },
+            replaceUrl: true,
+            queryParamsHandling: 'merge',
+         });
       }
    }
 }

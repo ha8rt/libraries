@@ -1,10 +1,11 @@
-import { NgModule } from '@angular/core';
-import { TableComponent } from './table.component';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { IconModule } from '@ha8rt/icon';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ColorPickerModule } from 'ngx-color-picker';
+import { TableComponent } from './table.component';
 
 @NgModule({
    declarations: [TableComponent],
@@ -14,6 +15,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
       FormsModule,
       IconModule,
       PaginationModule.forRoot(),
+      ColorPickerModule,
    ],
    exports: [TableComponent, RouterModule]
 })

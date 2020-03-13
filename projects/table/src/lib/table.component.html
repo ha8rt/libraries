@@ -14,19 +14,19 @@
                </ng-container>
                <ng-container *ngIf="search">
                   <button class="btn btn-primary btn-sm" style="margin-left: 0.25rem;"
-                     (click)="onSearch(); $event.stopPropagation();">
+                     (click)="searchEvent.emit(); $event.stopPropagation();">
                      <lib-icon [content]="'fas:faSearch'"> </lib-icon>
                   </button>
                </ng-container>
                <ng-container *ngIf="refresh">
                   <button class="btn btn-primary btn-sm" style="margin-left: 0.25rem;"
-                     (click)="onRefresh(); $event.stopPropagation();">
+                     (click)="refreshEvent.emit(); $event.stopPropagation();">
                      <lib-icon [content]="'fas:faSyncAlt'"> </lib-icon>
                   </button>
                </ng-container>
                <ng-container *ngIf="headerButtons">
                   <div *ngFor="let button of headerButtons; let i = index">
-                     <button class="btn btn-primary btn-sm" (click)="onHeaderButtons(i); $event.stopPropagation();"
+                     <button class="btn btn-primary btn-sm" (click)="headerEvent.emit(i); $event.stopPropagation();"
                         type="button" style="margin-left: 0.25rem" [id]="'button'+i">{{ button }}</button>
                   </div>
                </ng-container>
@@ -73,19 +73,23 @@
                               <ng-container [ngSwitch]="true">
                                  <input *ngSwitchCase="inputs && (inputs[0].includes(i) || inputs[1].includes(j))"
                                     id="{{ 'input' + i + '' + j }}" class="form-control" type="text"
-                                    value="{{ fieldValue }}" (focusout)="onFocusOut($event, row, i, j)">
+                                    value="{{ fieldValue }}"
+                                    (focusout)="focusOut.emit({ row: row, value: $event.target.value, rowId: i, columnId: j })">
                                  <!-- if this field contains icons -->
                                  <lib-icon *ngSwitchCase="isIcons([fieldValue])" [content]="fieldValue.content"
                                     [tooltip]="fieldValue.tooltip"
                                     [ngClass]="[fieldValue.classes ? fieldValue.classes.join(' ') : '']"
-                                    (iClicked)="onIconClick({row: row, icon: fieldValue.content, id: fieldValue.id})">
+                                    (iClicked)="iconEvent.emit({ row: row, icon: fieldValue.content, id: fieldValue.id })"
+                                    (click)="$event.stopPropagation()">
                                  </lib-icon>
                                  <!-- if this field is boolean -->
-                                 <div *ngSwitchCase="isBoolean(row[code.str])" class="custom-control custom-checkbox">
+                                 <div *ngSwitchCase="isBoolean(fieldValue)" class="custom-control custom-checkbox"
+                                    (click)="$event.stopPropagation()">
                                     <input class="custom-control-input"
                                        id="{{ code.str + '_' + rows.indexOf(row) + '_' + id }}" type="checkbox"
-                                       [(ngModel)]="row[code.str]" (change)="onCheckChange({row: row, elem: code.str})"
-                                       [disabled]="isReadOnly(row)">
+                                       [checked]="fieldValue.value === undefined ? fieldValue : fieldValue.value"
+                                       (click)="$event.stopPropagation(); onCheckBox(row, code.str); checkEvent.emit({ row: row, elem: code.str });"
+                                       [disabled]="isReadOnly(row)" [indeterminate]="fieldValue.indeterminate">
                                     <label class="custom-control-label"
                                        for="{{ code.str + '_' + rows.indexOf(row) + '_' + id }}"></label>
                                  </div>
@@ -93,18 +97,24 @@
                                  <ng-container *ngSwitchCase="isLink(fieldValue)">
                                     <a *ngIf="fieldValue.tab; else sameSite" [routerLink]="routerLink"
                                        [queryParams]="router.parseUrl(router.url).queryParams"
-                                       (click)="onLinkClick(fieldValue)">
+                                       (click)="onLinkClick(fieldValue); $event.stopPropagation();">
                                        {{ fieldValue.value }}</a>
                                     <ng-template #sameSite>
                                        <a [routerLink]="fieldValue.link"
                                           [queryParams]="fieldValue.params">{{ fieldValue.value }}</a>
                                     </ng-template>
                                  </ng-container>
+                                 <!-- if this field is a button -->
                                  <button *ngSwitchCase="isButton(fieldValue)"
                                     [ngClass]="['btn', 'btn-sm', fieldValue.classes ? fieldValue.classes.join(' ') : 'btn-primary']"
-                                    (click)="onBtnClick({row: row, id: code})">
+                                    (click)="buttonEvent.emit({ row: row, id: code }); $event.stopPropagation();">
                                     {{ fieldValue.button }}
                                  </button>
+                                 <!-- if this field is color -->
+                                 <input *ngSwitchCase="isColor(fieldValue)" [style.background]="fieldValue"
+                                    [disabled]="isReadOnly(row)" [cpDisabled]="isReadOnly(row)" style="width: 8rem;"
+                                    [colorPicker]="fieldValue" [cpOutputFormat]="'hex'" [cpAlphaChannel]="'disabled'"
+                                    (colorPickerSelect)="setFieldValue(row, code.str, $event); colorEvent.emit({row: row, elem: code.str});">
                                  <!-- default: normal text -->
                                  <ng-container *ngSwitchDefault>
                                     {{ fieldValue }}

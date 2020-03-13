@@ -101,10 +101,16 @@ export function setFieldValue(row: any, field: string, value: any) {
    }
 }
 
-export function convertToBool<T>(rows: T[], fields: Array<keyof T>) {
+export function convertToBool<T>(rows: T[], fields: Array<keyof T>, indeterminate?: boolean, indeterminateVal = -1) {
    rows.forEach((row) => {
       fields.forEach((field) => {
-         row[field] = (row[field] !== undefined ? (Number(row[field]) === 1 ? true : false) : undefined) as any;
+         // tslint:disable-next-line: max-line-length
+         const value = row[field] !== undefined && row[field] !== indeterminateVal as any ? (Number(row[field]) === 1 ? true : false) : undefined;
+         if (indeterminate) {
+            row[field] = { value, indeterminate: value === undefined ? true : false } as any;
+         } else {
+            row[field] = value as any;
+         }
       });
    });
 }
@@ -255,10 +261,14 @@ export function cleanSpaces(value: string): string {
       split(thinSpace).filter((chunk) => chunk.length > 0).join('');
 }
 
-export function setBoolean<T>(rows: T[], keys: Array<keyof T>) {
+export function setBoolean<T>(rows: T[], keys: Array<keyof T>, indeterminate?: boolean) {
    rows.forEach((row) => {
       keys.forEach((key) => {
-         row[key] = Boolean(row[key]) as any;
+         if (indeterminate) {
+            row[key] = { value: Boolean(row[key]), indeterminate: false } as any;
+         } else {
+            row[key] = Boolean(row[key]) as any;
+         }
       });
    });
 }

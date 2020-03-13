@@ -1,9 +1,9 @@
-export interface ICheckClick<U> {
+export interface ICheckEvent<U> {
    row: U;
    elem: string;
 }
 
-export interface IIconClick<U> {
+export interface IIconEvent<U> {
    row: U;
    icon: string;
    id: string;
@@ -21,7 +21,12 @@ export interface IPageChanged {
    itemsPerPage: number;
 }
 
-export interface IButtonClick<U> {
+export interface IButtonEvent<U> {
    row: U;
    id: string;
+}
+
+export interface IColorEvent<U> {
+   row: U;
+   elem: string;
 }
