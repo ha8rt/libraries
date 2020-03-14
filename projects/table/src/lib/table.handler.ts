@@ -101,17 +101,19 @@ export function setFieldValue(row: any, field: string, value: any) {
    }
 }
 
-export function convertToBool<T>(rows: T[], fields: Array<keyof T>, indeterminate?: boolean, indeterminateVal = -1) {
+export function convertToBool<T>(rows: T[], fields: Array<keyof T>, condition?: keyof T, indeterminate?: boolean, indeterminateVal = -1) {
    rows.forEach((row) => {
-      fields.forEach((field) => {
-         // tslint:disable-next-line: max-line-length
-         const value = row[field] !== undefined && row[field] !== indeterminateVal as any ? (Number(row[field]) === 1 ? true : false) : undefined;
-         if (indeterminate) {
-            row[field] = { value, indeterminate: value === undefined ? true : false } as any;
-         } else {
-            row[field] = value as any;
-         }
-      });
+      if (!condition || row[condition]) {
+         fields.forEach((field) => {
+            // tslint:disable-next-line: max-line-length
+            const value = row[field] !== undefined && row[field] !== indeterminateVal as any ? (Number(row[field]) === 1 ? true : false) : undefined;
+            if (indeterminate) {
+               row[field] = { value, indeterminate: value === undefined ? true : false } as any;
+            } else {
+               row[field] = value as any;
+            }
+         });
+      }
    });
 }
 
