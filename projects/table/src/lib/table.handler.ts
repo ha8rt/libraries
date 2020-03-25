@@ -238,22 +238,24 @@ const thinSpace = '\u202F'; // '\u2009';
 export function splitThousands(rows: any[], fields: string[], omitZero: boolean = true, fromLast: boolean = true, blockSize: number = 3) {
    rows.forEach(row => {
       fields.forEach(field => {
-         if (omitZero && typeof row[field] === 'number' && row[field] === 0) {
-            row[field] = '';
+         let value = getFieldValue(row, field);
+         if (omitZero && typeof value === 'number' && value === 0) {
+            value = '';
          }
          if (fromLast) {
-            row[field] = String(row[field]).split('').reverse().join('');
+            value = String(value).split('').reverse().join('');
          }
-         row[field] = String(row[field])
+         value = String(value)
             .split('')
             .reduce<string>((previous, current) =>
                previous + current + ((previous.split(thinSpace).join('').length % blockSize === blockSize - 1) ? thinSpace : ''), '')
             .split(thinSpace)
-            .filter((value) => value.length > 0)
+            .filter((val) => val.length > 0)
             .join(thinSpace);
          if (fromLast) {
-            row[field] = String(row[field]).split('').reverse().join('');
+            value = String(value).split('').reverse().join('');
          }
+         setFieldValue(row, field, value);
       });
    });
 }

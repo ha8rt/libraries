@@ -53,3 +53,8 @@ div div form label {
 .table td, th{
    vertical-align: middle;
 }
+
+.custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
+    border-color: #28a745;
+    background-color: #28a745;
+}
