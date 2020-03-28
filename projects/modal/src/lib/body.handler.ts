@@ -1,3 +1,4 @@
+import { ValidatorFn } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { ChangeType } from './modal.handler';
 
@@ -20,12 +21,12 @@ export class Body {
       return this.value[0] as string;
    }
 
-   getField(field: string): string {
+   getField(field: string): any {
       const element = (this.value[1] as IElement[]).find((value) => value.id === field);
       return element ? element.value : undefined;
    }
 
-   getId(): string {
+   getId(): any {
       const element = (this.value[1] as IElement[]).find((value) => value.id.split('-').reverse()[0] === 'id');
       return element ? element.value : undefined;
    }
@@ -58,6 +59,8 @@ export interface IModalBody {
    field?: string;
    options?: any;
    default?: string;
+   validators?: ValidatorFn[];
+   errors?: (string[])[];
 }
 
 export enum ControlType {

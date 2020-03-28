@@ -99,6 +99,8 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
             if (!this.localTime) {
                const date: Date = new Date(control.value);
                control.value = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+            } else {
+               control.value = new Date(control.value);
             }
             const dateControl = this.fb.control({ value: control.value, disabled: control.disabled },
                control.required ? Validators.required : null);
@@ -121,12 +123,19 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
                });
             }
          } else {
-            const formControl = this.fb.control({ value: control.value, disabled: control.disabled },
-               control.required ? Validators.required : null);
-            this.inputs.push(formControl);
+            const formControl = this.fb.control({ value: control.value, disabled: control.disabled });
+            if (control.validators) {
+               formControl.setValidators(control.validators);
+               (control.errors || []).forEach((error) => {
+                  // tslint:disable-next-line: max-line-length
+                  AddInvalidControl(this.invalidData, formControl, [error[0], this.translateField(error[1], [control.placeHolder].concat(error.splice(2)))]);
+               });
+            }
             if (control.required) {
+               formControl.setValidators((control.validators || []).concat(Validators.required));
                AddInvalidControl(this.invalidData, formControl, ['required', this.translateField(this.reqAlert, [control.placeHolder])]);
             }
+            this.inputs.push(formControl);
             this.body.push(control);
          }
       });
