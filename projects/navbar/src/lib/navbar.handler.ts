@@ -19,6 +19,7 @@ export interface IButton {
    classes?: Array<string>;
    icon?: IIconClass;
    tooltip?: string;
+   disabled?: boolean;
 }
 
 export interface IImage {

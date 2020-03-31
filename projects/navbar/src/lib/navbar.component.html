@@ -23,7 +23,7 @@
          <ng-container *ngFor="let button of handler.buttons">
             <button *ngIf="button" [id]="button.id" class="btn"
                [ngClass]="[button.classes ? button.classes.join(' ') : 'btn-primary']" type="button"
-               [tooltip]="button.tooltip" (click)="onButton(button.id)">
+               [tooltip]="button.tooltip" [disabled]="button.disabled" (click)="onButton(button.id)">
                {{ button.text }}
                <ng-container *ngIf="isIcons([button.icon])">
                   <lib-icon [content]="button.icon.content" [tooltip]="button.icon.tooltip"></lib-icon>
