@@ -4,7 +4,7 @@ import { AddInvalidControl, InvalidDataType } from '@ha8rt/alert';
 import { getFieldValue } from '@ha8rt/table';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Observable, Subscription, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { Body, ControlType, IElement, IModalBody } from './body.handler';
 import { IModalButton } from './button.handler';
 import { ChangeType, ModalHandler } from './modal.handler';
@@ -123,6 +123,16 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
                });
             }
          } else {
+            if (control.type === ControlType.dateRange && Array.isArray(control.value)) {
+               control.value.forEach((val) => {
+                  if (!this.localTime) {
+                     const date: Date = new Date(val);
+                     val = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+                  } else {
+                     val = new Date(val);
+                  }
+               });
+            }
             const formControl = this.fb.control({ value: control.value, disabled: control.disabled });
             if (control.validators) {
                formControl.setValidators(control.validators);
@@ -229,6 +239,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
                }
                value = value.toISOString();
             }
+            // TODO dateRange
             if (element.type === ControlType.number) {
                value = Number(value).valueOf();
             } else if (element.type === ControlType.checkbox) {

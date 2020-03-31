@@ -32,6 +32,11 @@ export function InitButton(obj: InitButtonObj, count: number): IModalButton[][] 
          AddModalButton(obj.button, obj.prefix + '-cancel', 'Cancel', 'btn-light', 'submit');
          break;
       }
+      case ButtonType.CancelYes: {
+         AddModalButton(obj.button, obj.prefix + '-yes', 'Yes', 'btn-primary', 'button');
+         AddModalButton(obj.button, obj.prefix + '-cancel', 'Cancel', 'btn-light', 'submit');
+         break;
+      }
       case ButtonType.SendCancel: {
          AddModalButton(obj.button, obj.prefix + '-send', 'Send', 'btn-primary', 'submit', true);
          AddModalButton(obj.button, obj.prefix + '-cancel', 'Cancel', 'btn-light', 'button');

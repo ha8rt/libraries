@@ -40,6 +40,11 @@
                                  placeholder="{{ control.placeHolder }}" [(ngModel)]="control.value" bsDatepicker
                                  [bsConfig]="bsConfig" triggers="dblclick:click" (dblclick)="onDblClick(control)">
                            </ng-container>
+                           <ng-container *ngSwitchCase="ControlType.dateRange">
+                              <input [formControlName]="i" id="{{ control.id }}" type="text" class="form-control"
+                                 placeholder="{{ control.placeHolder }}" [(ngModel)]="control.value" bsDaterangepicker
+                                 [bsConfig]="bsConfig" triggers="dblclick:click">
+                           </ng-container>
                            <ng-container *ngSwitchCase="ControlType.checkbox">
                               <div class="custom-control custom-checkbox">
                                  <input [formControlName]="i" class="custom-control-input" id="{{ control.id }}"

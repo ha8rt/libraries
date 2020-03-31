@@ -12,6 +12,7 @@ export enum ButtonType {
    OkCancel,
    YesCancel,
    CancelOk,
+   CancelYes,
    SendCancel,
    ListCancel,
    CancelDelete,

@@ -69,6 +69,7 @@ export enum ControlType {
    number = 'number',
    date = 'date',
    dateTime = 'dateTime',
+   dateRange = 'dateRange',
    select = 'select',
    textarea = 'textarea',
    formInline = 'form-inline',
