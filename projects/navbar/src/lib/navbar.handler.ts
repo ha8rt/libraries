@@ -26,6 +26,7 @@ export interface IImage {
    src: string;
    alt: string;
    style?: any;
+   link?: Array<string>;
 }
 
 export interface IHeader {
