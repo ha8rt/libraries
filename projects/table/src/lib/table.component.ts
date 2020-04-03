@@ -105,7 +105,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
             currentPage: 1
          } as any;
       }
-      this.filterKeys = Object.keys(this.filterOn).length > 0;
+      this.filterKeys = Object.keys(this.filterOn || {}).length > 0;
    }
 
    onToggle = () => this.isOpen = !this.isOpen;

@@ -168,50 +168,55 @@ export function addTooltips(rows: any[], fields: string[], tooltips: string[]) {
 
 export function addLinks(
    rows: any[], field: string, paths: string[], scopes: string[], params?: object, queryParams?: Params, tab?: boolean,
+   conditions?: string[]
 ) {
    rows.forEach((row) => {
-      const obj = Object.assign({}, params);
-      if (obj) {
-         Object.keys(obj).forEach((key) => {
-            obj[key] = getFieldValue(row, obj[key]);
-         });
+      if (!conditions || conditions.every((condition) => row[condition])) {
+         const obj = Object.assign({}, params);
+         if (obj) {
+            Object.keys(obj).forEach((key) => {
+               obj[key] = getFieldValue(row, obj[key]);
+            });
+         }
+         const link: ILink = {
+            value: getFieldValue(row, field),
+            link: '/' + paths.join('/').split('/').filter((path) => !path.includes(':')).map((path) => encodeURIComponent(path)).join('/')
+               + '/' + scopes.map((param) => encodeURIComponent(getFieldValue(row, param))).join('/'),
+            params: Object.assign(obj, queryParams),
+            tab
+         };
+         setFieldValue(row, field, link);
       }
-      const link: ILink = {
-         value: getFieldValue(row, field),
-         link: '/' + paths.join('/').split('/').filter((path) => !path.includes(':')).map((path) => encodeURIComponent(path)).join('/')
-            + '/' + scopes.map((param) => encodeURIComponent(getFieldValue(row, param))).join('/'),
-         params: Object.assign(obj, queryParams),
-         tab
-      };
-      setFieldValue(row, field, link);
    });
 }
 
-export function addRouting(rows: any[], field: string, paths: string[], queryParams?: Params, openTab?: boolean) {
+export function addRouting(rows: any[], field: string, paths: string[], queryParams?: Params, openTab?: boolean, conditions?: string[]) {
    rows.forEach((row) => {
-      const routes: string[] = [];
-      paths.forEach((path) => {
-         if (path.startsWith('$')) {
-            routes.push(getFieldValue(row, path.substring(1)));
-         } else {
-            routes.push(path);
-         }
-      });
-      const params: Params = {};
-      Object.keys(queryParams || {}).forEach((key) => {
-         if (queryParams[key].startsWith('$')) {
-            params[key] = encodeURIComponent(getFieldValue(row, String(queryParams[key]).substring(1)));
-         } else {
-            params[key] = encodeURIComponent(queryParams[key]);
-         }
-      });
-      const link: ILink = {
-         value: getFieldValue(row, field),
-         link: '/' + routes.map((route) => encodeURIComponent(route)).join('/'),
-         params,
-         tab: openTab,
-      };
-      setFieldValue(row, field, link);
+      if (!conditions || conditions.every((condition) => row[condition])) {
+         const routes: string[] = [];
+         paths.forEach((path) => {
+            if (path.startsWith('$')) {
+               routes.push(getFieldValue(row, path.substring(1)));
+            } else {
+               routes.push(path);
+            }
+         });
+         const params: Params = {};
+         Object.keys(queryParams || {}).forEach((key) => {
+            if (queryParams[key].startsWith('$')) {
+               params[key] = encodeURIComponent(getFieldValue(row, String(queryParams[key]).substring(1)));
+            } else {
+               params[key] = encodeURIComponent(queryParams[key]);
+            }
+         });
+         const link: ILink = {
+            value: getFieldValue(row, field),
+            link: '/' + routes.map((route) => encodeURIComponent(route)).join('/'),
+            params,
+            tab: openTab,
+         };
+         setFieldValue(row, field, link);
+      }
    });
 }
 
@@ -237,25 +242,27 @@ const thinSpace = '\u202F'; // '\u2009';
 
 export function splitThousands(rows: any[], fields: string[], omitZero: boolean = true, fromLast: boolean = true, blockSize: number = 3) {
    rows.forEach(row => {
-      fields.forEach(field => {
+      fields.forEach((field) => {
          let value = getFieldValue(row, field);
-         if (omitZero && typeof value === 'number' && value === 0) {
-            value = '';
+         if (value && typeof value !== 'object') {
+            if (omitZero && typeof value === 'number' && value === 0) {
+               value = '';
+            }
+            if (fromLast) {
+               value = String(value).split('').reverse().join('');
+            }
+            value = String(value)
+               .split('')
+               .reduce<string>((previous, current) =>
+                  previous + current + ((previous.split(thinSpace).join('').length % blockSize === blockSize - 1) ? thinSpace : ''), '')
+               .split(thinSpace)
+               .filter((val) => val.length > 0)
+               .join(thinSpace);
+            if (fromLast) {
+               value = String(value).split('').reverse().join('');
+            }
+            setFieldValue(row, field, value);
          }
-         if (fromLast) {
-            value = String(value).split('').reverse().join('');
-         }
-         value = String(value)
-            .split('')
-            .reduce<string>((previous, current) =>
-               previous + current + ((previous.split(thinSpace).join('').length % blockSize === blockSize - 1) ? thinSpace : ''), '')
-            .split(thinSpace)
-            .filter((val) => val.length > 0)
-            .join(thinSpace);
-         if (fromLast) {
-            value = String(value).split('').reverse().join('');
-         }
-         setFieldValue(row, field, value);
       });
    });
 }
