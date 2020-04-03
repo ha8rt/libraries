@@ -1,6 +1,6 @@
-import { FormControl, FormArray } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 
-export type InvalidDataType = (FormControl | FormArray | string[][])[][];
+export type InvalidDataType = (FormControl | FormArray | FormGroup | string[][])[][];
 
 export function AddInvalidControl(invalidData: InvalidDataType, control: FormControl | FormArray, error: string[]) {
    invalidData.splice(0, 0, [control, [error]]);
