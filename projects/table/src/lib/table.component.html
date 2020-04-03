@@ -14,7 +14,7 @@
                </ng-container>
                <ng-container *ngIf="search">
                   <button class="btn btn-primary btn-sm" style="margin-left: 0.25rem;"
-                     (click)="searchEvent.emit(); $event.stopPropagation();">
+                     [ngClass]="{'btn-warning': filterKeys}" (click)="searchEvent.emit(); $event.stopPropagation();">
                      <lib-icon [content]="'fas:faSearch'"> </lib-icon>
                   </button>
                </ng-container>

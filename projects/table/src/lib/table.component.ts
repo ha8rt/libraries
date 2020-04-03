@@ -18,6 +18,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
    @Input() codes: Codes;
    @Input() rows: any[];
    @Input() filter: boolean;
+   @Input() filterOn: object;
    @Input() search: boolean;
    @Input() refresh: boolean;
    @Input() nr: string;
@@ -58,6 +59,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
    queryParamsSubscription: Subscription;
    queryParams: Params;
    routerLink: string[];
+   filterKeys: boolean;
 
    constructor(public router: Router, private route: ActivatedRoute) {
       this.routerLink = router.url.split('?')[0].split('/').map((segment) => decodeURIComponent(segment));
@@ -103,6 +105,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
             currentPage: 1
          } as any;
       }
+      this.filterKeys = Object.keys(this.filterOn).length > 0;
    }
 
    onToggle = () => this.isOpen = !this.isOpen;
