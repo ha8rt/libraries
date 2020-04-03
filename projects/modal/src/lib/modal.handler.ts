@@ -1,8 +1,8 @@
-import { Subject, Observable } from 'rxjs';
 import { ValidatorFn } from '@angular/forms';
-import { Locales } from './locale.module';
-import { IModalBody, Body } from './body.handler';
+import { Observable, Subject } from 'rxjs';
+import { Body, IModalBody } from './body.handler';
 import { IModalButton } from './button.handler';
+import { Locales } from './locale.module';
 
 export interface ChangeType {
    title?: string;
@@ -10,9 +10,10 @@ export interface ChangeType {
    body?: IModalBody[];
    buttons?: IModalButton[];
    reqAlert?: string;
+   errors?: (string[])[];
 }
 
-export class ModalHandler {
+export class ModalHandler implements ChangeType {
    event: Subject<void> = new Subject<void>();
    obs: Observable<void> = this.event.asObservable();
    title: string;

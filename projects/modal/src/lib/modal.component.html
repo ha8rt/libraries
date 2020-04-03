@@ -32,8 +32,7 @@
                         <ng-container [ngSwitch]="control.type">
                            <ng-container *ngSwitchCase="ControlType.textarea">
                               <textarea [formControlName]="i" id="{{ control.id }}" class="form-control"
-                                 maxlength="1000" placeholder="{{ control.placeHolder }}"
-                                 [(ngModel)]="control.value"></textarea>
+                                 placeholder="{{ control.placeHolder }}" [(ngModel)]="control.value"></textarea>
                            </ng-container>
                            <ng-container *ngSwitchCase="ControlType.date">
                               <input [formControlName]="i" id="{{ control.id }}" type="date" class="form-control"

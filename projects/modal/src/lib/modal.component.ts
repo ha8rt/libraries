@@ -39,6 +39,9 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
          this.errors = handler.errors;
       }
       this.changeSub = handler.change.asObservable().subscribe((data: ChangeType) => {
+         if (data.errors) {
+            this.errors = data.errors;
+         }
          this.title = data.title ? data.title : this.title;
          this.text = data.text ? data.text : this.text;
          this.reqAlert = data.reqAlert ? data.reqAlert : this.reqAlert;
@@ -92,7 +95,6 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
 
    setBody(body: IModalBody[]) {
       this.inputs.clear();
-      this.invalidData = [];
       this.body = [];
       body.forEach((control) => {
          if (control.type === ControlType.date || control.type === ControlType.dateTime) {
@@ -154,8 +156,10 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.inputs.setValidators(validators);
    }
    set errors(errors: (string[])[]) {
-      errors.forEach(error => {
-         AddInvalidControl(this.invalidData, this.inputs, error);
+      this.invalidData = [];
+      errors.forEach((error) => {
+         // tslint:disable-next-line: max-line-length
+         AddInvalidControl(this.invalidData, this.inputs, [error[0], this.translateField(error[1], [''].concat(error.splice(2)))]);
       });
    }
 
@@ -277,16 +281,10 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
    }
 
    isInvalid(): boolean {
-      let invalid = false;
-      if (this.inputs.errors && (this.inputs.errors.DoNotMatchNew || this.inputs.errors.MatchOld)) {
-         invalid = true;
+      if (this.inputs.errors) {
+         return true;
       } else {
-         this.inputs.controls.forEach(element => {
-            if (element.invalid && (element.touched || element.dirty)) {
-               invalid = true;
-            }
-         });
+         return this.inputs.controls.some((control) => control.invalid && (control.touched || control.dirty));
       }
-      return invalid;
    }
 }
