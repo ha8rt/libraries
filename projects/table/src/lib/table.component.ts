@@ -98,11 +98,12 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       }
       const isMultiRow = () => this.headers ? this.headers.rows.length > 1 : false;
       this.multiRow = isMultiRow();
-      if (!this.pagination) {
+      if (!this.pagination || this.pagination.generated) {
          this.pagination = {
             itemsPerPage: (this.rows ? this.rows.length : 0),
             totalItems: (this.rows ? this.rows.length : 0),
-            currentPage: 1
+            currentPage: 1,
+            generated: true
          } as any;
       }
       this.filterKeys = Object.keys(this.filterOn || {}).length > 0;

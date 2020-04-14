@@ -16,6 +16,7 @@ export class Pagination {
    routeProvided: boolean;
    change: Subject<Pagination> = new Subject<Pagination>();
    scrollToTop = true;
+   generated = false;
 
    private current: number;
 
