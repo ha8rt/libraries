@@ -14,7 +14,6 @@ export class AlertComponent {
 
    getShown = () => this.data.some((control) => {
       const element = control[0] as AbstractControl;
-      console.log(element);
       const invalid = element.invalid && element.touched;
       return invalid && element.errors && (control[1] as string[][]).some((error) => element.errors[error[0]]);
    })
