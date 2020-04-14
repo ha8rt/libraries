@@ -1,4 +1,4 @@
-import { ValidatorFn } from '@angular/forms';
+import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { Body, IModalBody } from './body.handler';
 import { IModalButton } from './button.handler';
@@ -10,6 +10,8 @@ export interface ChangeType {
    body?: IModalBody[];
    buttons?: IModalButton[];
    reqAlert?: string;
+   validators?: ValidatorFn[];
+   asyncValidators?: AsyncValidatorFn[];
    errors?: (string[])[];
 }
 
@@ -21,6 +23,7 @@ export class ModalHandler implements ChangeType {
    buttons: IModalButton[] = [];
    text: string;
    validators: ValidatorFn[] = [];
+   asyncValidators: AsyncValidatorFn[] = [];
    errors: (string[])[] = [];
    change: Subject<ChangeType> = new Subject<ChangeType>();
 

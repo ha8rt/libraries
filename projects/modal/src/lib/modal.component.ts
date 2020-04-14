@@ -1,5 +1,5 @@
 import { AfterViewChecked, Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, ValidatorFn, Validators } from '@angular/forms';
+import { AsyncValidatorFn, FormArray, FormBuilder, ValidatorFn, Validators } from '@angular/forms';
 import { AddInvalidControl, InvalidDataType } from '@ha8rt/alert';
 import { getFieldValue } from '@ha8rt/table';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
@@ -25,23 +25,16 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.localTime = handler.localTime;
       this.localeService.use(handler.locale);
       this.reqAlert = handler.reqAlert;
-      if (handler.buttons) {
-         this.buttons = handler.buttons;
-      }
-      if (handler.body) {
-         this.setBody(handler.body);
-      }
-      if (handler.validators) {
-         this.validators = handler.validators;
-      }
+      if (handler.buttons) { this.buttons = handler.buttons; }
+      if (handler.body) { this.setBody(handler.body); }
+      if (handler.validators) { this.validators = handler.validators; }
+      if (handler.asyncValidators) { this.asyncValidators = handler.asyncValidators; }
       this.text = handler.text;
-      if (handler.errors) {
-         this.errors = handler.errors;
-      }
+      if (handler.errors) { this.errors = handler.errors; }
       this.changeSub = handler.change.asObservable().subscribe((data: ChangeType) => {
-         if (data.errors) {
-            this.errors = data.errors;
-         }
+         if (data.validators) { this.validators = data.validators; }
+         if (data.asyncValidators) { this.asyncValidators = data.asyncValidators; }
+         if (data.errors) { this.errors = data.errors; }
          this.title = data.title ? data.title : this.title;
          this.text = data.text ? data.text : this.text;
          this.reqAlert = data.reqAlert ? data.reqAlert : this.reqAlert;
@@ -71,13 +64,15 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
 
    body: IModalBody[];
 
-   modalForm = this.fb.group({
-      inputs: this.fb.array([])
-   });
+   modalForm = this.fb.group({ inputs: this.fb.array([]) });
 
    modalRef: BsModalRef;
+
    showSub: Subscription;
+   shownSub: Subscription;
+   hiddenSub: Subscription;
    changeSub: Subscription;
+
    invalidData: InvalidDataType = [];
 
    checkFocus = false;
@@ -91,6 +86,15 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
 
    get inputs() {
       return this.modalForm.get('inputs') as FormArray;
+   }
+
+   translateField = (translate: string, fields: string[]): string => {
+      if (translate && fields) {
+         fields.forEach((value, index) => {
+            translate = translate.replace('$' + String(index + 1), value);
+         });
+      }
+      return translate;
    }
 
    setBody(body: IModalBody[]) {
@@ -136,8 +140,9 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
                });
             }
             const formControl = this.fb.control({ value: control.value, disabled: control.disabled });
-            if (control.validators) {
+            if (control.validators || control.asyncValidators) {
                formControl.setValidators(control.validators);
+               formControl.setAsyncValidators(control.asyncValidators);
                (control.errors || []).forEach((error) => {
                   // tslint:disable-next-line: max-line-length
                   AddInvalidControl(this.invalidData, formControl, [error[0], this.translateField(error[1], [control.placeHolder].concat(error.splice(2)))]);
@@ -152,24 +157,15 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
          }
       });
    }
-   set validators(validators: ValidatorFn[]) {
-      this.inputs.setValidators(validators);
-   }
+
+   set validators(validators: ValidatorFn[]) { this.inputs.setValidators(validators); }
+   set asyncValidators(asyncValidators: AsyncValidatorFn[]) { this.inputs.setAsyncValidators(asyncValidators); }
    set errors(errors: (string[])[]) {
       this.invalidData = [];
       errors.forEach((error) => {
          // tslint:disable-next-line: max-line-length
          AddInvalidControl(this.invalidData, this.inputs, [error[0], this.translateField(error[1], [''].concat(error.splice(2)))]);
       });
-   }
-
-   translateField(translate: string, fields: string[]): string {
-      if (translate && fields) {
-         fields.forEach((value, index) => {
-            translate = translate.replace('$' + String(index + 1), value);
-         });
-      }
-      return translate;
    }
 
    ngOnInit(): void {
@@ -179,24 +175,20 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
             this.openModal(this.template);
          }
       });
-      this.modalService.onShown.subscribe(() => {
+      this.shownSub = this.modalService.onShown.subscribe(() => {
          this.checkFocus = true;
          this.inputs.controls.forEach(element => {
             element.reset();
          });
       });
-      this.modalService.onHidden.subscribe(() => {
-         this.shown = false;
-      });
+      this.hiddenSub = this.modalService.onHidden.subscribe(() => { this.shown = false; });
    }
 
    ngOnDestroy(): void {
-      if (this.showSub) {
-         this.showSub.unsubscribe();
-      }
-      if (this.changeSub) {
-         this.changeSub.unsubscribe();
-      }
+      if (this.showSub) { this.showSub.unsubscribe(); }
+      if (this.shownSub) { this.shownSub.unsubscribe(); }
+      if (this.hiddenSub) { this.hiddenSub.unsubscribe(); }
+      if (this.changeSub) { this.changeSub.unsubscribe(); }
    }
 
    ngAfterViewChecked(): void {
@@ -227,6 +219,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
    }
 
    onButton(event) {
+      this.modalRef.hide();
       const values: IElement[] = [];
       for (const [index, element] of this.body.entries()) {
          if (element.type !== ControlType.null) {
@@ -260,7 +253,6 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
       }
       this.button.emit(new Body(event.currentTarget.id, values));
       this.output.next(new Body(event.currentTarget.id, values));
-      this.modalRef.hide();
    }
 
    onDblClick(body: IModalBody) {
@@ -280,11 +272,5 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
       }
    }
 
-   isInvalid(): boolean {
-      if (this.inputs.errors) {
-         return true;
-      } else {
-         return this.inputs.controls.some((control) => control.invalid && (control.touched || control.dirty));
-      }
-   }
+   isInvalid = () => (this.inputs.errors ? true : false) || this.inputs.controls.some((control) => control.invalid && control.touched);
 }

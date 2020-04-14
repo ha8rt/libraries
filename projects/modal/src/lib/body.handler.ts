@@ -1,4 +1,4 @@
-import { ValidatorFn } from '@angular/forms';
+import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { ChangeType } from './modal.handler';
 
@@ -60,6 +60,7 @@ export interface IModalBody {
    options?: any;
    default?: string;
    validators?: ValidatorFn[];
+   asyncValidators?: AsyncValidatorFn[];
    errors?: (string[])[];
 }
 
