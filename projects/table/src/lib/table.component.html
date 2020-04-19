@@ -8,7 +8,7 @@
          <div class="col" style="text-align: right">
             <div style="display: inline-flex">
                <ng-container *ngIf="filter">
-                  <input class="form-control" id="{{ 'filter' }}" style="height: 2rem" type="search"
+                  <input class="form-control" id="{{ 'filter' + (id?id:'') }}" style="height: 2rem" type="search"
                      [placeholder]="filter" #control (search)="onFilter(control.value)"
                      (keyup)="onFilter(control.value)" (click)="$event.stopPropagation()">
                </ng-container>

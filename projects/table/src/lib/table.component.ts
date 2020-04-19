@@ -175,7 +175,7 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
    // tslint:disable-next-line: member-ordering
    isIcons = isIcons;
    isBoolean = (elem: any) => {
-      return typeof elem === 'boolean' || (elem.indeterminate !== undefined && typeof elem.indeterminate === 'boolean');
+      return typeof elem === 'boolean' || (elem && elem.indeterminate !== undefined && typeof elem.indeterminate === 'boolean');
    }
    onCheckBox(row: any, elem: string) {
       if (row[elem].indeterminate !== undefined) {
