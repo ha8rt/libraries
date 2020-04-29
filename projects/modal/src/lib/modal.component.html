@@ -37,12 +37,12 @@
                            <ng-container *ngSwitchCase="ControlType.date">
                               <input [formControlName]="i" id="{{ control.id }}" type="date" class="form-control"
                                  placeholder="{{ control.placeHolder }}" [(ngModel)]="control.value" bsDatepicker
-                                 [bsConfig]="bsConfig" triggers="dblclick:click" (dblclick)="onDblClick(control)">
+                                 [bsConfig]="bsConfig" triggers="click:click" (click)="onClick(control)">
                            </ng-container>
                            <ng-container *ngSwitchCase="ControlType.dateRange">
                               <input [formControlName]="i" id="{{ control.id }}" type="text" class="form-control"
                                  placeholder="{{ control.placeHolder }}" [(ngModel)]="control.value" bsDaterangepicker
-                                 [bsConfig]="bsConfig" triggers="dblclick:click">
+                                 [bsConfig]="bsConfig" triggers="click:click">
                            </ng-container>
                            <ng-container *ngSwitchCase="ControlType.checkbox">
                               <div class="custom-control custom-checkbox">
@@ -58,7 +58,7 @@
                                  <div class="col-6">
                                     <input [formControlName]="i" id="{{ control.id }}" type="date" class="form-control"
                                        placeholder="{{ control.placeHolder }}" [(ngModel)]="control.value" bsDatepicker
-                                       [bsConfig]="bsConfig" triggers="dblclick:click" (dblclick)="onDblClick(control)">
+                                       [bsConfig]="bsConfig" triggers="click:click" (click)="onClick(control)">
                                  </div>
                                  <div class="col-6">
                                     <timepicker [formControlName]="i+1" id="{{ body[i+1].id }}"

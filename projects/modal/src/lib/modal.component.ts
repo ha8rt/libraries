@@ -3,7 +3,7 @@ import { AsyncValidatorFn, FormArray, FormBuilder, ValidatorFn, Validators } fro
 import { AddInvalidControl, InvalidDataType } from '@ha8rt/alert';
 import { getFieldValue } from '@ha8rt/table';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { Body, ControlType, IElement, IModalBody } from './body.handler';
 import { IModalButton } from './button.handler';
@@ -23,7 +23,8 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.obs = handler.obs;
       this.title = handler.title;
       this.localTime = handler.localTime;
-      this.localeService.use(handler.locale);
+      if (handler.locale) { this.localeService.use(handler.locale); }
+      if (handler.bsConfig) { this.bsConfig = handler.bsConfig; }
       this.reqAlert = handler.reqAlert;
       if (handler.buttons) { this.buttons = handler.buttons; }
       if (handler.body) { this.setBody(handler.body); }
@@ -55,9 +56,10 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
    title: string;
    buttons: IModalButton[];
    text: string;
-   config: object = {};
+   config: ModalOptions = {};
    closeButton: boolean;
    localTime: boolean;
+   bsConfig: Partial<BsDatepickerConfig>;
    reqAlert: string;
    ControlType = ControlType;
    output: Subject<Body>;
@@ -77,10 +79,6 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
 
    checkFocus = false;
    shown: boolean;
-
-   bsConfig: Partial<BsDatepickerConfig> = Object.assign({}, {
-      containerClass: 'theme-dark-blue', isAnimated: true, dateInputFormat: 'YYYY-MM-DD'
-   });
 
    getFieldValue = getFieldValue;
 
@@ -255,7 +253,7 @@ export class ModalComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.output.next(new Body(event.currentTarget.id, values));
    }
 
-   onDblClick(body: IModalBody) {
+   onClick(body: IModalBody) {
       if (!body.value || body.value === '0000-01-01') {
          body.value = new Date(Date.now());
       }
