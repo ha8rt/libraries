@@ -7,11 +7,12 @@
       <span class="navbar-toggler-icon"></span>
    </button>
    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <a *ngIf="handler.header.text" class="navbar-brand" routerLink="/">{{ handler.header.text }}</a>
+      <a *ngIf="handler.header.text" class="navbar-brand" [routerLink]="['/']">{{ handler.header.text }}</a>
       <div *ngFor="let nav of handler.navs" class="btn-group" dropdown>
          <button *ngIf="nav" id="button-basic" dropdownToggle type="button" class="btn"
             [ngClass]="[nav.disabled ? 'disabled' : '', nav.submenus ? 'dropdown-toggle' : '', nav.classes ? nav.classes.join(' ') : 'btn-primary']"
-            aria-controls="dropdown-basic" [routerLink]="nav.link" [tooltip]="nav.tooltip">
+            aria-controls="dropdown-basic" [routerLink]="nav.link"
+            [queryParamsHandling]="!nav.link || nav.link.length===0 ? 'preserve': 'default'" [tooltip]="nav.tooltip">
             {{ nav.text }}
             <ng-container *ngIf="isIcons([nav.icon])">
                <lib-icon [content]="nav.icon.content" [tooltip]="nav.icon.tooltip"></lib-icon>
