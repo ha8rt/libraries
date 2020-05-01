@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 // tslint:disable-next-line: max-line-length
-import { faComment as farComment, faCommentDots as farCommentDots, faComments as farComments, faEdit as farEdit, faFileAlt, faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import { faComment as farComment, faCommentDots as farCommentDots, faComments as farComments, faEdit as farEdit, faFileAlt, faEnvelope, faClone } from '@fortawesome/free-regular-svg-icons';
 // tslint:disable-next-line: max-line-length
 import { faBox, faCheck, faChevronDown, faChevronUp, faClipboardCheck, faClipboardList, faCogs, faComment, faCommentDots, faComments, faDollarSign, faDolly, faDownload, faEdit, faGlobeAmericas, faHome, faInfo, faInfoCircle, faKey, faPlus, faPrint, faReceipt, faReplyAll, faSearch, faShare, faSignOutAlt, faThumbtack, faTimes, faTrashAlt, faTruck, faUndoAlt, faUserEdit, faUsersCog, faWarehouse, faSyncAlt, faUserShield, faBook, faList, faUsers, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
@@ -18,7 +18,7 @@ export class IconComponent {
       // tslint:disable-next-line: max-line-length
       faPlus, faCheck, faEdit, faTimes, faDownload, faComment, faComments, faCommentDots, faDollarSign, faSignOutAlt, faKey, faTrashAlt, faClipboardCheck, faClipboardList, faDolly, faThumbtack, faTruck, faCogs, faBox, faInfo, faInfoCircle, faPrint, faGlobeAmericas, faHome, faUsersCog, faWarehouse, faSearch, faChevronDown, faChevronUp, faUserEdit, faUndoAlt, faReceipt, faShare, faReplyAll, faSyncAlt, faUserShield, faBook, faList, faUsers, faExclamationTriangle
    };
-   far = { farEdit, farComment, farComments, farCommentDots, faFileAlt, faEnvelope };
+   far = { farEdit, farComment, farComments, farCommentDots, faFileAlt, faEnvelope, faClone };
 
    constructor() { }
 
