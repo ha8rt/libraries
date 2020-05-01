@@ -1,9 +1,9 @@
-import { Component, OnInit, EventEmitter, Input, ViewChild, ElementRef, Output, OnDestroy, OnChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
-import { SelectValidators } from './select.validator';
 import { getFieldValue } from '@ha8rt/table';
+import { Observable, Subscription } from 'rxjs';
 import { ElemList } from './select.handler';
+import { SelectValidators } from './select.validator';
 
 @Component({
    selector: 'lib-select',
@@ -18,10 +18,10 @@ export class SelectComponent implements OnInit, OnDestroy, OnChanges {
    @Input() load: Observable<number>;
    @Input() unload: Observable<void>;
    @Input() disable: Observable<boolean>;
-   @Input('h') header: string;
+   @Input() header: string;
    @Input() options: string[];
    @Input() field: string;
-   @Input('req') required: boolean;
+   @Input() required: boolean;
    @Input() elemList: ElemList;
    @Input() myName: string;
    @Input() myGroup: FormGroup;
@@ -56,7 +56,9 @@ export class SelectComponent implements OnInit, OnDestroy, OnChanges {
          this.loadSub = this.load.subscribe((value) => {
             this.loaded = true;
             this.control.enable();
-            this.control.setValue(this.options && this.options.length === 1 ? 0 : value);
+            if (!this.setFirstIfPossible()) {
+               this.control.setValue(value);
+            }
          });
       }
       if (this.unload) {
@@ -78,24 +80,16 @@ export class SelectComponent implements OnInit, OnDestroy, OnChanges {
    }
 
    ngOnDestroy() {
-      if (this.reset) {
-         this.resetSub.unsubscribe();
-      }
-      if (this.load) {
-         this.loadSub.unsubscribe();
-      }
-      if (this.unload) {
-         this.unloadSub.unsubscribe();
-      }
-      if (this.disable) {
-         this.disableSub.unsubscribe();
-      }
+      this.elemList.splice(this.elemList.findIndex((elem) => elem.name === this.myName), 1);
+      this.myGroup.removeControl(this.myName);
+      if (this.reset) { this.resetSub.unsubscribe(); }
+      if (this.load) { this.loadSub.unsubscribe(); }
+      if (this.unload) { this.unloadSub.unsubscribe(); }
+      if (this.disable) { this.disableSub.unsubscribe(); }
    }
 
    ngOnChanges() {
-      if (this.options && this.options.length === 1) {
-         this.control.setValue(0);
-      }
+      this.setFirstIfPossible();
       if (this.required) {
          this.control.setValidators(SelectValidators.cannotBeEmpty);
       }
@@ -103,5 +97,15 @@ export class SelectComponent implements OnInit, OnDestroy, OnChanges {
 
    onChange(value) {
       this.changed.emit(value);
+   }
+
+   setFirstIfPossible(): boolean {
+      if (this.options && this.options.length === 1) {
+         const value = (this.options[0] as any)._id || 0;
+         this.control.setValue(value);
+         this.onChange(value);
+         return true;
+      }
+      return false;
    }
 }

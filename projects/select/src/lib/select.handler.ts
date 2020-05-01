@@ -23,13 +23,7 @@ export function getNative(elemList: ElemList, name: string) {
 }
 
 export function getInvalid(elemList: ElemList): boolean {
-   let invalid = false;
-   elemList.forEach(elem => {
-      if (elem.control.invalid && elem.control.touched) {
-         invalid = true;
-      }
-   });
-   return invalid;
+   return elemList.some((elem) => elem.control.invalid);
 }
 
 export function getValue(elemList: ElemList, name: string, rows: any[], code: string): any {
