@@ -49,6 +49,7 @@ export class SelectComponent implements OnInit, OnDestroy, OnChanges {
       if (this.reset) {
          this.resetSub = this.reset.subscribe(() => {
             this.control.reset();
+            // console.log("RESET" + this.myName);
             this.control.setValue(-1);
          });
       }
@@ -57,7 +58,8 @@ export class SelectComponent implements OnInit, OnDestroy, OnChanges {
             this.loaded = true;
             this.control.enable();
             if (!this.setFirstIfPossible()) {
-               this.control.setValue(value);
+               // console.log("LOAD" + this.myName, value || this.control.value);
+               this.control.setValue(value || this.control.value);
             }
          });
       }
@@ -65,6 +67,7 @@ export class SelectComponent implements OnInit, OnDestroy, OnChanges {
          this.unloadSub = this.unload.subscribe(() => {
             this.loaded = false;
             this.control.disable();
+            // console.log("UNLOAD" + this.myName);
             this.control.setValue(-1);
          });
       }
@@ -96,11 +99,13 @@ export class SelectComponent implements OnInit, OnDestroy, OnChanges {
    }
 
    onChange(value) {
+      // console.log("CHANGE:" + this.myName + value);
       this.changed.emit(value);
    }
 
    setFirstIfPossible(): boolean {
-      if (this.options && this.options.length === 1) {
+      if (this.options && this.options.length === 1 && this.control.value !== 0) {
+         // console.log("SET FIRST", this.options);
          const value = (this.options[0] as any)._id || 0;
          this.control.setValue(value);
          this.onChange(value);
