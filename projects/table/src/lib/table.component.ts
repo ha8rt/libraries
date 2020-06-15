@@ -159,8 +159,10 @@ export class TableComponent implements OnInit, OnChanges, OnDestroy {
       if (this.rowStyles) {
          return this.rowStyles.map((style) => {
             if (row[Object.keys(style)[0]]) {
+               // console.log(row._id.callsign, Object.keys(style)[0], row[Object.keys(style)[0]]);
                return style[Object.keys(style)[0]];
             }
+            return '';
          }).join(' ');
       } else {
          return '';

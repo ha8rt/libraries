@@ -195,7 +195,7 @@ export function addRouting(rows: any[], field: string, paths: string[], queryPar
       if (!conditions || conditions.every((condition) => row[condition])) {
          const routes: string[] = [];
          paths.forEach((path) => {
-            if (path.startsWith('$')) {
+            if (typeof path === 'string' && path.startsWith('$')) {
                routes.push(getFieldValue(row, path.substring(1)));
             } else {
                routes.push(path);
@@ -203,7 +203,7 @@ export function addRouting(rows: any[], field: string, paths: string[], queryPar
          });
          const params: Params = {};
          Object.keys(queryParams || {}).forEach((key) => {
-            if (queryParams[key].startsWith('$')) {
+            if (typeof queryParams[key] === 'string' && queryParams[key].startsWith('$')) {
                params[key] = encodeURIComponent(getFieldValue(row, String(queryParams[key]).substring(1)));
             } else {
                params[key] = encodeURIComponent(queryParams[key]);
