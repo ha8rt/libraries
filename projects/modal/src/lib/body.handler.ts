@@ -64,19 +64,21 @@ export interface IModalBody {
    errors?: (string[])[];
 }
 
+/**
+ * this is used in html, don't change
+ */
 export enum ControlType {
-   text,
-   password,
-   number,
-   date,
-   dateTime,
-   dateRange,
-   select,
-   textarea,
-   formInline,
-   checkbox,
-   null,
-   checkboxGroup,
+   text = 'text',
+   password = 'password',
+   number = 'number',
+   date = 'date',
+   dateTime = 'dateTime',
+   dateRange = 'dateRange',
+   select = 'select',
+   textarea = 'textarea',
+   formInline = 'formInline',
+   checkbox = 'checkbox',
+   null = 'null',
 }
 
 export enum BodyType {
