@@ -45,8 +45,9 @@
                                  [bsConfig]="bsConfig" triggers="click:click">
                            </ng-container>
                            <ng-container *ngSwitchCase="ControlType.checkbox">
-                              <div class="custom-control custom-checkbox">
-                                 <input [formControlName]="i" class="custom-control-input" id="{{ control.id }}"
+                              <div class="custom-control custom-checkbox"
+                                 [ngStyle]="i === 0 ? {'margin-top': '0px'} : ''">
+                                 <input [formControlName]=" i" class="custom-control-input" id="{{ control.id }}"
                                     type="checkbox" [checked]="control.value" [indeterminate]="control.indeterminate"
                                     (click)="onCheckBox(control)">
                                  <label class="custom-control-label"

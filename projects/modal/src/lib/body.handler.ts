@@ -65,17 +65,18 @@ export interface IModalBody {
 }
 
 export enum ControlType {
-   text = 'text',
-   password = 'password',
-   number = 'number',
-   date = 'date',
-   dateTime = 'dateTime',
-   dateRange = 'dateRange',
-   select = 'select',
-   textarea = 'textarea',
-   formInline = 'form-inline',
-   checkbox = 'checkbox',
-   null = 'null',
+   text,
+   password,
+   number,
+   date,
+   dateTime,
+   dateRange,
+   select,
+   textarea,
+   formInline,
+   checkbox,
+   null,
+   checkboxGroup,
 }
 
 export enum BodyType {

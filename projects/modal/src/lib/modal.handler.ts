@@ -48,6 +48,7 @@ export class ModalHandler implements ChangeType {
    constructor() { }
 
    set(item: string, value: any) {
+      // todo datetime nem működik
       this.body.find((elem) => elem.id === item).value = value;
    }
 }
